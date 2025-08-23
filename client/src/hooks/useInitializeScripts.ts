@@ -14,34 +14,58 @@ declare global {
 
 const useInitializeScripts = () => {
   useEffect(() => {
-    // IMMEDIATELY disable any container manipulation to prevent zoom
+    // COMPLETELY DISABLE ALL JAVASCRIPT EFFECTS TO PREVENT ZOOM ISSUES
+    console.log('All JavaScript effects disabled to prevent zoom issues on Home page');
+    
     if (typeof window !== 'undefined') {
-      // Set a global flag to prevent any layout manipulation
+      // Set global flags to prevent any dynamic behavior
       (window as any).PREVENT_LAYOUT_SHIFTS = true;
+      (window as any).DISABLE_ALL_JS_EFFECTS = true;
       
-      // Override getContainer immediately
+      // Override all problematic functions immediately
       window.getContainer = function() {
-        console.log('getContainer function disabled to prevent zoom issues');
+        console.log('getContainer function completely disabled');
         return;
       };
       
-      // Intercept any jQuery css modifications to margin-left on container-wrapper
+      // Disable all Swiper initialization
+      if (window.Swiper) {
+        const originalSwiper = window.Swiper;
+        window.Swiper = function() {
+          console.log('Swiper initialization disabled to prevent zoom issues');
+          return { destroy: () => {}, on: () => {}, off: () => {} };
+        };
+        window.Swiper.use = () => {};
+      }
+      
+      // Disable Fancybox
+      if (window.Fancybox) {
+        window.Fancybox.bind = function() {
+          console.log('Fancybox disabled to prevent zoom issues');
+          return;
+        };
+      }
+      
+      // Intercept and block all jQuery css modifications
       if (window.$ && window.jQuery) {
         const originalCss = window.$.fn.css;
         window.$.fn.css = function(prop: any, _value?: any) {
-          // Prevent margin-left modifications on container-wrapper
-          if ((this.hasClass('container-wrapper') || this.is('.container-wrapper')) && 
-              (prop === 'margin-left' || (typeof prop === 'object' && prop['margin-left']))) {
-            console.log('Blocked margin-left modification on container-wrapper to prevent zoom');
-            return this;
-          }
-          return originalCss.apply(this, arguments);
+          console.log('All jQuery CSS modifications blocked to prevent zoom');
+          return this;
         };
         
-        // Override getContainer in jQuery ready
+        // Disable jQuery animations
+        const originalAnimate = window.$.fn.animate;
+        window.$.fn.animate = function() {
+          console.log('jQuery animations disabled to prevent zoom');
+          return this;
+        };
+        
+        // Override jQuery ready to prevent script execution
         window.$(document).ready(function() {
+          console.log('jQuery ready executed but all effects disabled');
           window.getContainer = function() {
-            console.log('getContainer function disabled in jQuery ready');
+            console.log('getContainer disabled in jQuery ready');
             return;
           };
         });
@@ -49,179 +73,43 @@ const useInitializeScripts = () => {
     }
 
     const initializeScripts = () => {
-      // Prevent multiple initializations
+      // COMPLETELY DISABLE ALL SCRIPT INITIALIZATION
+      console.log('Script initialization completely disabled to prevent zoom issues');
+      
       if (window.globetrottersInitialized) {
-        console.log('Scripts already initialized, skipping...');
+        console.log('Scripts already disabled, skipping...');
         return;
       }
 
-      console.log('Initializing Globetrotters scripts...');
+      // Only set the flag and ensure container-wrapper styling is static
+      const containerWrappers = document.querySelectorAll('.container-wrapper');
+      containerWrappers.forEach(element => {
+        (element as HTMLElement).style.marginLeft = 'auto';
+        (element as HTMLElement).style.transform = 'none';
+        (element as HTMLElement).style.transition = 'none';
+      });
 
-      if (window.$ && window.jQuery && window.Swiper && window.Fancybox) {
-        // FIRST: Immediately disable the problematic getContainer function
-        console.log('Disabling getContainer function before any other initialization...');
-        if (window.$) {
-          // Override any existing getContainer function
-          window.getContainer = function() {
-            console.log('getContainer called but disabled to prevent zoom issues');
-            return;
-          };
-          
-          // Remove any resize event listeners that might call getContainer
-          window.$(window).off('resize');
-          
-          // Ensure container-wrapper has proper CSS
-          const containerWrappers = document.querySelectorAll('.container-wrapper');
-          containerWrappers.forEach(element => {
-            (element as HTMLElement).style.marginLeft = 'auto';
-            (element as HTMLElement).style.transform = 'none';
-          });
-        }
+      // Ensure all potentially problematic elements have static positioning
+      const problematicElements = document.querySelectorAll('.swiper, .destinationSlider, .tourCateSlider, .testimonialSlider');
+      problematicElements.forEach(element => {
+        (element as HTMLElement).style.transform = 'none';
+        (element as HTMLElement).style.transition = 'none';
+      });
 
-        // Initialize Swiper sliders with error handling
-        window.swiperInstances = window.swiperInstances || [];
-
-        try {
-          // Destroy existing instances if any
-          if (window.swiperInstances.length > 0) {
-            window.swiperInstances.forEach(swiper => {
-              if (swiper && swiper.destroy) {
-                swiper.destroy(true, true);
-              }
-            });
-            window.swiperInstances = [];
-          }
-
-          const destinationSlider = document.querySelector('.destinationSlider');
-          if (destinationSlider && !destinationSlider.classList.contains('swiper-initialized')) {
-            const destinationSwiper = new window.Swiper('.destinationSlider', {
-              loop: true,
-              slidesPerView: 2.2,
-              spaceBetween: 30,
-              autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-              },
-              breakpoints: {
-                0: {
-                  slidesPerView: 1.2,
-                  spaceBetween: 15,
-                },
-                480: {
-                  slidesPerView: 2.2,
-                  spaceBetween: 30,
-                },
-              }
-            });
-            window.swiperInstances.push(destinationSwiper);
-          }
-
-          const tourCateSlider = document.querySelector('.tourCateSlider');
-          if (tourCateSlider && !tourCateSlider.classList.contains('swiper-initialized')) {
-            const tourCateSwiper = new window.Swiper('.tourCateSlider', {
-              loop: true,
-              slidesPerView: 3,
-              spaceBetween: 20,
-              autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-              },
-              breakpoints: {
-                0: {
-                  slidesPerView: 1,
-                  spaceBetween: 5,
-                },
-                768: {
-                  slidesPerView: 3,
-                  spaceBetween: 20,
-                },
-              }
-            });
-            window.swiperInstances.push(tourCateSwiper);
-          }
-
-          const testimonialSlider = document.querySelector('.testimonialSlider .swiper');
-          if (testimonialSlider && !testimonialSlider.classList.contains('swiper-initialized')) {
-            const testimonialSwiper = new window.Swiper('.testimonialSlider .swiper', {
-              loop: true,
-              slidesPerView: 1,
-              autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-              },
-              pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-              },
-            });
-            window.swiperInstances.push(testimonialSwiper);
-          }
-
-          // Initialize Fancybox only once
-          try {
-            window.Fancybox.bind('[data-fancybox="gallery"]', {});
-            window.Fancybox.bind('[data-fancybox="overviewVideo"]', {});
-            window.Fancybox.bind('[data-fancybox="gallery-a"]', {});
-            window.Fancybox.bind('[data-fancybox="gallery-b"]', {});
-          } catch (fancyboxError) {
-            console.warn('Fancybox initialization warning:', fancyboxError);
-          }
-
-          // Initialize responsive tabs
-          const horizontalTab = window.$('#parentHorizontalTab');
-          if (horizontalTab.length && !horizontalTab.hasClass('easyResponsiveTabs')) {
-            horizontalTab.easyResponsiveTabs({
-              type: 'default',
-              width: 'auto',
-              fit: true,
-              tabidentify: 'hor_1',
-            });
-          }
-
-          // Disable the problematic getContainer function that causes zoom issues
-          // Override the getContainer function to prevent it from executing
-          if (window.$) {
-            window.getContainer = function() {
-              // Do nothing - this prevents the original getContainer from running
-              console.log('getContainer function disabled to prevent zoom issues');
-            };
-            
-            // Remove any existing resize event listeners that call getContainer
-            window.$(window).off('resize.getContainer');
-            
-            // Ensure container-wrapper has proper CSS instead of JS manipulation
-            const containerWrapper = document.querySelector('.container-wrapper');
-            if (containerWrapper) {
-              (containerWrapper as HTMLElement).style.marginLeft = 'auto';
-            }
-          }
-
-          window.globetrottersInitialized = true;
-        } catch (error) {
-          console.error('Error initializing scripts:', error);
-        }
-      }
+      window.globetrottersInitialized = true;
+      console.log('All effects disabled - static layout enforced');
     };
 
-    // Run immediately to override any external scripts
+    // Run immediately to disable any external scripts
     initializeScripts();
     
-    // Also set a timer as backup
+    // Also set a timer as backup to ensure effects stay disabled
     const timer = setTimeout(initializeScripts, 100);
+    
     return () => {
       clearTimeout(timer);
-      // Cleanup on unmount
-      if (window.swiperInstances) {
-        window.swiperInstances.forEach(swiper => {
-          if (swiper && swiper.destroy) {
-            swiper.destroy(true, true);
-          }
-        });
-      }
-      // Cleanup jQuery events if any
-      if (window.$) {
-        window.$(window).off('resize.globetrotters');
-      }
+      // No cleanup needed since everything is disabled
+      console.log('useInitializeScripts cleanup - all effects remain disabled');
     };
   }, []);
 };
