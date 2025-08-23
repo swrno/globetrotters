@@ -30,7 +30,6 @@ const useInitializeScripts = () => {
       
       // Disable all Swiper initialization
       if (window.Swiper) {
-        const originalSwiper = window.Swiper;
         window.Swiper = function() {
           console.log('Swiper initialization disabled to prevent zoom issues');
           return { destroy: () => {}, on: () => {}, off: () => {} };
@@ -48,14 +47,12 @@ const useInitializeScripts = () => {
       
       // Intercept and block all jQuery css modifications
       if (window.$ && window.jQuery) {
-        const originalCss = window.$.fn.css;
-        window.$.fn.css = function(prop: any, _value?: any) {
+        window.$.fn.css = function(_prop: any, _value?: any) {
           console.log('All jQuery CSS modifications blocked to prevent zoom');
           return this;
         };
         
         // Disable jQuery animations
-        const originalAnimate = window.$.fn.animate;
         window.$.fn.animate = function() {
           console.log('jQuery animations disabled to prevent zoom');
           return this;
