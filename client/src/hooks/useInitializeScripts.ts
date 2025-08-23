@@ -28,7 +28,7 @@ const useInitializeScripts = () => {
       // Intercept any jQuery css modifications to margin-left on container-wrapper
       if (window.$ && window.jQuery) {
         const originalCss = window.$.fn.css;
-        window.$.fn.css = function(prop, value) {
+        window.$.fn.css = function(prop: any, _value?: any) {
           // Prevent margin-left modifications on container-wrapper
           if ((this.hasClass('container-wrapper') || this.is('.container-wrapper')) && 
               (prop === 'margin-left' || (typeof prop === 'object' && prop['margin-left']))) {
