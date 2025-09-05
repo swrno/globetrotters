@@ -2,6 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 export default function Contact() {
   const [formData, setFormData] = useState({
@@ -50,38 +52,7 @@ export default function Contact() {
 
   return (
     <>
-      <header className="header">
-        <div className="container">
-          <nav className="navbar navbar-expand-lg">
-            <Link className="logo" href="/">
-              <img src="/logo.svg" alt="logo" />
-            </Link>
-            <button 
-              className="navbar-toggler" 
-              type="button" 
-              data-bs-toggle="collapse" 
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent" 
-              aria-expanded="false" 
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul className="navbar-nav ms-auto">
-                <li><Link href="/">home</Link></li>
-                <li><Link href="/holiday-packages">Holiday Packages</Link></li>
-                <li><Link href="/about">About Us</Link></li>
-                <li><Link href="/faq">FAQ</Link></li>
-                <li className="current-menu-item"><Link href="/contact">Contact Us</Link></li>
-              </ul>
-              <button className="closebtn">
-                <img src="/closeicon.png" alt="" />
-              </button>
-            </div>
-          </nav>
-        </div>
-      </header>
+      <Header currentPage="contact" />
 
       <div className="innerBanner">
         <figure><img src="/holidaybanner.jpg" alt="" /></figure>
@@ -190,46 +161,7 @@ export default function Contact() {
         </div>
       </div>
 
-      <footer className="footer gapsec">
-        <div className="container">
-          <div className="footerTop">
-            <div className="row">
-              <div className="col-lg-5">
-                <h2>Subscribe to Our Newsletter</h2>
-              </div>
-              <div className="col-lg-7">
-                <div className="NewsletterForm">
-                  <input type="email" placeholder="Email Address" />
-                  <button type="button" className="primaryBtn">Subscribe</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="footerBot">
-            <div className="footLogo">
-              <Link href="/">
-                <img src="/footlogo.png" alt="" />
-              </Link>
-            </div>
-            <div className="footNav">
-              <ul>
-                <li><Link href="/">Home</Link></li>
-                <li><Link href="/holiday-packages">Holiday Packages</Link></li>
-                <li><Link href="/about">About Us</Link></li>
-                <li><Link href="/faq">FAQ</Link></li>
-                <li><Link href="/contact">Contact Us</Link></li>
-              </ul>
-            </div>
-            <div className="socialsec">
-              <ul>
-                <li><Link href="#"><img src="/fb.svg" alt="" /></Link></li>
-                <li><Link href="#"><img src="/insta.svg" alt="" /></Link></li>
-                <li><Link href="#"><img src="/wh.svg" alt="" /></Link></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }
