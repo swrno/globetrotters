@@ -2,6 +2,7 @@ import FeaturedPackages from '@/components/FeaturedPackages';
 import NewsletterSignup from '@/components/NewsletterSignup';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import TourCategories from '@/components/TourCategories';
 
 export default function Home() {
   return (
@@ -211,44 +212,7 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="tourCate gapsec">
-        <div className="container">
-          <div className="innerTourCate">
-            <div className="headingsec">
-              <h3>Embrace your wanderlust</h3>
-              <h2>Tour Categories</h2>
-            </div>
-            <div className="swiper tourCateSlider">
-              <div className="swiper-wrapper">
-                <div className="swiper-slide">
-                  <div className="item">
-                    <figure><img src="/cateimg1.png" alt="" /></figure>
-                    <h4><a href="#"> Hiking</a></h4>
-                  </div>
-                </div>
-                <div className="swiper-slide">
-                  <div className="item">
-                    <figure><img src="/cateimg2.png" alt="" /></figure>
-                    <h4><a href="#"> Hiking</a></h4>
-                  </div>
-                </div>
-                <div className="swiper-slide">
-                  <div className="item">
-                    <figure><img src="/cateimg3.png" alt="" /></figure>
-                    <h4><a href="#"> Hiking</a></h4>
-                  </div>
-                </div>
-                <div className="swiper-slide">
-                  <div className="item">
-                    <figure><img src="/cateimg3.png" alt="" /></figure>
-                    <h4><a href="#"> Hiking</a></h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <TourCategories />
 
       <div className="ourRecentColl gapsec">
         <div className="container">

@@ -3,6 +3,44 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  IconButton,
+  Button,
+  Box,
+  Container,
+  Grid,
+  Card,
+  CardContent,
+  Table,
+  TableHead,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableContainer,
+  Paper,
+  Avatar,
+  Chip,
+  CircularProgress,
+  Switch,
+  FormControlLabel,
+} from '@mui/material';
+import {
+  Logout,
+  Inventory,
+  People,
+  Email,
+  Star,
+  Visibility,
+  Edit,
+  Delete,
+  Add,
+  DarkMode,
+  LightMode,
+} from '@mui/icons-material';
 
 interface Package {
   _id: string;
@@ -22,9 +60,9 @@ interface Package {
 export default function AdminDashboard() {
   const [packages, setPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
-  const [darkMode, setDarkMode] = useState(false);
   
   const { user, logout } = useAuth();
+  const { darkMode, toggleDarkMode } = useTheme();
   const router = useRouter();
 
   useEffect(() => {
@@ -34,13 +72,6 @@ export default function AdminDashboard() {
     }
     
     fetchPackages();
-    
-    // Check for dark mode preference
-    const savedDarkMode = localStorage.getItem('darkMode') === 'true';
-    setDarkMode(savedDarkMode);
-    if (savedDarkMode) {
-      document.documentElement.classList.add('dark');
-    }
   }, [user, router]);
 
   const fetchPackages = async () => {
@@ -54,18 +85,6 @@ export default function AdminDashboard() {
       console.error('Error fetching packages:', error);
     } finally {
       setLoading(false);
-    }
-  };
-
-  const toggleDarkMode = () => {
-    const newDarkMode = !darkMode;
-    setDarkMode(newDarkMode);
-    localStorage.setItem('darkMode', newDarkMode.toString());
-    
-    if (newDarkMode) {
-      document.documentElement.classList.add('dark');
-    } else {
-      document.documentElement.classList.remove('dark');
     }
   };
 
@@ -91,235 +110,256 @@ export default function AdminDashboard() {
     return null;
   }
 
+  const totalRegistrations = packages.reduce((total, pkg) => total + pkg.registrations.length, 0);
+  const mostPopular = packages.length > 0 
+    ? packages.reduce((a, b) => a.registrations.length > b.registrations.length ? a : b).location
+    : 'N/A';
+
   return (
-    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
-      {/* Header */}
-      <header className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <img src="/logo.svg" alt="Globetrotters" className="h-8 w-auto" />
-              <h1 className="ml-3 text-xl font-semibold text-gray-900 dark:text-white">
-                Admin Dashboard
-              </h1>
-            </div>
-            
-            <div className="flex items-center space-x-4">
-              <button
-                onClick={toggleDarkMode}
-                className="p-2 rounded-md text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700"
-              >
-                {darkMode ? '☀️' : '🌙'}
-              </button>
-              
-              <span className="text-sm text-gray-700 dark:text-gray-300">
-                {user.email}
-              </span>
-              
-              <button
-                onClick={logout}
-                className="px-3 py-2 rounded-md text-sm font-medium text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-              >
-                Logout
-              </button>
-            </div>
-          </div>
-        </div>
-      </header>
+    <Box sx={{ flexGrow: 1 }}>
+      {/* AppBar */}
+      <AppBar position="static" elevation={1}>
+        <Toolbar>
+          <Avatar src="/logo.svg" sx={{ mr: 2 }} />
+          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+            Admin Dashboard
+          </Typography>
+          
+          <FormControlLabel
+            control={
+              <Switch
+                checked={darkMode}
+                onChange={toggleDarkMode}
+                icon={<LightMode />}
+                checkedIcon={<DarkMode />}
+              />
+            }
+            label=""
+            sx={{ mr: 2 }}
+          />
+          
+          <Typography variant="body2" sx={{ mr: 2 }}>
+            {user.email}
+          </Typography>
+          
+          <Button
+            color="inherit"
+            onClick={logout}
+            startIcon={<Logout />}
+            variant="outlined"
+          >
+            Logout
+          </Button>
+        </Toolbar>
+      </AppBar>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">📦</span>
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+        <Grid container spacing={3} sx={{ mb: 4 }}>
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Card>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>
+                    <Inventory />
+                  </Avatar>
+                  <Box>
+                    <Typography color="textSecondary" gutterBottom variant="overline">
                       Total Packages
-                    </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
+                    </Typography>
+                    <Typography variant="h4">
                       {packages.length}
-                    </dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">👥</span>
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Card>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Avatar sx={{ bgcolor: 'success.main', mr: 2 }}>
+                    <People />
+                  </Avatar>
+                  <Box>
+                    <Typography color="textSecondary" gutterBottom variant="overline">
                       Total Registrations
-                    </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
-                      {packages.reduce((total, pkg) => total + pkg.registrations.length, 0)}
-                    </dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
+                    </Typography>
+                    <Typography variant="h4">
+                      {totalRegistrations}
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-purple-500 rounded-md flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">📧</span>
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Card>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Avatar sx={{ bgcolor: 'info.main', mr: 2 }}>
+                    <Email />
+                  </Avatar>
+                  <Box>
+                    <Typography color="textSecondary" gutterBottom variant="overline">
                       Newsletter Subscribers
-                    </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
-                      <button 
-                        onClick={() => router.push('/admin/newsletter')}
-                        className="text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300"
-                      >
-                        Manage →
-                      </button>
-                    </dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
+                    </Typography>
+                    <Button 
+                      color="primary"
+                      onClick={() => router.push('/admin/newsletter')}
+                      size="small"
+                    >
+                      Manage →
+                    </Button>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
 
-          <div className="bg-white dark:bg-gray-800 overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
-                    <span className="text-white font-bold text-sm">⭐</span>
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 dark:text-gray-400 truncate">
+          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+            <Card>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Avatar sx={{ bgcolor: 'warning.main', mr: 2 }}>
+                    <Star />
+                  </Avatar>
+                  <Box>
+                    <Typography color="textSecondary" gutterBottom variant="overline">
                       Most Popular
-                    </dt>
-                    <dd className="text-lg font-medium text-gray-900 dark:text-white">
-                      {packages.length > 0 
-                        ? packages.reduce((a, b) => a.registrations.length > b.registrations.length ? a : b).location
-                        : 'N/A'
-                      }
-                    </dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                    </Typography>
+                    <Typography variant="h6">
+                      {mostPopular}
+                    </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
 
         {/* Packages Section */}
-        <div className="bg-white dark:bg-gray-800 shadow rounded-lg">
-          <div className="px-4 py-5 sm:p-6">
-            <div className="flex justify-between items-center mb-4">
-              <h3 className="text-lg leading-6 font-medium text-gray-900 dark:text-white">
+        <Card>
+          <CardContent>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+              <Typography variant="h5" component="h2">
                 Travel Packages
-              </h3>
-              <button 
+              </Typography>
+              <Button 
+                variant="contained"
+                startIcon={<Add />}
                 onClick={() => router.push('/admin/packages/new')}
-                className="px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 Add New Package
-              </button>
-            </div>
+              </Button>
+            </Box>
 
             {loading ? (
-              <div className="text-center py-8">
-                <div className="text-gray-500 dark:text-gray-400">Loading packages...</div>
-              </div>
+              <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+                <CircularProgress />
+              </Box>
             ) : packages.length === 0 ? (
-              <div className="text-center py-8">
-                <div className="text-gray-500 dark:text-gray-400">No packages found. Create your first package!</div>
-              </div>
+              <Box sx={{ textAlign: 'center', py: 4 }}>
+                <Typography color="textSecondary">
+                  No packages found. Create your first package!
+                </Typography>
+              </Box>
             ) : (
-              <div className="overflow-x-auto">
-                <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
-                  <thead className="bg-gray-50 dark:bg-gray-700">
-                    <tr>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Package
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Duration
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Registrations
-                      </th>
-                      <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-300 uppercase tracking-wider">
-                        Actions
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white dark:bg-gray-800 divide-y divide-gray-200 dark:divide-gray-700">
+              <TableContainer component={Paper} variant="outlined">
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Package</TableCell>
+                      <TableCell>Duration</TableCell>
+                      <TableCell>Tags</TableCell>
+                      <TableCell align="center">Registrations</TableCell>
+                      <TableCell align="center">Actions</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
                     {packages.map((pkg) => (
-                      <tr key={pkg.id}>
-                        <td className="px-6 py-4 whitespace-nowrap">
-                          <div className="flex items-center">
-                            <div>
-                              <div className="text-sm font-medium text-gray-900 dark:text-white">
-                                {pkg.title}
-                              </div>
-                              <div className="text-sm text-gray-500 dark:text-gray-400">
-                                {pkg.location}
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                          {pkg.days}D/{pkg.nights}N
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900 dark:text-white">
-                          {pkg.registrations.length}
-                        </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                          <button 
-                            onClick={() => router.push(`/admin/packages/${pkg.id}`)}
-                            className="text-blue-600 dark:text-blue-400 hover:text-blue-900 dark:hover:text-blue-300"
-                          >
-                            View
-                          </button>
-                          <button 
-                            onClick={() => router.push(`/admin/packages/${pkg.id}/edit`)}
-                            className="text-indigo-600 dark:text-indigo-400 hover:text-indigo-900 dark:hover:text-indigo-300"
-                          >
-                            Edit
-                          </button>
-                          <button 
-                            onClick={() => deletePackage(pkg.id)}
-                            className="text-red-600 dark:text-red-400 hover:text-red-900 dark:hover:text-red-300"
-                          >
-                            Delete
-                          </button>
-                        </td>
-                      </tr>
+                      <TableRow key={pkg.id} hover>
+                        <TableCell>
+                          <Box>
+                            <Typography variant="subtitle2" fontWeight="bold">
+                              {pkg.title}
+                            </Typography>
+                            <Typography variant="body2" color="textSecondary">
+                              {pkg.location}
+                            </Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Chip 
+                            label={`${pkg.days}D/${pkg.nights}N`} 
+                            variant="outlined" 
+                            size="small"
+                          />
+                        </TableCell>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', gap: 0.5, flexWrap: 'wrap' }}>
+                            {pkg.tags.slice(0, 2).map((tag, index) => (
+                              <Chip 
+                                key={index}
+                                label={tag} 
+                                size="small" 
+                                variant="outlined"
+                              />
+                            ))}
+                            {pkg.tags.length > 2 && (
+                              <Chip 
+                                label={`+${pkg.tags.length - 2}`} 
+                                size="small" 
+                                variant="outlined"
+                              />
+                            )}
+                          </Box>
+                        </TableCell>
+                        <TableCell align="center">
+                          <Chip 
+                            label={pkg.registrations.length}
+                            color={pkg.registrations.length > 0 ? 'success' : 'default'}
+                            size="small"
+                          />
+                        </TableCell>
+                        <TableCell align="center">
+                          <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+                            <IconButton 
+                              size="small"
+                              color="primary"
+                              onClick={() => router.push(`/admin/packages/${pkg.id}`)}
+                            >
+                              <Visibility />
+                            </IconButton>
+                            <IconButton 
+                              size="small"
+                              color="secondary"
+                              onClick={() => router.push(`/admin/packages/${pkg.id}/edit`)}
+                            >
+                              <Edit />
+                            </IconButton>
+                            <IconButton 
+                              size="small"
+                              color="error"
+                              onClick={() => deletePackage(pkg.id)}
+                            >
+                              <Delete />
+                            </IconButton>
+                          </Box>
+                        </TableCell>
+                      </TableRow>
                     ))}
-                  </tbody>
-                </table>
-              </div>
+                  </TableBody>
+                </Table>
+              </TableContainer>
             )}
-          </div>
-        </div>
-      </main>
-    </div>
+          </CardContent>
+        </Card>
+      </Container>
+    </Box>
   );
 }

@@ -1,6 +1,7 @@
 'use client';
 
 import { AuthProvider } from '@/contexts/AuthContext';
+import { MaterialUIThemeProvider } from '@/contexts/ThemeContext';
 
 export default function AdminLayout({
   children,
@@ -9,9 +10,9 @@ export default function AdminLayout({
 }) {
   return (
     <AuthProvider>
-      <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
+      <MaterialUIThemeProvider>
         {children}
-      </div>
+      </MaterialUIThemeProvider>
     </AuthProvider>
   );
 }

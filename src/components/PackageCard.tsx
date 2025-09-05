@@ -41,28 +41,11 @@ export default function PackageCard({ package: pkg }: PackageCardProps) {
   return (
     <>
       <div className="swiper-slide">
-        <div className="item">
+        <div className="item" onClick={() => setShowRegistration(true)}>
           <figure>
             <img src={primaryImage} alt={pkg.title} />
           </figure>
-          <div className="package-info">
-            <h3>{pkg.location}</h3>
-            <h4>{pkg.title}</h4>
-            <p className="package-duration">{pkg.days}D/{pkg.nights}N</p>
-            <div className="package-tags">
-              {pkg.tags.slice(0, 3).map((tag, index) => (
-                <span key={index} className="tag">
-                  {tag}
-                </span>
-              ))}
-            </div>
-            <button
-              onClick={() => setShowRegistration(true)}
-              className="register-btn primaryBtn"
-            >
-              Register Interest
-            </button>
-          </div>
+          <h3>{pkg.location}</h3>
         </div>
       </div>
 

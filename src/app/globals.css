@@ -1,6 +1,81 @@
 @import "tailwindcss";
 
-/* Custom styles for package cards */
+/* Fix navigation visibility */
+@media (min-width: 992px) {
+  .navbar-collapse {
+    display: flex !important;
+    visibility: visible !important;
+  }
+  .navbar-nav {
+    display: flex !important;
+    visibility: visible !important;
+  }
+}
+
+/* Force show navigation on desktop */
+.collapse.navbar-collapse {
+  display: flex !important;
+  visibility: visible !important;
+}
+
+.navbar-nav {
+  display: flex !important;
+  visibility: visible !important;
+}
+
+/* Featured Holiday Packages - Match raw HTML design exactly */
+.feaHolidayPack .destinationSlider .item {
+  position: relative;
+  cursor: pointer;
+  height: 585px; /* Match the natural height of manali.png (470x585) */
+}
+
+.feaHolidayPack .destinationSlider .item::before {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 40px;
+  background: linear-gradient(to bottom, rgba(229, 229, 229, 0) 0%, rgba(148, 148, 148, 0) 35%, rgba(0, 0, 0, 0.98) 99%, rgb(0, 0, 0) 100%);
+  z-index: 1;
+}
+
+.feaHolidayPack .destinationSlider .item figure {
+  margin-bottom: 0;
+  height: 100%;
+}
+
+.feaHolidayPack .destinationSlider .item figure img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 40px;
+}
+
+.feaHolidayPack .destinationSlider .item h3 {
+  position: absolute;
+  left: 30px;
+  bottom: 30px;
+  font-size: 26px;
+  font-weight: 500;
+  color: #fff;
+  z-index: 2;
+  margin: 0;
+}
+
+@media (max-width: 767px) {
+  .feaHolidayPack .destinationSlider .item {
+    height: 400px; /* Smaller height for mobile */
+  }
+  
+  .feaHolidayPack .destinationSlider .item h3 {
+    font-size: 20px;
+  }
+}
+
+/* Custom styles for package cards - keeping for backwards compatibility */
 .package-info {
   padding: 15px;
   text-align: center;
