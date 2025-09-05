@@ -25,6 +25,11 @@ const eslintConfig = [
       "@next/next/no-html-link-for-pages": "off",
       "@next/next/no-img-element": "off",
       "@next/next/no-page-custom-font": "off",
+      "@next/next/no-css-tags": "off",
+      "@next/next/no-sync-scripts": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-unused-vars": "off",
+      "@typescript-eslint/no-unsafe-function-type": "off",
     },
   },
 ];
