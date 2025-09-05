@@ -1,3 +1,5 @@
+import FeaturedPackages from '@/components/FeaturedPackages';
+
 export default function Home() {
   return (
     <>
@@ -200,40 +202,7 @@ export default function Home() {
               </div>
             </div>
             <div className="col-lg-7 feaHolidayPackSlider">
-              <div className="swiper destinationSlider">
-                <div className="swiper-wrapper">
-                  <div className="swiper-slide">
-                    <div className="item">
-                      <figure><img src="/manali.png" alt="" /></figure>
-                      <h3>Manali</h3>
-                    </div>
-                  </div>
-                  <div className="swiper-slide">
-                    <div className="item">
-                      <figure><img src="/manali.png" alt="" /></figure>
-                      <h3>Manali</h3>
-                    </div>
-                  </div>
-                  <div className="swiper-slide">
-                    <div className="item">
-                      <figure><img src="/manali.png" alt="" /></figure>
-                      <h3>Manali</h3>
-                    </div>
-                  </div>
-                  <div className="swiper-slide">
-                    <div className="item">
-                      <figure><img src="/manali.png" alt="" /></figure>
-                      <h3>Manali</h3>
-                    </div>
-                  </div>
-                  <div className="swiper-slide">
-                    <div className="item">
-                      <figure><img src="/manali.png" alt="" /></figure>
-                      <h3>Manali</h3>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <FeaturedPackages />
             </div>
           </div>
         </div>
