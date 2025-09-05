@@ -1,40 +1,12 @@
 import FeaturedPackages from '@/components/FeaturedPackages';
+import NewsletterSignup from '@/components/NewsletterSignup';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
 
 export default function Home() {
   return (
     <>
-      <header className="header">
-        <div className="container">
-          <nav className="navbar navbar-expand-lg">
-            <a className="logo" href="/">
-              <img src="/logo.svg" alt="logo" />
-            </a>
-            <button 
-              className="navbar-toggler" 
-              type="button" 
-              data-bs-toggle="collapse" 
-              data-bs-target="#navbarSupportedContent"
-              aria-controls="navbarSupportedContent" 
-              aria-expanded="false" 
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div className="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul className="navbar-nav ms-auto">
-                <li className="current-menu-item"><a href="/">home</a></li>
-                <li><a href="/holiday-packages">Holiday Packages</a></li>
-                <li><a href="/about">About Us</a></li>
-                <li><a href="/faq">FAQ</a></li>
-                <li><a href="/contact">Contact Us</a></li>
-              </ul>
-              <button className="closebtn">
-                <img src="/closeicon.png" alt="" />
-              </button>
-            </div>
-          </nav>
-        </div>
-      </header>
+      <Header currentPage="home" />
 
       <div className="banner">
         <figure><img src="/banner.jpg" alt="" /></figure>
@@ -432,46 +404,7 @@ export default function Home() {
         </div>
       </div>
 
-      <footer className="footer gapsec">
-        <div className="container">
-          <div className="footerTop">
-            <div className="row">
-              <div className="col-lg-5">
-                <h2>Subscribe to Our Newsletter</h2>
-              </div>
-              <div className="col-lg-7">
-                <div className="NewsletterForm">
-                  <input type="email" placeholder="Email Address" />
-                  <button type="button" className="primaryBtn">Subscribe</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="footerBot">
-            <div className="footLogo">
-              <a href="/">
-                <img src="/footlogo.png" alt="" />
-              </a>
-            </div>
-            <div className="footNav">
-              <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/holiday-packages">Holiday Packages</a></li>
-                <li><a href="/about">About Us</a></li>
-                <li><a href="/faq">FAQ</a></li>
-                <li><a href="/contact">Contact Us</a></li>
-              </ul>
-            </div>
-            <div className="socialsec">
-              <ul>
-                <li><a href="#"><img src="/fb.svg" alt="" /></a></li>
-                <li><a href="#"><img src="/insta.svg" alt="" /></a></li>
-                <li><a href="#"><img src="/wh.svg" alt="" /></a></li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </>
   );
 }
