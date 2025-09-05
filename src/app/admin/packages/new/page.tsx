@@ -20,7 +20,7 @@ export default function NewPackage() {
   const { user } = useAuth();
   const router = useRouter();
 
-  if (!user) {
+  if (typeof window !== 'undefined' && !user) {
     router.push('/admin');
     return null;
   }
