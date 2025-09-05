@@ -1,5 +1,28 @@
 @import "tailwindcss";
 
+/* Fix navigation visibility */
+@media (min-width: 992px) {
+  .navbar-collapse {
+    display: flex !important;
+    visibility: visible !important;
+  }
+  .navbar-nav {
+    display: flex !important;
+    visibility: visible !important;
+  }
+}
+
+/* Force show navigation on desktop */
+.collapse.navbar-collapse {
+  display: flex !important;
+  visibility: visible !important;
+}
+
+.navbar-nav {
+  display: flex !important;
+  visibility: visible !important;
+}
+
 /* Custom styles for package cards */
 .package-info {
   padding: 15px;
