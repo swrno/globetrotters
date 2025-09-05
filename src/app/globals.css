@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+/* Custom styles for package cards */
+.package-info {
+  padding: 15px;
+  text-align: center;
+}
+
+.package-info h3 {
+  font-size: 24px;
+  margin-bottom: 5px;
+  color: #00525B;
+}
+
+.package-info h4 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  color: #6A6A6A;
+  font-weight: 400;
+}
+
+.package-duration {
+  font-size: 14px;
+  color: #00525B;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.package-tags {
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.package-tags .tag {
+  background: #E8F4FD;
+  color: #00525B;
+  padding: 3px 8px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.register-btn {
+  width: 100%;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
