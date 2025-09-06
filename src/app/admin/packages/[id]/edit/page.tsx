@@ -1,7 +1,7 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
+import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import {
   Container,
@@ -15,15 +15,35 @@ import {
   Link,
   Grid,
   Alert,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+  Chip,
 } from '@mui/material';
 import {
   ArrowBack,
   Save,
   Cancel,
-  Add,
 } from '@mui/icons-material';
 
-export default function NewPackage() {
+interface Package {
+  _id: string;
+  id: string;
+  location: string;
+  title: string;
+  description: string;
+  tags: string[];
+  days: number;
+  nights: number;
+  registrations: any[];
+  images: string[];
+  createdAt: string;
+  updatedAt: string;
+}
+
+export default function EditPackage() {
+  const [packageData, setPackageData] = useState<Package | null>(null);
   const [formData, setFormData] = useState({
     location: '',
     title: '',
@@ -33,17 +53,52 @@ export default function NewPackage() {
     nights: '',
     images: '',
   });
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   
   const { user } = useAuth();
   const router = useRouter();
+  const params = useParams();
+  const packageId = params.id as string;
 
-  if (typeof window !== 'undefined' && !user) {
-    router.push('/admin');
-    return null;
-  }
+  useEffect(() => {
+    if (!user) {
+      router.push('/admin');
+      return;
+    }
+    
+    fetchPackage();
+  }, [user, router, packageId]);
+
+  const fetchPackage = async () => {
+    try {
+      const response = await fetch(`/api/packages/${packageId}`);
+      const data = await response.json();
+      
+      if (data.success) {
+        const pkg = data.data;
+        setPackageData(pkg);
+        setFormData({
+          location: pkg.location,
+          title: pkg.title,
+          description: pkg.description,
+          tags: pkg.tags.join(', '),
+          days: pkg.days.toString(),
+          nights: pkg.nights.toString(),
+          images: pkg.images.join(', '),
+        });
+      } else {
+        setError('Package not found');
+      }
+    } catch (error) {
+      console.error('Error fetching package:', error);
+      setError('Failed to load package');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setFormData(prev => ({
@@ -54,21 +109,23 @@ export default function NewPackage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setSaving(true);
     setError('');
     setSuccess(false);
 
     try {
       const packageData = {
-        ...formData,
+        location: formData.location,
+        title: formData.title,
+        description: formData.description,
         days: parseInt(formData.days),
         nights: parseInt(formData.nights),
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
         images: formData.images.split(',').map(img => img.trim()).filter(img => img),
       };
 
-      const response = await fetch('/api/packages', {
-        method: 'POST',
+      const response = await fetch(`/api/packages/${packageId}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -80,17 +137,49 @@ export default function NewPackage() {
       if (data.success) {
         setSuccess(true);
         setTimeout(() => {
-          router.push('/admin/dashboard');
+          router.push(`/admin/packages/${packageId}`);
         }, 1500);
       } else {
-        setError(data.error || 'Failed to create package');
+        setError(data.error || 'Failed to update package');
       }
     } catch (error) {
-      setError('An error occurred while creating the package');
+      console.error('Error updating package:', error);
+      setError('An error occurred while updating the package');
     } finally {
-      setLoading(false);
+      setSaving(false);
     }
   };
+
+  if (!user) {
+    return null;
+  }
+
+  if (loading) {
+    return (
+      <Container maxWidth="lg" sx={{ mt: 4, display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+        <CircularProgress />
+      </Container>
+    );
+  }
+
+  if (error && !packageData) {
+    return (
+      <Container maxWidth="lg" sx={{ mt: 4 }}>
+        <Paper sx={{ p: 4, textAlign: 'center' }}>
+          <Typography variant="h6" color="error">
+            {error}
+          </Typography>
+          <Button
+            variant="contained"
+            onClick={() => router.push('/admin/dashboard')}
+            sx={{ mt: 2 }}
+          >
+            Back to Dashboard
+          </Button>
+        </Paper>
+      </Container>
+    );
+  }
 
   return (
     <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
@@ -107,8 +196,19 @@ export default function NewPackage() {
         >
           Admin Dashboard
         </Link>
+        <Link
+          color="inherit"
+          href={`/admin/packages/${packageId}`}
+          onClick={(e) => {
+            e.preventDefault();
+            router.push(`/admin/packages/${packageId}`);
+          }}
+          sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
+        >
+          {packageData?.title}
+        </Link>
         <Typography color="text.primary">
-          New Package
+          Edit
         </Typography>
       </Breadcrumbs>
 
@@ -116,14 +216,14 @@ export default function NewPackage() {
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Button
           startIcon={<ArrowBack />}
-          onClick={() => router.push('/admin/dashboard')}
+          onClick={() => router.push(`/admin/packages/${packageId}`)}
           variant="outlined"
         >
-          Back to Dashboard
+          Back to Package
         </Button>
         
         <Typography variant="h4" component="h1">
-          Create New Package
+          Edit Package
         </Typography>
         
         <Box /> {/* Spacer */}
@@ -133,7 +233,7 @@ export default function NewPackage() {
       <Paper sx={{ p: 4 }}>
         {success && (
           <Alert severity="success" sx={{ mb: 3 }}>
-            Package created successfully! Redirecting to dashboard...
+            Package updated successfully! Redirecting...
           </Alert>
         )}
 
@@ -238,13 +338,28 @@ export default function NewPackage() {
               />
             </Grid>
 
+            {packageData && (
+              <Grid size={{ xs: 12 }}>
+                <Box sx={{ p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
+                  <Typography variant="subtitle2" gutterBottom>
+                    Package Statistics
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    Created: {new Date(packageData.createdAt).toLocaleDateString()} | 
+                    Registrations: {packageData.registrations.length} | 
+                    Last Updated: {new Date(packageData.updatedAt).toLocaleDateString()}
+                  </Typography>
+                </Box>
+              </Grid>
+            )}
+
             <Grid size={{ xs: 12 }}>
               <Box sx={{ display: 'flex', gap: 2, justifyContent: 'flex-end' }}>
                 <Button
                   variant="outlined"
                   startIcon={<Cancel />}
-                  onClick={() => router.push('/admin/dashboard')}
-                  disabled={loading}
+                  onClick={() => router.push(`/admin/packages/${packageId}`)}
+                  disabled={saving}
                 >
                   Cancel
                 </Button>
@@ -252,10 +367,10 @@ export default function NewPackage() {
                 <Button
                   type="submit"
                   variant="contained"
-                  startIcon={loading ? <CircularProgress size={20} /> : <Add />}
-                  disabled={loading}
+                  startIcon={saving ? <CircularProgress size={20} /> : <Save />}
+                  disabled={saving}
                 >
-                  {loading ? 'Creating...' : 'Create Package'}
+                  {saving ? 'Saving...' : 'Save Changes'}
                 </Button>
               </Box>
             </Grid>
