@@ -33,6 +33,11 @@ export default function NewPackage() {
     nights: '',
     cost_per_person: '',
     images: '',
+    trip_highlight: '',
+    itinerary_description: '',
+    itinerary_details: '',
+    inclusions: '',
+    exclusions: '',
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -60,21 +65,51 @@ export default function NewPackage() {
     setSuccess(false);
 
     try {
+      // Parse trip highlights
+      const tripHighlight: Record<string, string> = {};
+      if (formData.trip_highlight.trim()) {
+        const highlights = formData.trip_highlight.split('\n');
+        highlights.forEach((highlight, index) => {
+          if (highlight.trim()) {
+            const [key, ...valueParts] = highlight.split(':');
+            if (key && valueParts.length > 0) {
+              tripHighlight[key.trim()] = valueParts.join(':').trim();
+            }
+          }
+        });
+      }
+
+      // Parse itinerary details
+      const itineraryDetails: Record<string, string> = {};
+      if (formData.itinerary_details.trim()) {
+        const details = formData.itinerary_details.split('\n---\n');
+        details.forEach((detail, index) => {
+          if (detail.trim()) {
+            const [key, ...valueParts] = detail.split(':');
+            if (key && valueParts.length > 0) {
+              itineraryDetails[key.trim()] = valueParts.join(':').trim();
+            }
+          }
+        });
+      }
+
       const packageData = {
-        ...formData,
+        location: formData.location,
+        title: formData.title,
+        description: formData.description,
         days: parseInt(formData.days),
         nights: parseInt(formData.nights),
         cost_per_person: parseFloat(formData.cost_per_person) || 0,
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
         images: formData.images.split(',').map(img => img.trim()).filter(img => img),
-        trip_highlight: {},
+        trip_highlight: tripHighlight,
         itinerary: {
-          description: '',
-          details: {}
+          description: formData.itinerary_description,
+          details: itineraryDetails
         },
         inclusions_exclusions: {
-          dos: [],
-          donts: []
+          dos: formData.inclusions.split('\n').map(item => item.trim()).filter(item => item),
+          donts: formData.exclusions.split('\n').map(item => item.trim()).filter(item => item)
         }
       };
 
@@ -259,6 +294,99 @@ export default function NewPackage() {
                 onChange={handleChange}
                 placeholder="/manali1.jpg, /manali2.jpg, /manali3.jpg"
                 helperText="Comma-separated image URLs for the package"
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="Trip Highlights"
+                name="trip_highlight"
+                value={formData.trip_highlight}
+                onChange={handleChange}
+                multiline
+                rows={6}
+                placeholder={`Scenic Landscapes: Rohtang Pass, a stunning mountain pass at 3,978 meters, known for its breathtaking views
+Adventure Activities: Paragliding, skiing, and snowboarding experiences
+Cultural Landmarks: Ancient temples and local heritage sites
+Natural Attractions: Beautiful valleys and pristine lakes`}
+                helperText="Enter highlights as 'Key: Description' format, one per line"
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="Itinerary Description"
+                name="itinerary_description"
+                value={formData.itinerary_description}
+                onChange={handleChange}
+                multiline
+                rows={4}
+                placeholder="A detailed overview of the trip itinerary..."
+                helperText="General description of the itinerary"
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="Itinerary Details"
+                name="itinerary_details"
+                value={formData.itinerary_details}
+                onChange={handleChange}
+                multiline
+                rows={8}
+                placeholder={`Day 1: Arrival in Shimla
+- Arrive in Shimla and check into hotel
+- Evening stroll on Mall Road
+---
+Day 2: Shimla Sightseeing
+- Visit Jakhu Temple
+- Explore local markets
+---
+Day 3: Departure
+- Check out from hotel
+- Departure to home`}
+                helperText="Enter itinerary as 'Day X: Title' followed by details, separate days with '---'"
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="Inclusions"
+                name="inclusions"
+                value={formData.inclusions}
+                onChange={handleChange}
+                multiline
+                rows={6}
+                placeholder={`Accommodation for 5 nights (double sharing basis)
+Daily breakfast and dinner
+Local transportation
+Professional guide services
+All permit fees
+Travel insurance`}
+                helperText="Enter inclusions, one per line"
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="Exclusions"
+                name="exclusions"
+                value={formData.exclusions}
+                onChange={handleChange}
+                multiline
+                rows={6}
+                placeholder={`Airfare or train fare
+Personal expenses
+Additional meals not mentioned
+Tips and gratuities
+Adventure activity charges
+Emergency evacuation`}
+                helperText="Enter exclusions, one per line"
               />
             </Grid>
 
