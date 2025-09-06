@@ -4,65 +4,24 @@ import Link from 'next/link';
 import { useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
+import { usePackages } from '@/hooks/usePackages';
 
 export default function HolidayPackages() {
-  const [activeTab, setActiveTab] = useState('domestic');
+  const [activeTab, setActiveTab] = useState('all');
+  const { packages, loading, error } = usePackages();
 
-  const packages = [
-    {
-      id: 1,
-      name: 'Kerala',
-      image: '/destinationimg1.png',
-      description: 'Corem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.',
-      duration: '5 Night / 6 Days (2N Shimla - 3N Manali - 1D Delhi)',
-      bestTime: 'APR - MAY',
-      type: 'domestic'
-    },
-    {
-      id: 2,
-      name: 'Goa',
-      image: '/destinationimg1.png',
-      description: 'Corem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.',
-      duration: '4 Night / 5 Days',
-      bestTime: 'NOV - MAR',
-      type: 'domestic'
-    },
-    {
-      id: 3,
-      name: 'Rajasthan',
-      image: '/destinationimg1.png',
-      description: 'Corem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.',
-      duration: '6 Night / 7 Days',
-      bestTime: 'OCT - MAR',
-      type: 'domestic'
-    },
-    {
-      id: 4,
-      name: 'Thailand',
-      image: '/destinationimg1.png',
-      description: 'Corem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.',
-      duration: '5 Night / 6 Days',
-      bestTime: 'NOV - APR',
-      type: 'international'
-    },
-    {
-      id: 5,
-      name: 'Dubai',
-      image: '/destinationimg1.png',
-      description: 'Corem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Curabitur tempus urna at turpis condimentum lobortis.',
-      duration: '4 Night / 5 Days',
-      bestTime: 'NOV - MAR',
-      type: 'international'
-    }
-  ];
+  // Determine if a package is domestic or international based on tags
+  const getDomesticInternational = (tags: string[]) => {
+    const internationalTags = ['international', 'europe', 'asia', 'africa', 'america', 'thailand', 'dubai', 'singapore', 'malaysia'];
+    return tags.some(tag => internationalTags.includes(tag.toLowerCase())) ? 'international' : 'domestic';
+  };
 
-  const featuredPackages = [
-    { id: 1, name: 'Manali', tag: 'Domestic', searches: 100, image: '/psckdestinationimg.png' },
-    { id: 2, name: 'Goa', tag: 'Domestic', searches: 85, image: '/psckdestinationimg.png' },
-    { id: 3, name: 'Dubai', tag: 'International', searches: 120, image: '/psckdestinationimg.png' }
-  ];
+  const filteredPackages = activeTab === 'all' 
+    ? packages 
+    : packages.filter(pkg => getDomesticInternational(pkg.tags) === activeTab);
 
-  const filteredPackages = packages.filter(pkg => pkg.type === activeTab);
+  // Featured packages are just the first 3 packages from database
+  const featuredPackages = packages.slice(0, 3);
 
   return (
     <>
@@ -97,20 +56,38 @@ export default function HolidayPackages() {
           <div className="headingsec">
             <h2>Explore Featured Packages</h2>
           </div>
-          <div className="row">
-            {featuredPackages.map((pkg) => (
-              <div key={pkg.id} className="col-lg-4 col-md-6">
-                <div className="item">
-                  <figure><img src={pkg.image} alt="" /></figure>
-                  <div className="detail">
-                    <h3>{pkg.name} <span className="tag">{pkg.tag}</span></h3>
-                    <h4><img src="/searchic.svg" alt="" /> {pkg.searches} Searches</h4>
-                    <Link href="#" className="arrowBtn"><img src="/arrowbtn.svg" alt="" /></Link>
+          {loading ? (
+            <div className="text-center py-5">
+              <div className="text-gray-500">Loading featured packages...</div>
+            </div>
+          ) : error ? (
+            <div className="text-center py-5">
+              <div className="text-red-500">No packages available at the moment.</div>
+            </div>
+          ) : featuredPackages.length === 0 ? (
+            <div className="text-center py-5">
+              <div className="text-gray-500">No packages available.</div>
+            </div>
+          ) : (
+            <div className="row">
+              {featuredPackages.map((pkg) => (
+                <div key={pkg.id} className="col-lg-4 col-md-6">
+                  <div className="item">
+                    <figure>
+                      <img src={pkg.images[0] || '/destinationimg1.png'} alt={pkg.title} />
+                    </figure>
+                    <div className="detail">
+                      <h3>{pkg.location} <span className="tag">{getDomesticInternational(pkg.tags) === 'domestic' ? 'Domestic' : 'International'}</span></h3>
+                      <h4><img src="/searchic.svg" alt="" /> {pkg.registrations.length} Registrations</h4>
+                      <Link href={`/package/${pkg.id}`} className="arrowBtn">
+                        <img src="/arrowbtn.svg" alt="" />
+                      </Link>
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div> 
       </div>
 
@@ -122,6 +99,16 @@ export default function HolidayPackages() {
           </div>
           <div className="beyondLimitTab">
             <ul className="tabMenu" role="tablist">
+              <li role="presentation">
+                <button 
+                  className={activeTab === 'all' ? 'active' : ''}
+                  onClick={() => setActiveTab('all')}
+                  type="button" 
+                  role="tab"
+                >
+                  All Packages
+                </button>
+              </li>
               <li role="presentation">
                 <button 
                   className={activeTab === 'domestic' ? 'active' : ''}
@@ -145,24 +132,42 @@ export default function HolidayPackages() {
             </ul>
             <div className="tab-content">
               <div className="tab-pane fade show active">
-                <div className="row">
-                  {filteredPackages.map((pkg) => (
-                    <div key={pkg.id} className="col-lg-4 col-md-6">
-                      <div className="item">
-                        <figure><Link href="#"><img src={pkg.image} alt="" /></Link></figure>
-                        <h3>{pkg.name}</h3>
-                        <p>{pkg.description}</p>
-                        <div className="durationBestTime">
-                          <ul>
-                            <li><span>Duration:</span> {pkg.duration}</li>
-                            <li><span>Best Time to Visit:</span> {pkg.bestTime}</li>
-                          </ul>
+                {loading ? (
+                  <div className="text-center py-5">
+                    <div className="text-gray-500">Loading packages...</div>
+                  </div>
+                ) : error ? (
+                  <div className="text-center py-5">
+                    <div className="text-red-500">No packages available at the moment.</div>
+                  </div>
+                ) : filteredPackages.length === 0 ? (
+                  <div className="text-center py-5">
+                    <div className="text-gray-500">No packages available for the selected category.</div>
+                  </div>
+                ) : (
+                  <div className="row">
+                    {filteredPackages.map((pkg) => (
+                      <div key={pkg.id} className="col-lg-4 col-md-6">
+                        <div className="item">
+                          <figure>
+                            <Link href={`/package/${pkg.id}`}>
+                              <img src={pkg.images[0] || '/destinationimg1.png'} alt={pkg.title} />
+                            </Link>
+                          </figure>
+                          <h3>{pkg.location}</h3>
+                          <p>{pkg.description}</p>
+                          <div className="durationBestTime">
+                            <ul>
+                              <li><span>Duration:</span> {pkg.nights} Nights / {pkg.days} Days</li>
+                              <li><span>Best Time to Visit:</span> All Year Round</li>
+                            </ul>
+                          </div>
+                          <Link href={`/package/${pkg.id}`} className="primaryBtn">Enquire</Link>
                         </div>
-                        <Link href="#" className="primaryBtn">Enquire</Link>
                       </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

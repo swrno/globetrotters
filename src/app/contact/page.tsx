@@ -30,19 +30,27 @@ export default function Contact() {
     setSuccess(false);
 
     try {
-      // Here you would typically send the form data to your API
-      console.log('Form submitted:', formData);
-      
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000));
-      
-      setSuccess(true);
-      setFormData({
-        fullName: '',
-        phone: '',
-        email: '',
-        message: ''
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
       });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSuccess(true);
+        setFormData({
+          fullName: '',
+          phone: '',
+          email: '',
+          message: ''
+        });
+      } else {
+        setError(data.error || 'Failed to send message. Please try again.');
+      }
     } catch (error) {
       setError('Failed to send message. Please try again.');
     } finally {

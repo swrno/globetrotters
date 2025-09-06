@@ -32,69 +32,14 @@ export default function PackageDetails() {
           throw new Error('Package not found');
         }
         const data = await response.json();
-        setPackageData(data);
-      } catch (err) {
-        console.error('Error fetching package:', err);
-        // Use fallback data for demonstration
-        const fallbackPackages = [
-          {
-            id: '1',
-            location: 'Manali',
-            title: 'Himalayan Adventure',
-            description: 'Experience the breathtaking beauty of Manali with snow-capped mountains and adventure activities. Manali is a perfect destination for nature lovers and adventure enthusiasts. The town offers stunning views of the Himalayas, lush valleys, and exciting activities like paragliding, skiing, and trekking.',
-            tags: ['Adventure', 'Mountains', 'Snow'],
-            days: 5,
-            nights: 4,
-            images: ['/manali.png'],
-          },
-          {
-            id: '2',
-            location: 'Goa',
-            title: 'Beach Paradise',
-            description: 'Relax on pristine beaches and enjoy the vibrant nightlife of Goa. Known for its beautiful coastline, Portuguese architecture, and lively atmosphere, Goa offers the perfect blend of relaxation and entertainment.',
-            tags: ['Beach', 'Relaxation', 'Nightlife'],
-            days: 4,
-            nights: 3,
-            images: ['/manali.png'],
-          },
-          {
-            id: '3',
-            location: 'Kerala',
-            title: 'Backwater Bliss',
-            description: 'Cruise through the serene backwaters and experience Kerala\'s natural beauty. Kerala, known as "God\'s Own Country," offers tranquil backwaters, lush green landscapes, and rich cultural heritage.',
-            tags: ['Nature', 'Backwaters', 'Culture'],
-            days: 6,
-            nights: 5,
-            images: ['/manali.png'],
-          },
-          {
-            id: '4',
-            location: 'Rajasthan',
-            title: 'Royal Heritage',
-            description: 'Explore the majestic palaces and forts of Rajasthan. This royal state is famous for its magnificent architecture, colorful culture, and historical significance.',
-            tags: ['Heritage', 'Palaces', 'Culture'],
-            days: 7,
-            nights: 6,
-            images: ['/manali.png'],
-          },
-          {
-            id: '5',
-            location: 'Ladakh',
-            title: 'High Altitude Adventure',
-            description: 'Experience the rugged beauty of Ladakh and its unique landscape. Known for its high-altitude deserts, Buddhist monasteries, and stunning mountain vistas.',
-            tags: ['Adventure', 'High Altitude', 'Landscape'],
-            days: 8,
-            nights: 7,
-            images: ['/manali.png'],
-          },
-        ];
-        
-        const fallbackPackage = fallbackPackages.find(pkg => pkg.id === packageId);
-        if (fallbackPackage) {
-          setPackageData(fallbackPackage);
+        if (data.success) {
+          setPackageData(data.data);
         } else {
           setError('Package not found');
         }
+      } catch (err) {
+        console.error('Error fetching package:', err);
+        setError('Package not found');
       } finally {
         setLoading(false);
       }
