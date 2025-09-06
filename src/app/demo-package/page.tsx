@@ -7,91 +7,71 @@ import Footer from "@/components/Footer";
 import PackageRegistrationForm from "@/components/PackageRegistrationForm";
 import Markdown from "@/components/Markdown";
 
-interface Package {
-  id: string;
-  location: string;
-  title: string;
-  description: string;
-  tags: string[];
-  days: number;
-  nights: number;
-  cost_per_person: number;
-  trip_highlight: Record<string, string>;
+// Mock data for demonstration
+const mockPackageData = {
+  id: "demo-himachal",
+  location: "Himachal Pradesh",
+  title: "Himachal Adventure Package",
+  description: `Explore the magnificent beauty of Himachal Pradesh with our comprehensive adventure package. This carefully curated itinerary takes you through the snow-capped mountains, lush valleys, and vibrant cultural heritage of the region.
+
+## Highlights
+- Visit to Shimla and Manali
+- Adventure activities like paragliding and river rafting
+- Scenic drives through mountain passes
+- Local cultural experiences
+- Comfortable accommodations throughout the journey`,
+  tags: ["adventure", "mountains", "trekking", "snow", "domestic", "himachal"],
+  days: 6,
+  nights: 5,
+  cost_per_person: 25000,
+  trip_highlight: {
+    "scenicLandscapes": "**Rohtang Pass,** a stunning mountain pass at 3,978 meters, known for its breathtaking views and snow activities. It's a prime spot for adventure enthusiasts seeking skiing and snowboarding experiences.\n\n**Spiti Valley,** renowned for its rugged terrain, beautiful valleys, and unique cultural heritage. Highlights include Kye Gompa and Chandratal Lake, making it a must-visit for nature lovers and trekkers.",
+    "adventureActivities": "**Paragliding in Manali** - Experience the thrill of flying over the beautiful valleys and snow-capped peaks.\n\n**River Rafting in Beas** - Navigate through exciting rapids while enjoying the scenic beauty of the river.",
+    "culturalLandmarks": "**Hadimba Devi Temple** - An ancient cave temple surrounded by cedar forests.\n\n**Mall Road Shimla** - Colonial architecture and vibrant local markets.",
+    "naturalAttractions": "**Solang Valley** - Known for adventure sports and scenic beauty.\n\n**Chandratal Lake** - A crescent-shaped lake at high altitude, perfect for camping."
+  },
   itinerary: {
-    description: string;
+    description: "Himachal Pradesh, known as 'Dev Bhoomi' (Land of Gods), is a paradise in the Himalayas, offering serene landscapes, vibrant culture, and thrilling adventures. Famous for picturesque hill stations like Shimla, Manali, and Dharamshala, it blends colonial charm, Tibetan heritage, and natural beauty. From snow-capped peaks to lush valleys, Himachal is perfect for trekking, paragliding, and exploring spiritual sites. This 5 Nights / 6 Days itinerary promises a mix of scenic beauty, cultural experiences, and adventure to create unforgettable memories.",
     details: {
-      [key: string]: string;
-    };
-  };
+      "day1": "**Arrival in Shimla**\n\n- Arrive in Shimla (via Delhi or Chandigarh) and check into your hotel\n- Evening stroll on Mall Road, explore local shops, and enjoy local cuisine\n- Overnight stay in Shimla",
+      "day2": "**Shimla Sightseeing**\n\n- Visit Jakhu Temple and Christ Church\n- Explore The Ridge and Mall Road\n- Take a toy train ride to Kalka (optional)\n- Overnight stay in Shimla",
+      "day3": "**Shimla to Manali**\n\n- Early morning departure for Manali (8-9 hours drive)\n- Check into hotel upon arrival\n- Rest and acclimatize to the mountain climate\n- Overnight stay in Manali",
+      "day4": "**Manali Local Sightseeing**\n\n- Visit Hadimba Devi Temple and Manu Temple\n- Explore Old Manali and Vashisht Hot Springs\n- Shopping at Mall Road Manali\n- Overnight stay in Manali",
+      "day5": "**Solang Valley or Rohtang Pass Excursion**\n\n- Full day excursion to Solang Valley or Rohtang Pass (subject to weather)\n- Adventure activities like paragliding, zorbing, and skiing\n- Scenic photography and nature walks\n- Return to Manali for overnight stay",
+      "day6": "**Departure**\n\n- Check out from hotel after breakfast\n- Departure to Delhi/Chandigarh\n- End of memorable Himachal tour"
+    }
+  },
   inclusions_exclusions: {
-    dos: string[];
-    donts: string[];
-  };
-  images: string[];
-}
+    dos: [
+      "Accommodation for 5 nights (double sharing basis)",
+      "Daily breakfast and dinner",
+      "Transportation by private vehicle",
+      "Sightseeing as per itinerary",
+      "All permits and entry fees",
+      "Professional driver cum guide"
+    ],
+    donts: [
+      "Airfare or train fare",
+      "Lunch and personal expenses",
+      "Adventure activity charges",
+      "Travel insurance",
+      "Tips and gratuities",
+      "Any item not specifically mentioned in inclusions"
+    ]
+  },
+  images: [
+    "/holidaygal1.png",
+    "/holidaygal2.png", 
+    "/holidaygal3.png",
+    "/holidaygal4.png",
+    "/holidaygal5.png",
+    "/holidaygal6.png"
+  ]
+};
 
-export default function PackageDetails() {
-  const params = useParams();
-  const packageId = params.id as string;
-  const [packageData, setPackageData] = useState<Package | null>(null);
-  const [images, setImages] = useState<string[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchPackage() {
-      try {
-        const response = await fetch(`/api/packages/${packageId}`);
-        if (!response.ok) {
-          throw new Error("Package not found");
-        }
-        const data = await response.json();
-        if (data.success) {
-          setPackageData(data.data);
-          setImages(data.data.images);
-        } else {
-          setError("Package not found");
-        }
-      } catch (err) {
-        console.error("Error fetching package:", err);
-        setError("Package not found");
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    if (packageId) {
-      fetchPackage();
-    }
-  }, [packageId]);
-
-  if (loading) {
-    return (
-      <>
-        <Header currentPage="" />
-        <div className="container py-5">
-          <div className="text-center">
-            <div className="text-gray-500">Loading package details...</div>
-          </div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
-
-  if (error || !packageData) {
-    return (
-      <>
-        <Header currentPage="" />
-        <div className="container py-5">
-          <div className="text-center">
-            <div className="text-red-500">Package not found</div>
-          </div>
-        </div>
-        <Footer />
-      </>
-    );
-  }
+export default function PackageDetailsDemo() {
+  const packageData = mockPackageData;
+  const images = packageData.images;
 
   const getImageUrl = (image: string) => {
     if (image.startsWith("http")) {
