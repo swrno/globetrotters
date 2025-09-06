@@ -31,6 +31,7 @@ export default function NewPackage() {
     tags: '',
     days: '',
     nights: '',
+    cost_per_person: '',
     images: '',
   });
   const [loading, setLoading] = useState(false);
@@ -63,8 +64,18 @@ export default function NewPackage() {
         ...formData,
         days: parseInt(formData.days),
         nights: parseInt(formData.nights),
+        cost_per_person: parseFloat(formData.cost_per_person) || 0,
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
         images: formData.images.split(',').map(img => img.trim()).filter(img => img),
+        trip_highlight: {},
+        itinerary: {
+          description: '',
+          details: {}
+        },
+        inclusions_exclusions: {
+          dos: [],
+          donts: []
+        }
       };
 
       const response = await fetch('/api/packages', {
@@ -196,6 +207,19 @@ export default function NewPackage() {
                 required
                 inputProps={{ min: 0 }}
                 helperText="Number of nights for the trip"
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="Cost Per Person"
+                name="cost_per_person"
+                type="number"
+                value={formData.cost_per_person}
+                onChange={handleChange}
+                inputProps={{ min: 0, step: 100 }}
+                helperText="Cost per person in INR (optional)"
               />
             </Grid>
 
