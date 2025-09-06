@@ -15,6 +15,18 @@ interface Package {
   tags: string[];
   days: number;
   nights: number;
+  cost_per_person: number;
+  trip_highlight: Record<string, string>;
+  itinerary: {
+    description: string;
+    details: {
+      [key: string]: string;
+    };
+  };
+  inclusions_exclusions: {
+    dos: string[];
+    donts: string[];
+  };
   images: string[];
 }
 
@@ -117,7 +129,7 @@ export default function PackageDetails() {
         <div className="container">
           <div className="innerCont">
             <div className="row">
-              <div className="col-lg-4 col-md-4">
+              <div className="col-lg-3 col-md-4">
                 <div className="item">
                   <figure>
                     <img src="/calendaric.svg" alt="" />
@@ -141,14 +153,14 @@ export default function PackageDetails() {
                   </div>
                 </div>
               </div>
-              <div className="col-lg-4 col-md-4">
+              <div className="col-lg-5 col-md-4">
                 <div className="item">
                   <figure>
                     <img src="/priceic.png" alt="" />
                   </figure>
                   <div className="cont">
-                    <h4>Package Type</h4>
-                    <p>{packageData.tags.join(", ")}</p>
+                    <h4>Cost / Per Person (Approx)</h4>
+                    <p>₹{packageData.cost_per_person || 'Contact for price'}</p>
                   </div>
                 </div>
               </div>
@@ -163,13 +175,13 @@ export default function PackageDetails() {
           <div className="headingsec">
             <h2>Overview</h2>
           </div>
-          <div className="">
-            <div className="w-[1000px] mx-auto mb-5">
+          <div className="row">
+            <div className="col-lg-6">
               <div className="overViewLeft">
                 <h3>{packageData.title}</h3>
-                <p>
+                <div className="mb-4">
                   <Markdown content={packageData.description} />
-                </p>
+                </div>
                 <p>
                   This carefully crafted itinerary offers the perfect blend of
                   adventure, relaxation, and cultural immersion. Experience the
@@ -178,7 +190,21 @@ export default function PackageDetails() {
                 </p>
               </div>
             </div>
-            
+            <div className="col-lg-6">
+              <div className="overViewRight">
+                <figure>
+                  <img
+                    src={
+                      images && images.length > 0
+                        ? getImageUrl(images[0])
+                        : "/default-package.jpg"
+                    }
+                    alt={packageData.title}
+                    className="w-full h-auto object-cover rounded-lg"
+                  />
+                </figure>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -202,7 +228,7 @@ export default function PackageDetails() {
             <div className="col-lg-3 col-md-4 col-6">
               <img
                 src={
-                  images && images.length > 0
+                  images && images.length > 1
                     ? getImageUrl(images[1])
                     : "/default-package.jpg"
                 }
@@ -212,7 +238,7 @@ export default function PackageDetails() {
             <div className="col-lg-3 col-md-4 col-6">
               <img
                 src={
-                  images && images.length > 0
+                  images && images.length > 2
                     ? getImageUrl(images[2])
                     : "/default-package.jpg"
                 }
@@ -222,7 +248,7 @@ export default function PackageDetails() {
             <div className="col-lg-3 col-md-4 col-6">
               <img
                 src={
-                  images && images.length > 0
+                  images && images.length > 3
                     ? getImageUrl(images[3])
                     : "/default-package.jpg"
                 }
@@ -232,7 +258,7 @@ export default function PackageDetails() {
             <div className="col-lg-3 col-md-4 col-6">
               <img
                 src={
-                  images && images.length > 0
+                  images && images.length > 4
                     ? getImageUrl(images[4])
                     : "/default-package.jpg"
                 }
@@ -242,7 +268,7 @@ export default function PackageDetails() {
             <div className="col-lg-6 col-md-4 col-6">
               <img
                 src={
-                  images && images.length > 0
+                  images && images.length > 5
                     ? getImageUrl(images[5])
                     : "/default-package.jpg"
                 }
@@ -252,6 +278,136 @@ export default function PackageDetails() {
           </div>
         </div>
       </div>
+
+      {/* Trip Highlights Section */}
+      {packageData.trip_highlight && Object.keys(packageData.trip_highlight).length > 0 && (
+        <div className="tripHighlights">
+          <div className="container">
+            <div className="headingsec">
+              <h3>The Best Bits, All in One</h3>
+              <h2>Trip Highlights</h2>
+            </div>
+            <div className="tabsContainer">
+              <div className="trip-highlights-tabs">
+                <ul className="nav nav-tabs" role="tablist">
+                  {Object.keys(packageData.trip_highlight).map((key, index) => (
+                    <li className="nav-item" role="presentation" key={key}>
+                      <button
+                        className={`nav-link ${index === 0 ? 'active' : ''}`}
+                        id={`highlight-${key}-tab`}
+                        data-bs-toggle="tab"
+                        data-bs-target={`#highlight-${key}`}
+                        type="button"
+                        role="tab"
+                        aria-controls={`highlight-${key}`}
+                        aria-selected={index === 0 ? 'true' : 'false'}
+                      >
+                        {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+                <div className="tab-content">
+                  {Object.entries(packageData.trip_highlight).map(([key, value], index) => (
+                    <div
+                      className={`tab-pane fade ${index === 0 ? 'show active' : ''}`}
+                      id={`highlight-${key}`}
+                      role="tabpanel"
+                      aria-labelledby={`highlight-${key}-tab`}
+                      key={key}
+                    >
+                      <div className="trip-highlight-content">
+                        <Markdown content={value} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Itinerary Section */}
+      {packageData.itinerary && packageData.itinerary.description && (
+        <div className="itinerary gapsec">
+          <img src="/dotted-plane.png" alt="" className="itineraryPlane" />
+          <div className="container">
+            <div className="headingsec">
+              <h3>Crafting Your Dream Getaway</h3>
+              <h2>Itinerary</h2>
+              <p>{packageData.itinerary.description}</p>
+            </div>
+            <div className="accordionWrapper">
+              <div className="accordion" id="itineraryAccordion">
+                {Object.entries(packageData.itinerary.details).map(([day, details], index) => (
+                  <div className="accordion-item" key={day}>
+                    <h2 className="accordion-header">
+                      <button
+                        className={`accordion-button ${index !== 0 ? 'collapsed' : ''}`}
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target={`#collapse-${day}`}
+                        aria-expanded={index === 0 ? 'true' : 'false'}
+                        aria-controls={`collapse-${day}`}
+                      >
+                        {day.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                      </button>
+                    </h2>
+                    <div
+                      id={`collapse-${day}`}
+                      className={`accordion-collapse collapse ${index === 0 ? 'show' : ''}`}
+                      data-bs-parent="#itineraryAccordion"
+                    >
+                      <div className="accordion-body">
+                        <Markdown content={details} />
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Inclusions/Exclusions Section */}
+      {(packageData.inclusions_exclusions?.dos?.length > 0 || packageData.inclusions_exclusions?.donts?.length > 0) && (
+        <div className="includeExclude gapsec">
+          <div className="container">
+            <div className="headingsec">
+              <h2>Inclusions / Exclusions</h2>
+              <p>To help you plan your trip, we have put together a list of what&apos;s included and what&apos;s not included in your tour package. This will give you a clear understanding of what to expect and help you make any necessary arrangements before your journey begins.</p>
+            </div>
+            <div className="row">
+              {packageData.inclusions_exclusions.dos?.length > 0 && (
+                <div className="col-md-6">
+                  <div className="itemInclude">
+                    <h4>Inclusions</h4>
+                    <ul>
+                      {packageData.inclusions_exclusions.dos.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+              {packageData.inclusions_exclusions.donts?.length > 0 && (
+                <div className="col-md-6">
+                  <div className="itemExclude">
+                    <h4>Exclusions</h4>
+                    <ul>
+                      {packageData.inclusions_exclusions.donts.map((item, index) => (
+                        <li key={index}>{item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Registration Form Section */}
       <div className="contactBot gapsec">

@@ -49,6 +49,18 @@ interface Package {
   tags: string[];
   days: number;
   nights: number;
+  cost_per_person: number;
+  trip_highlight: Record<string, string>;
+  itinerary: {
+    description: string;
+    details: {
+      [key: string]: string;
+    };
+  };
+  inclusions_exclusions: {
+    dos: string[];
+    donts: string[];
+  };
   registrations: Array<{
     _id: string;
     name: string;
@@ -317,41 +329,49 @@ export default function PackageView() {
                 No registrations yet
               </Typography>
             ) : (
-              <Box sx={{ maxHeight: 400, overflowY: 'auto' }}>
-                {packageData.registrations.map((registration, index) => (
-                  <Box key={registration._id} sx={{ mb: 2, p: 2, bgcolor: 'background.default', borderRadius: 1 }}>
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
-                      <Avatar sx={{ width: 32, height: 32, mr: 1.5, bgcolor: 'primary.main' }}>
-                        {registration.name.charAt(0).toUpperCase()}
-                      </Avatar>
-                      <Typography variant="subtitle2" fontWeight="bold">
-                        {registration.name}
-                      </Typography>
-                    </Box>
-                    
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, ml: 5.5 }}>
-                      <Email sx={{ fontSize: 16, mr: 1, color: 'text.secondary' }} />
-                      <Typography variant="body2" color="text.secondary">
-                        {registration.email}
-                      </Typography>
-                    </Box>
-                    
-                    <Box sx={{ display: 'flex', alignItems: 'center', mb: 0.5, ml: 5.5 }}>
-                      <Phone sx={{ fontSize: 16, mr: 1, color: 'text.secondary' }} />
-                      <Typography variant="body2" color="text.secondary">
-                        {registration.phone}
-                      </Typography>
-                    </Box>
-                    
-                    <Box sx={{ display: 'flex', alignItems: 'center', ml: 5.5 }}>
-                      <CalendarToday sx={{ fontSize: 16, mr: 1, color: 'text.secondary' }} />
-                      <Typography variant="body2" color="text.secondary">
-                        {new Date(registration.registeredAt).toLocaleDateString()}
-                      </Typography>
-                    </Box>
-                  </Box>
-                ))}
-              </Box>
+              <TableContainer component={Paper} variant="outlined">
+                <Table size="small">
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Name</TableCell>
+                      <TableCell>Email</TableCell>
+                      <TableCell>Phone</TableCell>
+                      <TableCell>Registration Date</TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {packageData.registrations.map((registration, index) => (
+                      <TableRow key={registration._id || index}>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                            <Avatar sx={{ width: 24, height: 24, mr: 1.5, bgcolor: 'primary.main', fontSize: 12 }}>
+                              {registration.name.charAt(0).toUpperCase()}
+                            </Avatar>
+                            <Typography variant="body2" fontWeight="medium">
+                              {registration.name}
+                            </Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2">
+                            {registration.email}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2">
+                            {registration.phone}
+                          </Typography>
+                        </TableCell>
+                        <TableCell>
+                          <Typography variant="body2" color="text.secondary">
+                            {new Date(registration.registeredAt).toLocaleDateString()}
+                          </Typography>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </TableContainer>
             )}
           </Paper>
         </Grid>

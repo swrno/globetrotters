@@ -11,10 +11,22 @@ export interface IPackage extends Document {
   id: string;
   location: string;
   title: string;
-  description: string; // Markdown
+  description: string; // Markdown string
   tags: string[];
   days: number;
   nights: number;
+  cost_per_person: number;
+  trip_highlight: Record<string, string>; // key-value where value is Markdown string
+  itinerary: {
+    description: string;
+    details: {
+      [key: string]: string; // e.g., day1, day2, day3, etc.
+    };
+  };
+  inclusions_exclusions: {
+    dos: string[];
+    donts: string[];
+  };
   registrations: IRegistration[];
   images: string[];
   createdAt: Date;
@@ -36,6 +48,16 @@ const PackageSchema = new Schema<IPackage>({
   tags: [{ type: String }],
   days: { type: Number, required: true },
   nights: { type: Number, required: true },
+  cost_per_person: { type: Number, required: true, default: 0 },
+  trip_highlight: { type: Map, of: String, default: {} },
+  itinerary: {
+    description: { type: String, default: '' },
+    details: { type: Map, of: String, default: {} }
+  },
+  inclusions_exclusions: {
+    dos: [{ type: String }],
+    donts: [{ type: String }]
+  },
   registrations: [RegistrationSchema],
   images: [{ type: String }],
 }, {
