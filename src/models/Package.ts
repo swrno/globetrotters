@@ -16,6 +16,8 @@ export interface IPackage extends Document {
   days: number;
   nights: number;
   cost_per_person: number;
+  best_time_to_visit: string; // e.g., "APR - MAY", "All Year Round"
+  video_url?: string; // Optional video URL for overview section
   trip_highlight: Record<string, string>; // key-value where value is Markdown string
   itinerary: {
     description: string;
@@ -49,6 +51,8 @@ const PackageSchema = new Schema<IPackage>({
   days: { type: Number, required: true },
   nights: { type: Number, required: true },
   cost_per_person: { type: Number, required: true, default: 0 },
+  best_time_to_visit: { type: String, default: 'All Year Round' },
+  video_url: { type: String },
   trip_highlight: { type: Map, of: String, default: {} },
   itinerary: {
     description: { type: String, default: '' },

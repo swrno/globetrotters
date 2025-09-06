@@ -16,6 +16,8 @@ interface Package {
   days: number;
   nights: number;
   cost_per_person: number;
+  best_time_to_visit: string;
+  video_url?: string;
   trip_highlight: Record<string, string>;
   itinerary: {
     description: string;
@@ -149,7 +151,7 @@ export default function PackageDetails() {
                   </figure>
                   <div className="cont">
                     <h4>Best Time To Visit</h4>
-                    <p>All Year Round</p>
+                    <p>{packageData.best_time_to_visit || 'All Year Round'}</p>
                   </div>
                 </div>
               </div>
@@ -202,6 +204,15 @@ export default function PackageDetails() {
                     alt={packageData.title}
                     className="w-full h-auto object-cover rounded-lg"
                   />
+                  {packageData.video_url && (
+                    <a 
+                      href={packageData.video_url} 
+                      data-fancybox="overviewVideo" 
+                      className="playtn"
+                    >
+                      <img src="/playbtn2.svg" alt="Play Video" />
+                    </a>
+                  )}
                 </figure>
               </div>
             </div>
