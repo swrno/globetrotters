@@ -1,17 +1,49 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import { usePackages } from '@/hooks/usePackages';
 import PackageCard from './PackageCard';
 
 export default function FeaturedPackages() {
   const { packages, loading, error } = usePackages();
+  const swiperRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Initialize Swiper after component mounts
+    if (typeof window !== 'undefined' && window.Swiper && swiperRef.current) {
+      new window.Swiper(swiperRef.current, {
+        loop: true,
+        slidesPerView: 2.5,
+        spaceBetween: 30,
+        autoplay: {
+          delay: 3000,
+        },
+        breakpoints: {
+          0: {
+            slidesPerView: 1.2,
+            spaceBetween: 15,
+          },
+          768: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          1024: {
+            slidesPerView: 2.5,
+            spaceBetween: 30,
+          },
+        },
+      });
+    }
+  }, [packages]); // Re-initialize when packages change
 
   if (loading) {
     return (
-      <div className="swiper destinationSlider">
+      <div className="swiper destinationSlider" ref={swiperRef}>
         <div className="swiper-wrapper">
-          <div className="text-center p-8">
-            <div className="text-gray-500">Loading packages...</div>
+          <div className="swiper-slide">
+            <div className="text-center p-8">
+              <div className="text-gray-500">Loading packages...</div>
+            </div>
           </div>
         </div>
       </div>
@@ -94,7 +126,7 @@ export default function FeaturedPackages() {
     ];
 
     return (
-      <div className="swiper destinationSlider">
+      <div className="swiper destinationSlider" ref={swiperRef}>
         <div className="swiper-wrapper">
           {fallbackPackages.map((pkg) => (
             <PackageCard key={pkg.id} package={pkg} />
@@ -106,10 +138,12 @@ export default function FeaturedPackages() {
 
   if (packages.length === 0) {
     return (
-      <div className="swiper destinationSlider">
+      <div className="swiper destinationSlider" ref={swiperRef}>
         <div className="swiper-wrapper">
-          <div className="text-center p-8">
-            <div className="text-gray-500">No packages available yet.</div>
+          <div className="swiper-slide">
+            <div className="text-center p-8">
+              <div className="text-gray-500">No packages available yet.</div>
+            </div>
           </div>
         </div>
       </div>
@@ -120,7 +154,7 @@ export default function FeaturedPackages() {
   const featuredPackages = packages.slice(0, 5);
 
   return (
-    <div className="swiper destinationSlider">
+    <div className="swiper destinationSlider" ref={swiperRef}>
       <div className="swiper-wrapper">
         {featuredPackages.map((pkg) => (
           <PackageCard key={pkg.id} package={pkg} />
