@@ -32,6 +32,8 @@ export default function NewPackage() {
     days: '',
     nights: '',
     cost_per_person: '',
+    best_time_to_visit: '',
+    video_url: '',
     images: '',
     trip_highlight: '',
     itinerary_description: '',
@@ -100,6 +102,8 @@ export default function NewPackage() {
         days: parseInt(formData.days),
         nights: parseInt(formData.nights),
         cost_per_person: parseFloat(formData.cost_per_person) || 0,
+        best_time_to_visit: formData.best_time_to_visit || 'All Year Round',
+        video_url: formData.video_url || undefined,
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
         images: formData.images.split(',').map(img => img.trim()).filter(img => img),
         trip_highlight: tripHighlight,
@@ -255,6 +259,30 @@ export default function NewPackage() {
                 onChange={handleChange}
                 inputProps={{ min: 0, step: 100 }}
                 helperText="Cost per person in INR (optional)"
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 6 }}>
+              <TextField
+                fullWidth
+                label="Best Time To Visit"
+                name="best_time_to_visit"
+                value={formData.best_time_to_visit}
+                onChange={handleChange}
+                placeholder="e.g., APR - MAY, Winter Season, All Year Round"
+                helperText="Best season or months to visit this destination"
+              />
+            </Grid>
+
+            <Grid size={{ xs: 12 }}>
+              <TextField
+                fullWidth
+                label="Video URL"
+                name="video_url"
+                value={formData.video_url}
+                onChange={handleChange}
+                placeholder="https://example.com/video.mp4 or /videos/package-video.mp4"
+                helperText="Optional video URL for the overview section (supports MP4, YouTube, etc.)"
               />
             </Grid>
 
