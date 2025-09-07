@@ -7,6 +7,13 @@ import Footer from "@/components/Footer";
 import PackageRegistrationForm from "@/components/PackageRegistrationForm";
 import Markdown from "@/components/Markdown";
 
+// Import Swiper React components
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Pagination, Autoplay } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+
 // Mock data for demonstration
 const mockPackageData = {
   id: "demo-himachal",
@@ -190,72 +197,48 @@ export default function PackageDetailsDemo() {
       </div>
 
       <div className="gallerysecHoliday gapsec">
-        <div className="headingsec">
-          <h2>Photo Gallery</h2>
-        </div>
         <div className="container">
-          <div className="row">
-            <div className="col-lg-6 col-md-4 col-6">
-              <img
-                src={
-                  images && images.length > 0
-                    ? getImageUrl(images[0])
-                    : "/default-package.jpg"
-                }
-                alt=""
-              />
-            </div>
-            <div className="col-lg-3 col-md-4 col-6">
-              <img
-                src={
-                  images && images.length > 1
-                    ? getImageUrl(images[1])
-                    : "/default-package.jpg"
-                }
-                alt=""
-              />
-            </div>
-            <div className="col-lg-3 col-md-4 col-6">
-              <img
-                src={
-                  images && images.length > 2
-                    ? getImageUrl(images[2])
-                    : "/default-package.jpg"
-                }
-                alt=""
-              />
-            </div>
-            <div className="col-lg-3 col-md-4 col-6">
-              <img
-                src={
-                  images && images.length > 3
-                    ? getImageUrl(images[3])
-                    : "/default-package.jpg"
-                }
-                alt=""
-              />
-            </div>
-            <div className="col-lg-3 col-md-4 col-6">
-              <img
-                src={
-                  images && images.length > 4
-                    ? getImageUrl(images[4])
-                    : "/default-package.jpg"
-                }
-                alt=""
-              />
-            </div>
-            <div className="col-lg-6 col-md-4 col-6">
-              <img
-                src={
-                  images && images.length > 5
-                    ? getImageUrl(images[5])
-                    : "/default-package.jpg"
-                }
-                alt=""
-              />
-            </div>
+          <div className="headingsec">
+            <h2>Photo Gallery</h2>
           </div>
+          <Swiper
+            modules={[Navigation, Pagination, Autoplay]}
+            loop={true}
+            slidesPerView={2}
+            spaceBetween={20}
+            autoplay={{
+              delay: 3000,
+            }}
+            pagination={{
+              clickable: true,
+            }}
+            navigation={true}
+            breakpoints={{
+              0: {
+                slidesPerView: 1,
+                spaceBetween: 10,
+              },
+              768: {
+                slidesPerView: 2,
+                spaceBetween: 20,
+              },
+              1024: {
+                slidesPerView: 3,
+                spaceBetween: 20,
+              },
+            }}
+            className="photoGallerySlider"
+          >
+            {images && images.map((image, index) => (
+              <SwiperSlide key={index}>
+                <img
+                  src={getImageUrl(image)}
+                  alt={`Gallery Image ${index + 1}`}
+                  className="w-full h-auto object-cover"
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
       </div>
 
