@@ -370,7 +370,48 @@ export default function PackageDetails() {
                       data-bs-parent="#itineraryAccordion"
                     >
                       <div className="accordion-body">
-                        <Markdown content={details} />
+                        {/* Parse the markdown content and render as simple HTML */}
+                        {details.split('\n').map((line, lineIndex) => {
+                          const trimmedLine = line.trim();
+                          if (!trimmedLine) return null;
+                          
+                          // Handle markdown bold syntax
+                          if (trimmedLine.startsWith('**') && trimmedLine.endsWith('**')) {
+                            const boldText = trimmedLine.slice(2, -2);
+                            return <p key={lineIndex}><strong>{boldText}</strong></p>;
+                          }
+                          
+                          // Handle list items
+                          if (trimmedLine.startsWith('- ')) {
+                            if (lineIndex === 1 || !details.split('\n')[lineIndex - 1]?.trim().startsWith('- ')) {
+                              // First item, create ul
+                              const listItems = [];
+                              let currentIndex = lineIndex;
+                              
+                              while (currentIndex < details.split('\n').length) {
+                                const currentLine = details.split('\n')[currentIndex]?.trim();
+                                if (currentLine?.startsWith('- ')) {
+                                  listItems.push(currentLine.slice(2));
+                                  currentIndex++;
+                                } else {
+                                  break;
+                                }
+                              }
+                              
+                              return (
+                                <ul key={lineIndex}>
+                                  {listItems.map((item, itemIndex) => (
+                                    <li key={itemIndex}>{item}</li>
+                                  ))}
+                                </ul>
+                              );
+                            }
+                            return null; // Skip, already handled in the ul above
+                          }
+                          
+                          // Regular paragraph
+                          return <p key={lineIndex}>{trimmedLine}</p>;
+                        })}
                       </div>
                     </div>
                   </div>

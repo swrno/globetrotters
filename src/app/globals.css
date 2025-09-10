@@ -125,3 +125,16 @@
   font-weight: 600;
   text-transform: uppercase;
 }
+
+/* Fix Bootstrap accordion visibility issue in itinerary section */
+.accordion-collapse.collapse.show {
+  visibility: visible !important;
+}
+
+.accordion-collapse.collapse {
+  visibility: hidden;
+}
+
+.accordion-collapse.collapse.show {
+  visibility: visible !important;
+}
