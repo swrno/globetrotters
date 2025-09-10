@@ -67,6 +67,24 @@ export default function PackageDetails() {
     }
   }, [packageId]);
 
+  // Initialize easy responsive tabs after package data is loaded
+  useEffect(() => {
+    if (packageData && packageData.trip_highlight && typeof window !== 'undefined') {
+      // Wait for the next tick to ensure DOM is ready
+      setTimeout(() => {
+        const $ = (window as any).$;
+        if ($ && $('#parentHorizontalTab').length > 0) {
+          $('#parentHorizontalTab').easyResponsiveTabs({
+            type: 'default',
+            width: 'auto',
+            fit: true,
+            tabidentify: 'hor_1',
+          });
+        }
+      }, 100);
+    }
+  }, [packageData]);
+
   if (loading) {
     return (
       <>
@@ -299,37 +317,18 @@ export default function PackageDetails() {
               <h2>Trip Highlights</h2>
             </div>
             <div className="tabsContainer">
-              <div className="trip-highlights-tabs">
-                <ul className="nav nav-tabs" role="tablist">
+              <div id="parentHorizontalTab">
+                <ul className="resp-tabs-list hor_1">
                   {Object.keys(packageData.trip_highlight).map((key, index) => (
-                    <li className="nav-item" role="presentation" key={key}>
-                      <button
-                        className={`nav-link ${index === 0 ? 'active' : ''}`}
-                        id={`highlight-${key}-tab`}
-                        data-bs-toggle="tab"
-                        data-bs-target={`#highlight-${key}`}
-                        type="button"
-                        role="tab"
-                        aria-controls={`highlight-${key}`}
-                        aria-selected={index === 0 ? 'true' : 'false'}
-                      >
-                        {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                      </button>
+                    <li key={key}>
+                      {key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                     </li>
                   ))}
                 </ul>
-                <div className="tab-content">
+                <div className="resp-tabs-container hor_1">
                   {Object.entries(packageData.trip_highlight).map(([key, value], index) => (
-                    <div
-                      className={`tab-pane fade ${index === 0 ? 'show active' : ''}`}
-                      id={`highlight-${key}`}
-                      role="tabpanel"
-                      aria-labelledby={`highlight-${key}-tab`}
-                      key={key}
-                    >
-                      <div className="trip-highlight-content">
-                        <Markdown content={value} />
-                      </div>
+                    <div key={key}>
+                      <Markdown content={value} />
                     </div>
                   ))}
                 </div>
