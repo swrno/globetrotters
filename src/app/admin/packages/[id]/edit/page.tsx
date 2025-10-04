@@ -549,7 +549,12 @@ Day 3: Departure
                     height={250}
                     data-color-mode="light"
                     textareaProps={{
-                      placeholder: 'Enter trip highlights with markdown formatting:\n\n**Scenic Landscapes:** Rohtang Pass, a stunning mountain pass at 3,978 meters, known for its breathtaking views\n\n**Adventure Activities:** Paragliding, skiing, and snowboarding experiences\n\n**Cultural Landmarks:** Ancient temples and local heritage sites',
+                      placeholder: `Key1: val1
+Key2: val2
+Key3: val3
+Key4: val4
+Key5: val5
+Enter trip highlights with markdown formatting:\n\n**Scenic Landscapes:** Rohtang Pass, a stunning mountain pass at 3,978 meters, known for its breathtaking views\n\n**Adventure Activities:** Paragliding, skiing, and snowboarding experiences\n\n**Cultural Landmarks:** Ancient temples and local heritage sites`,
                       style: { fontSize: '14px', lineHeight: '1.5' }
                     }}
                     style={{
@@ -558,7 +563,7 @@ Day 3: Departure
                   />
                 </Paper>
                 <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                  Enter highlights with markdown formatting. Use **bold** for categories and bullet points for details.
+                  Enter highlights as Key: Value pairs, one per line. Use markdown for formatting: **bold**, *italic*, - lists, etc.
                 </Typography>
               </Box>
             </Grid>

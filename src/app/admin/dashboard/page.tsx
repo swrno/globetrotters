@@ -40,6 +40,7 @@ import {
   Add,
   DarkMode,
   LightMode,
+  Download,
 } from '@mui/icons-material';
 
 interface Package {
@@ -157,7 +158,7 @@ export default function AdminDashboard() {
       <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
         {/* Stats Cards */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -177,7 +178,7 @@ export default function AdminDashboard() {
             </Card>
           </Grid>
 
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -197,7 +198,7 @@ export default function AdminDashboard() {
             </Card>
           </Grid>
 
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -221,7 +222,31 @@ export default function AdminDashboard() {
             </Card>
           </Grid>
 
-          <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+          <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
+            <Card>
+              <CardContent>
+                <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                  <Avatar sx={{ bgcolor: 'secondary.main', mr: 2 }}>
+                    <Download />
+                  </Avatar>
+                  <Box>
+                    <Typography color="textSecondary" gutterBottom variant="overline">
+                      Export Data
+                    </Typography>
+                    <Button 
+                      color="primary"
+                      onClick={() => router.push('/admin/registrations')}
+                      size="small"
+                    >
+                      Download →
+                    </Button>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -249,13 +274,22 @@ export default function AdminDashboard() {
               <Typography variant="h5" component="h2">
                 Travel Packages
               </Typography>
-              <Button 
-                variant="contained"
-                startIcon={<Add />}
-                onClick={() => router.push('/admin/packages/new')}
-              >
-                Add New Package
-              </Button>
+              <Box sx={{ display: 'flex', gap: 2 }}>
+                <Button 
+                  variant="outlined"
+                  startIcon={<Download />}
+                  onClick={() => router.push('/admin/registrations')}
+                >
+                  Download Registrations
+                </Button>
+                <Button 
+                  variant="contained"
+                  startIcon={<Add />}
+                  onClick={() => router.push('/admin/packages/new')}
+                >
+                  Add New Package
+                </Button>
+              </Box>
             </Box>
 
             {loading ? (
