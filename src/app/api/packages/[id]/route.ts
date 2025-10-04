@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import dbConnect from '@/lib/mongodb';
 import Package from '@/models/Package';
 import { withAuth } from '@/lib/middleware';
+import { extractPublicId, deleteImages } from '@/lib/cloudinary';
 
 // GET /api/packages/[id] - Fetch a single package by ID
 export async function GET(
@@ -78,6 +79,22 @@ export const DELETE = withAuth(async (
         { success: false, error: 'Package not found' },
         { status: 404 }
       );
+    }
+
+    // Delete all images from Cloudinary if they exist
+    if (deletedPackage.images && deletedPackage.images.length > 0) {
+      try {
+        const publicIds = deletedPackage.images
+          .map((url: string) => extractPublicId(url))
+          .filter((publicId: string | null): publicId is string => publicId !== null);
+        
+        if (publicIds.length > 0) {
+          await deleteImages(publicIds);
+        }
+      } catch (error) {
+        console.error('Error deleting images from Cloudinary:', error);
+        // Continue with package deletion even if image deletion fails
+      }
     }
 
     return NextResponse.json({ 
