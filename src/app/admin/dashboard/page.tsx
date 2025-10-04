@@ -207,7 +207,7 @@ export default function AdminDashboard() {
                   </Avatar>
                   <Box>
                     <Typography color="textSecondary" gutterBottom variant="overline">
-                      Newsletter Subscribers
+                      Newsletter
                     </Typography>
                     <Button 
                       color="primary"
