@@ -72,6 +72,7 @@ const mockPackageData = {
 export default function PackageDetailsDemo() {
   const packageData = mockPackageData;
   const images = packageData.images;
+  const [openAccordion, setOpenAccordion] = useState(0);
 
   // Initialize easy responsive tabs after component mounts
   useEffect(() => {
@@ -90,6 +91,10 @@ export default function PackageDetailsDemo() {
       }, 100);
     }
   }, [packageData]);
+
+  const toggleAccordion = (index: number) => {
+    setOpenAccordion(openAccordion === index ? -1 : index);
+  };
 
   const getImageUrl = (image: string) => {
     if (image.startsWith("http")) {
@@ -323,25 +328,19 @@ export default function PackageDetailsDemo() {
                   <div className="accordion-item" key={day}>
                     <h2 className="accordion-header">
                       <button
-                        className={`accordion-button ${index !== 0 ? 'collapsed' : ''}`}
+                        className={`accordion-button ${openAccordion !== index ? 'collapsed' : ''}`}
                         type="button"
-                        data-bs-toggle="collapse"
-                        data-bs-target={`#collapse-${day}`}
-                        aria-expanded={index === 0 ? 'true' : 'false'}
-                        aria-controls={`collapse-${day}`}
+                        onClick={() => toggleAccordion(index)}
+                        aria-expanded={openAccordion === index}
                       >
                         {day.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                       </button>
                     </h2>
-                    <div
-                      id={`collapse-${day}`}
-                      className={`accordion-collapse collapse ${index === 0 ? 'show' : ''}`}
-                      data-bs-parent="#itineraryAccordion"
-                    >
+                    {openAccordion === index && (
                       <div className="accordion-body">
                         <Markdown content={details} />
                       </div>
-                    </div>
+                    )}
                   </div>
                 ))}
               </div>

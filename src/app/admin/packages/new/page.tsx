@@ -22,6 +22,9 @@ import {
   Cancel,
   Add,
 } from '@mui/icons-material';
+import MDEditor from '@uiw/react-md-editor';
+import '@uiw/react-md-editor/markdown-editor.css';
+import '@uiw/react-markdown-preview/markdown.css';
 
 export default function NewPackage() {
   const [formData, setFormData] = useState({
@@ -287,18 +290,35 @@ export default function NewPackage() {
             </Grid>
 
             <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                label="Description"
-                name="description"
-                value={formData.description}
-                onChange={handleChange}
-                required
-                multiline
-                rows={8}
-                placeholder="Enter package description in markdown format..."
-                helperText="Detailed description of the package (Markdown supported)"
-              />
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle2" gutterBottom sx={{ mb: 1 }}>
+                  Description *
+                </Typography>
+                <Paper sx={{ border: '1px solid #e0e0e0', borderRadius: 1, overflow: 'hidden' }}>
+                  <MDEditor
+                    value={formData.description}
+                    onChange={(value?: string) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        description: value || ''
+                      }));
+                    }}
+                    preview="edit"
+                    height={350}
+                    data-color-mode="light"
+                    textareaProps={{
+                      placeholder: 'Enter package description in markdown format...\n\n## Example:\n\n**Explore the magnificent beauty** of this destination with our comprehensive package.\n\n### Highlights\n- Amazing scenic views\n- Cultural experiences\n- Adventure activities\n\n> This trip offers unforgettable memories and experiences that will last a lifetime.',
+                      style: { fontSize: '14px', lineHeight: '1.5' }
+                    }}
+                    style={{
+                      backgroundColor: '#fafafa'
+                    }}
+                  />
+                </Paper>
+                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                  Detailed description of the package. Use Markdown for formatting: **bold**, *italic*, ## headings, - lists, {'>'}quotes, etc.
+                </Typography>
+              </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 6 }}>
@@ -326,96 +346,163 @@ export default function NewPackage() {
             </Grid>
 
             <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                label="Trip Highlights"
-                name="trip_highlight"
-                value={formData.trip_highlight}
-                onChange={handleChange}
-                multiline
-                rows={6}
-                placeholder={`Scenic Landscapes: Rohtang Pass, a stunning mountain pass at 3,978 meters, known for its breathtaking views
-Adventure Activities: Paragliding, skiing, and snowboarding experiences
-Cultural Landmarks: Ancient temples and local heritage sites
-Natural Attractions: Beautiful valleys and pristine lakes`}
-                helperText="Enter highlights as 'Key: Description' format, one per line"
-              />
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle2" gutterBottom sx={{ mb: 1 }}>
+                  Trip Highlights
+                </Typography>
+                <Paper sx={{ border: '1px solid #e0e0e0', borderRadius: 1, overflow: 'hidden' }}>
+                  <MDEditor
+                    value={formData.trip_highlight}
+                    onChange={(value?: string) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        trip_highlight: value || ''
+                      }));
+                    }}
+                    preview="edit"
+                    height={250}
+                    data-color-mode="light"
+                    textareaProps={{
+                      placeholder: 'Enter trip highlights with markdown formatting:\n\n**Scenic Landscapes:** Rohtang Pass, a stunning mountain pass at 3,978 meters, known for its breathtaking views\n\n**Adventure Activities:** Paragliding, skiing, and snowboarding experiences\n\n**Cultural Landmarks:** Ancient temples and local heritage sites',
+                      style: { fontSize: '14px', lineHeight: '1.5' }
+                    }}
+                    style={{
+                      backgroundColor: '#fafafa'
+                    }}
+                  />
+                </Paper>
+                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                  Enter highlights with markdown formatting. Use **bold** for categories and bullet points for details.
+                </Typography>
+              </Box>
             </Grid>
 
             <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                label="Itinerary Description"
-                name="itinerary_description"
-                value={formData.itinerary_description}
-                onChange={handleChange}
-                multiline
-                rows={4}
-                placeholder="A detailed overview of the trip itinerary..."
-                helperText="General description of the itinerary"
-              />
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle2" gutterBottom sx={{ mb: 1 }}>
+                  Itinerary Description
+                </Typography>
+                <Paper sx={{ border: '1px solid #e0e0e0', borderRadius: 1, overflow: 'hidden' }}>
+                  <MDEditor
+                    value={formData.itinerary_description}
+                    onChange={(value?: string) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        itinerary_description: value || ''
+                      }));
+                    }}
+                    preview="edit"
+                    height={200}
+                    data-color-mode="light"
+                    textareaProps={{
+                      placeholder: 'A detailed overview of the trip itinerary...\n\nExample: **Himachal Pradesh**, known as \'Dev Bhoomi\' (Land of Gods), is a paradise in the Himalayas, offering serene landscapes, vibrant culture, and thrilling adventures.',
+                      style: { fontSize: '14px', lineHeight: '1.5' }
+                    }}
+                    style={{
+                      backgroundColor: '#fafafa'
+                    }}
+                  />
+                </Paper>
+                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                  General description of the itinerary with markdown formatting support.
+                </Typography>
+              </Box>
             </Grid>
 
             <Grid size={{ xs: 12 }}>
-              <TextField
-                fullWidth
-                label="Itinerary Details"
-                name="itinerary_details"
-                value={formData.itinerary_details}
-                onChange={handleChange}
-                multiline
-                rows={8}
-                placeholder={`Day 1: Arrival in Shimla
-- Arrive in Shimla and check into hotel
-- Evening stroll on Mall Road
----
-Day 2: Shimla Sightseeing
-- Visit Jakhu Temple
-- Explore local markets
----
-Day 3: Departure
-- Check out from hotel
-- Departure to home`}
-                helperText="Enter itinerary as 'Day X: Title' followed by details, separate days with '---'"
-              />
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle2" gutterBottom sx={{ mb: 1 }}>
+                  Itinerary Details
+                </Typography>
+                <Paper sx={{ border: '1px solid #e0e0e0', borderRadius: 1, overflow: 'hidden' }}>
+                  <MDEditor
+                    value={formData.itinerary_details}
+                    onChange={(value?: string) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        itinerary_details: value || ''
+                      }));
+                    }}
+                    preview="edit"
+                    height={300}
+                    data-color-mode="light"
+                    textareaProps={{
+                      placeholder: 'Enter detailed itinerary with markdown formatting:\n\n**Day 1: Arrival in Shimla**\n\n- Arrive in Shimla and check into hotel\n- Evening stroll on Mall Road\n\n---\n\n**Day 2: Shimla Sightseeing**\n\n- Visit Jakhu Temple\n- Explore local markets\n\n---\n\n**Day 3: Departure**\n\n- Check out from hotel\n- Departure to home',
+                      style: { fontSize: '14px', lineHeight: '1.5' }
+                    }}
+                    style={{
+                      backgroundColor: '#fafafa'
+                    }}
+                  />
+                </Paper>
+                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                  Enter itinerary as **Day X: Title** followed by details, separate days with --- (horizontal rule).
+                </Typography>
+              </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="Inclusions"
-                name="inclusions"
-                value={formData.inclusions}
-                onChange={handleChange}
-                multiline
-                rows={6}
-                placeholder={`Accommodation for 5 nights (double sharing basis)
-Daily breakfast and dinner
-Local transportation
-Professional guide services
-All permit fees
-Travel insurance`}
-                helperText="Enter inclusions, one per line"
-              />
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle2" gutterBottom sx={{ mb: 1 }}>
+                  Inclusions
+                </Typography>
+                <Paper sx={{ border: '1px solid #e0e0e0', borderRadius: 1, overflow: 'hidden' }}>
+                  <MDEditor
+                    value={formData.inclusions}
+                    onChange={(value?: string) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        inclusions: value || ''
+                      }));
+                    }}
+                    preview="edit"
+                    height={250}
+                    data-color-mode="light"
+                    textareaProps={{
+                      placeholder: 'Enter inclusions with markdown formatting:\n\n- **Accommodation** for 5 nights (double sharing basis)\n- **Daily breakfast and dinner**\n- **Local transportation**\n- **Professional guide services**\n- All permit fees\n- Travel insurance',
+                      style: { fontSize: '14px', lineHeight: '1.5' }
+                    }}
+                    style={{
+                      backgroundColor: '#fafafa'
+                    }}
+                  />
+                </Paper>
+                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                  Enter inclusions with markdown formatting. Use bullet points and **bold** for emphasis.
+                </Typography>
+              </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="Exclusions"
-                name="exclusions"
-                value={formData.exclusions}
-                onChange={handleChange}
-                multiline
-                rows={6}
-                placeholder={`Airfare or train fare
-Personal expenses
-Additional meals not mentioned
-Tips and gratuities
-Adventure activity charges
-Emergency evacuation`}
-                helperText="Enter exclusions, one per line"
-              />
+              <Box sx={{ mb: 2 }}>
+                <Typography variant="subtitle2" gutterBottom sx={{ mb: 1 }}>
+                  Exclusions
+                </Typography>
+                <Paper sx={{ border: '1px solid #e0e0e0', borderRadius: 1, overflow: 'hidden' }}>
+                  <MDEditor
+                    value={formData.exclusions}
+                    onChange={(value?: string) => {
+                      setFormData(prev => ({
+                        ...prev,
+                        exclusions: value || ''
+                      }));
+                    }}
+                    preview="edit"
+                    height={250}
+                    data-color-mode="light"
+                    textareaProps={{
+                      placeholder: 'Enter exclusions with markdown formatting:\n\n- **Airfare or train fare**\n- Personal expenses\n- Additional meals not mentioned\n- Tips and gratuities\n- Adventure activity charges\n- Emergency evacuation',
+                      style: { fontSize: '14px', lineHeight: '1.5' }
+                    }}
+                    style={{
+                      backgroundColor: '#fafafa'
+                    }}
+                  />
+                </Paper>
+                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                  Enter exclusions with markdown formatting. Use bullet points and **bold** for emphasis.
+                </Typography>
+              </Box>
             </Grid>
 
             <Grid size={{ xs: 12 }}>
