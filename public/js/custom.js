@@ -1,17 +1,35 @@
 
+   document.addEventListener("DOMContentLoaded", function (e) {
+
+// $(document).ready(function () {
+
 document.querySelector('.navbar-toggler').addEventListener("click", menubtn);
 function menubtn(){
   document.querySelector('body').classList.toggle('menuOpen')
 }
 
-document.querySelector('.closebtn').addEventListener("click", closemenu);
+let closeMenuBtn = document.querySelector('.closebtn')
+closeMenuBtn.addEventListener("click", closemenu);
+
 function closemenu(){
+  console.log('hit')
   document.querySelector('body').classList.remove('menuOpen');
   document.querySelector('.navbar-toggler').classList.add('collapsed');
   document.querySelector('.navbar-collapse').classList.remove('show');
 }
-$(document).ready(function () {
 
+
+let menuItem = document.querySelectorAll('.header .navbar .navbar-nav > li > a');
+if(menuItem){
+menuItem.forEach((item)=>{
+  item.addEventListener("click", menuItemClick);
+  function menuItemClick(){
+  document.querySelector('body').classList.remove('menuOpen');
+  document.querySelector('.navbar-toggler').classList.add('collapsed');
+  document.querySelector('.navbar-collapse').classList.remove('show');
+}
+})
+}
 
   $(window).on('scroll', function(){
     var scroll = $(window).scrollTop();
@@ -36,15 +54,28 @@ $(document).ready(function () {
    
 });
 
- function getContainer(){
-  let container = $('.whyGlobetrotters .container');
-  if(container){
-    let leftPos = container.offset().left;
-    let customContainer = $('.container-wrapper');
-    $(customContainer).css('margin-left', leftPos);
-  }
+//  function getContainer(){
+//   let container = $('.whyGlobetrotters .container');
+//   if(container){
+//     let leftPos = container.offset().left;
+//     let customContainer = $('.container-wrapper');
+//     $(customContainer).css('margin-left', leftPos);
+//   }
     
- }
+//  }
+
+
+function getContainer() {
+  const container = document.querySelector('.whyGlobetrotters .container');
+  if (container) {
+    const rect = container.getBoundingClientRect();
+    const leftPos = rect.left + window.scrollX; // account for scroll offset
+    const customContainer = document.querySelector('.container-wrapper');
+    if (customContainer) {
+      customContainer.style.marginLeft = `${leftPos}px`;
+    }
+  }
+}
 $(window).on('resize', function(){
   getContainer()
  });
@@ -52,7 +83,7 @@ $(window).on('resize', function(){
 
 
 
-});
+// });
 
 const swiper = new Swiper('.destinationSlider', {
   loop: true,
@@ -102,3 +133,4 @@ const swiper2 = new Swiper(".testimonialSlider .swiper", {
     el: ".swiper-pagination",
   },
 });
+})

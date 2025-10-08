@@ -41,9 +41,9 @@ export default function Header({ currentPage }: HeaderProps) {
                 <Link href="/contact">Contact Us</Link>
               </li>
             </ul>
-            <button className="closebtn">
+            {/* <button className="closebtn" type="button">
               <img src="/closeicon.png" alt="" />
-            </button>
+            </button> */}
           </div>
         </nav>
       </div>
