@@ -5,18 +5,18 @@
 
 document.querySelector('.navbar-toggler').addEventListener("click", menubtn);
 function menubtn(){
-  document.querySelector('body').classList.toggle('menuOpen')
+  document.querySelector('body').classList.add('menuOpen')
 }
 
-let closeMenuBtn = document.querySelector('.closebtn')
-closeMenuBtn.addEventListener("click", closemenu);
+// let closeMenuBtn = document.querySelector('.closebtn')
+// closeMenuBtn.addEventListener("click", closemenu);
 
-function closemenu(){
-  console.log('hit')
-  document.querySelector('body').classList.remove('menuOpen');
-  document.querySelector('.navbar-toggler').classList.add('collapsed');
-  document.querySelector('.navbar-collapse').classList.remove('show');
-}
+// function closemenu(){
+//   console.log('hit')
+//   document.querySelector('body').classList.remove('menuOpen');
+//   document.querySelector('.navbar-toggler').classList.add('collapsed');
+//   document.querySelector('.navbar-collapse').classList.remove('show');
+// }
 
 
 let menuItem = document.querySelectorAll('.header .navbar .navbar-nav > li > a');

@@ -1,11 +1,15 @@
 import Link from 'next/link';
-
+import CloseBtn from '../components/CloseBtn';
 interface HeaderProps {
   currentPage?: string;
 }
 
 export default function Header({ currentPage }: HeaderProps) {
+  
+
+  
   return (
+    
     <header className="header">
       <div className="container">
         <nav className="navbar navbar-expand-lg">
@@ -41,7 +45,8 @@ export default function Header({ currentPage }: HeaderProps) {
                 <Link href="/contact">Contact Us</Link>
               </li>
             </ul>
-            {/* <button className="closebtn" type="button">
+            <CloseBtn/>
+            {/* <button className="closebtn" type="button" onClick={closeMenuBtn}>
               <img src="/closeicon.png" alt="" />
             </button> */}
           </div>
