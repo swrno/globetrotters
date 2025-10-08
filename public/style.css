@@ -453,6 +453,7 @@ textarea {
     background: #fff;
     min-height: 100vh;
     height: 100%;
+    width: 250px;
   }
 }
 .header.headerMoveDown {
@@ -471,7 +472,7 @@ body.menuOpen::before {
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.8);
-  z-index: 2;
+  z-index: 3;
 }
 body.menuOpen .navbar-collapse {
   left: 0 !important;
