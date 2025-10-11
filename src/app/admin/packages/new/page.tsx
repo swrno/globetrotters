@@ -25,6 +25,7 @@ import {
 import MDEditor from '@uiw/react-md-editor';
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
+import ImageUploader from '@/components/admin/ImageUploader';
 
 export default function NewPackage() {
   const [formData, setFormData] = useState({
@@ -37,13 +38,13 @@ export default function NewPackage() {
     cost_per_person: '',
     best_time_to_visit: '',
     video_url: '',
-    images: '',
     trip_highlight: '',
     itinerary_description: '',
     itinerary_details: '',
     inclusions: '',
     exclusions: '',
   });
+  const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -108,7 +109,7 @@ export default function NewPackage() {
         best_time_to_visit: formData.best_time_to_visit || 'All Year Round',
         video_url: formData.video_url || undefined,
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-        images: formData.images.split(',').map(img => img.trim()).filter(img => img),
+        images: images,
         trip_highlight: tripHighlight,
         itinerary: {
           description: formData.itinerary_description,
@@ -333,15 +334,11 @@ export default function NewPackage() {
               />
             </Grid>
 
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="Image URLs"
-                name="images"
-                value={formData.images}
-                onChange={handleChange}
-                placeholder="/manali1.jpg, /manali2.jpg, /manali3.jpg"
-                helperText="Comma-separated image URLs for the package"
+            <Grid size={{ xs: 12 }}>
+              <ImageUploader
+                images={images}
+                onChange={setImages}
+                maxImages={10}
               />
             </Grid>
 
