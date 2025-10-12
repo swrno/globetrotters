@@ -32,6 +32,7 @@ import {
   TableRow,
   TablePagination,
   Table as MuiTable,
+  Menu,
 } from '@mui/material';
 import {
   Download,
@@ -39,6 +40,7 @@ import {
   Table as TableIcon,
   FileJson,
   FileText,
+  ChevronDown,
 } from 'lucide-react';
 
 interface Registration {
@@ -73,9 +75,34 @@ export default function RegistrationsDownload() {
   const [error, setError] = useState('');
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+  const openMenu = Boolean(anchorEl);
   
   const { user } = useAuth();
   const router = useRouter();
+
+  const handleMenuClick = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleDownload = (format: 'excel' | 'csv' | 'json') => {
+    switch (format) {
+      case 'excel':
+        downloadExcel();
+        break;
+      case 'csv':
+        downloadCSV();
+        break;
+      case 'json':
+        downloadJSON();
+        break;
+    }
+    handleMenuClose();
+  };
 
   useEffect(() => {
     if (!user) {
@@ -258,7 +285,7 @@ export default function RegistrationsDownload() {
 
   if (loading) {
     return (
-      <Container maxWidth="lg" sx={{ mt: 4, display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
+      <Container maxWidth="xl" sx={{ mt: 4, display: 'flex', justifyContent: 'center', alignItems: 'center', height: '50vh' }}>
         <CircularProgress />
       </Container>
     );
@@ -271,7 +298,7 @@ export default function RegistrationsDownload() {
   );
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
+    <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
       {/* Breadcrumbs */}
       <Breadcrumbs sx={{ mb: 3 }}>
         <Link
@@ -334,36 +361,48 @@ export default function RegistrationsDownload() {
           </Grid>
           
           <Grid size={{ xs: 12, md: 8 }}>
-            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
+            <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap', justifyContent: 'flex-end' }}>
               <Button
                 variant="contained"
-                startIcon={<FileSpreadsheet size={18} />}
-                onClick={downloadExcel}
+                startIcon={<Download size={18} />}
+                endIcon={<ChevronDown size={18} />}
+                onClick={handleMenuClick}
                 disabled={filteredRegistrations.length === 0}
-                sx={{ bgcolor: '#1976d2' }}
+                sx={{ 
+                  bgcolor: '#60a5fa',
+                  '&:hover': { bgcolor: '#3b82f6' },
+                  color: '#ffffff'
+                }}
               >
-                Download Excel
+                Download Registrations
               </Button>
               
-              <Button
-                variant="contained"
-                startIcon={<FileText size={18} />}
-                onClick={downloadCSV}
-                disabled={filteredRegistrations.length === 0}
-                sx={{ bgcolor: '#2e7d32' }}
+              <Menu
+                anchorEl={anchorEl}
+                open={openMenu}
+                onClose={handleMenuClose}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'right',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+                }}
               >
-                Download CSV
-              </Button>
-              
-              <Button
-                variant="contained"
-                startIcon={<FileJson size={18} />}
-                onClick={downloadJSON}
-                disabled={filteredRegistrations.length === 0}
-                sx={{ bgcolor: '#ed6c02' }}
-              >
-                Download JSON
-              </Button>
+                <MenuItem onClick={() => handleDownload('excel')}>
+                  <FileSpreadsheet size={18} style={{ marginRight: 8 }} />
+                  Excel (.xlsx)
+                </MenuItem>
+                <MenuItem onClick={() => handleDownload('csv')}>
+                  <FileText size={18} style={{ marginRight: 8 }} />
+                  CSV (.csv)
+                </MenuItem>
+                <MenuItem onClick={() => handleDownload('json')}>
+                  <FileJson size={18} style={{ marginRight: 8 }} />
+                  JSON (.json)
+                </MenuItem>
+              </Menu>
             </Box>
           </Grid>
         </Grid>

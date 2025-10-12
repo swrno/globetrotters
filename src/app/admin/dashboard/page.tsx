@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
 import {
   Typography,
   Button,
@@ -72,6 +73,9 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const [regPage, setRegPage] = useState(0);
   const [regRowsPerPage, setRegRowsPerPage] = useState(10);
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [packageToDelete, setPackageToDelete] = useState<{ id: string; title: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
   
   const { user, logout } = useAuth();
   const { darkMode, toggleDarkMode } = useTheme();
@@ -127,10 +131,7 @@ export default function AdminDashboard() {
   };
 
   const deletePackage = async (packageId: string) => {
-    if (!confirm('Are you sure you want to delete this package?')) {
-      return;
-    }
-
+    setDeleting(true);
     try {
       const response = await fetch(`/api/packages/${packageId}`, {
         method: 'DELETE',
@@ -143,6 +144,21 @@ export default function AdminDashboard() {
       }
     } catch (error) {
       console.error('Error deleting package:', error);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleDeleteClick = (packageId: string, packageTitle: string) => {
+    setPackageToDelete({ id: packageId, title: packageTitle });
+    setDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (packageToDelete) {
+      await deletePackage(packageToDelete.id);
+      setDeleteModalOpen(false);
+      setPackageToDelete(null);
     }
   };
 

@@ -50,6 +50,8 @@ interface Package {
   days: number;
   nights: number;
   cost_per_person: number;
+  best_time_to_visit?: string;
+  video_url?: string;
   trip_highlight: Record<string, string>;
   itinerary: {
     description: string;
@@ -83,15 +85,6 @@ export default function PackageView() {
   const params = useParams();
   const packageId = params.id as string;
 
-  useEffect(() => {
-    if (!user) {
-      router.push('/admin');
-      return;
-    }
-    
-    fetchPackage();
-  }, [user, router, packageId]);
-
   const fetchPackage = async () => {
     try {
       const response = await fetch(`/api/packages/${packageId}`);
@@ -109,6 +102,16 @@ export default function PackageView() {
       setLoading(false);
     }
   };
+
+  useEffect(() => {
+    if (!user) {
+      router.push('/admin');
+      return;
+    }
+    
+    fetchPackage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user, router, packageId]);
 
   const deletePackage = async () => {
     if (!confirm('Are you sure you want to delete this package? This action cannot be undone.')) {
@@ -233,13 +236,30 @@ export default function PackageView() {
               </Typography>
             </Box>
 
-            <Box sx={{ display: 'flex', alignItems: 'center', mb: 3 }}>
-              <Schedule sx={{ mr: 1, color: 'text.secondary' }} />
+            <Box sx={{ display: 'flex', gap: 2, mb: 3, flexWrap: 'wrap' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <Schedule sx={{ mr: 1, color: 'text.secondary' }} />
+                <Chip
+                  label={`${packageData.days} Days / ${packageData.nights} Nights`}
+                  variant="outlined"
+                  color="primary"
+                />
+              </Box>
+              
               <Chip
-                label={`${packageData.days} Days / ${packageData.nights} Nights`}
-                variant="outlined"
-                color="primary"
+                label={`₹${packageData.cost_per_person.toLocaleString()} per person`}
+                variant="filled"
+                color="success"
+                sx={{ fontWeight: 'bold' }}
               />
+              
+              {packageData.best_time_to_visit && (
+                <Chip
+                  label={`Best Time: ${packageData.best_time_to_visit}`}
+                  variant="outlined"
+                  color="info"
+                />
+              )}
             </Box>
 
             <Box sx={{ mb: 3 }}>
@@ -264,6 +284,135 @@ export default function PackageView() {
                 __html: getDescriptionHTML(packageData.description)
               }}
             />
+
+            {/* Video URL */}
+            {packageData.video_url && (
+              <>
+                <Divider sx={{ my: 3 }} />
+                <Typography variant="h6" gutterBottom>
+                  Overview Video
+                </Typography>
+                <Box sx={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
+                  <iframe
+                    src={packageData.video_url}
+                    style={{
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      width: '100%',
+                      height: '100%',
+                      border: 'none',
+                      borderRadius: '8px'
+                    }}
+                    allowFullScreen
+                  />
+                </Box>
+              </>
+            )}
+
+            {/* Trip Highlights */}
+            {packageData.trip_highlight && Object.keys(packageData.trip_highlight).length > 0 && (
+              <>
+                <Divider sx={{ my: 3 }} />
+                <Typography variant="h6" gutterBottom>
+                  Trip Highlights
+                </Typography>
+                <Box sx={{ mt: 2 }}>
+                  {Object.entries(packageData.trip_highlight).map(([key, value], index) => (
+                    <Box key={index} sx={{ mb: 2 }}>
+                      <Typography variant="subtitle1" fontWeight="bold" sx={{ mb: 1 }}>
+                        {key.replace(/_/g, ' ').toUpperCase()}
+                      </Typography>
+                      <Box
+                        sx={{ '& p': { mb: 1 }, '& ul': { mb: 1, pl: 3 } }}
+                        dangerouslySetInnerHTML={{
+                          __html: getDescriptionHTML(value)
+                        }}
+                      />
+                    </Box>
+                  ))}
+                </Box>
+              </>
+            )}
+
+            {/* Itinerary */}
+            {packageData.itinerary && (
+              <>
+                <Divider sx={{ my: 3 }} />
+                <Typography variant="h6" gutterBottom>
+                  Itinerary
+                </Typography>
+                {packageData.itinerary.description && (
+                  <Box
+                    sx={{ mb: 2, '& p': { mb: 1 } }}
+                    dangerouslySetInnerHTML={{
+                      __html: getDescriptionHTML(packageData.itinerary.description)
+                    }}
+                  />
+                )}
+                {packageData.itinerary.details && Object.keys(packageData.itinerary.details).length > 0 && (
+                  <Box sx={{ mt: 2 }}>
+                    {Object.entries(packageData.itinerary.details).map(([day, details], index) => (
+                      <Paper key={index} sx={{ p: 2, mb: 2, bgcolor: 'background.default' }}>
+                        <Typography variant="subtitle1" fontWeight="bold" color="primary" sx={{ mb: 1 }}>
+                          {day.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                        </Typography>
+                        <Box
+                          sx={{ '& p': { mb: 1 }, '& ul': { mb: 1, pl: 3 } }}
+                          dangerouslySetInnerHTML={{
+                            __html: getDescriptionHTML(details)
+                          }}
+                        />
+                      </Paper>
+                    ))}
+                  </Box>
+                )}
+              </>
+            )}
+
+            {/* Inclusions & Exclusions */}
+            {packageData.inclusions_exclusions && (
+              <>
+                <Divider sx={{ my: 3 }} />
+                <Typography variant="h6" gutterBottom>
+                  Inclusions & Exclusions
+                </Typography>
+                <Grid container spacing={3} sx={{ mt: 1 }}>
+                  {packageData.inclusions_exclusions.dos && packageData.inclusions_exclusions.dos.length > 0 && (
+                    <Grid size={{ xs: 12, md: 6 }}>
+                      <Paper sx={{ p: 2, bgcolor: 'success.50', borderLeft: '4px solid', borderColor: 'success.main' }}>
+                        <Typography variant="subtitle1" fontWeight="bold" color="success.main" sx={{ mb: 1 }}>
+                          ✓ Included
+                        </Typography>
+                        <Box component="ul" sx={{ m: 0, pl: 3 }}>
+                          {packageData.inclusions_exclusions.dos.map((item, index) => (
+                            <li key={index}>
+                              <Typography variant="body2">{item}</Typography>
+                            </li>
+                          ))}
+                        </Box>
+                      </Paper>
+                    </Grid>
+                  )}
+                  {packageData.inclusions_exclusions.donts && packageData.inclusions_exclusions.donts.length > 0 && (
+                    <Grid size={{ xs: 12, md: 6 }}>
+                      <Paper sx={{ p: 2, bgcolor: 'error.50', borderLeft: '4px solid', borderColor: 'error.main' }}>
+                        <Typography variant="subtitle1" fontWeight="bold" color="error.main" sx={{ mb: 1 }}>
+                          ✗ Not Included
+                        </Typography>
+                        <Box component="ul" sx={{ m: 0, pl: 3 }}>
+                          {packageData.inclusions_exclusions.donts.map((item, index) => (
+                            <li key={index}>
+                              <Typography variant="body2">{item}</Typography>
+                            </li>
+                          ))}
+                        </Box>
+                      </Paper>
+                    </Grid>
+                  )}
+                </Grid>
+              </>
+            )}
           </Paper>
 
           {/* Package Images */}
