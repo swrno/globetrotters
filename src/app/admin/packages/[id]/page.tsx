@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import PageHeader from '@/components/PageHeader';
 import {
   Container,
   Paper,
@@ -22,8 +23,6 @@ import {
   CardMedia,
   Grid,
   CircularProgress,
-  Breadcrumbs,
-  Link,
   Divider,
   Avatar,
 } from '@mui/material';
@@ -199,55 +198,37 @@ export default function PackageView() {
 
   return (
     <>
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      {/* Breadcrumbs */}
-      <Breadcrumbs sx={{ mb: 3 }}>
-        <Link
-          color="inherit"
-          href="/admin/dashboard"
-          onClick={(e) => {
-            e.preventDefault();
-            router.push('/admin/dashboard');
-          }}
-          sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-        >
-          Admin Dashboard
-        </Link>
-        <Typography color="text.primary">
-          {packageData.title}
-        </Typography>
-      </Breadcrumbs>
-
-      {/* Header Actions */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Button
-          startIcon={<ArrowBack />}
-          onClick={() => router.push('/admin/dashboard')}
-          variant="outlined"
-        >
-          Back to Dashboard
-        </Button>
-        
-        <Box sx={{ display: 'flex', gap: 2 }}>
-          <Button
-            startIcon={<Edit />}
-            variant="contained"
-            color="primary"
-            onClick={() => router.push(`/admin/packages/${packageId}/edit`)}
-          >
-            Edit Package
-          </Button>
-          
-          <Button
-            startIcon={<Delete />}
-            variant="outlined"
-            color="error"
-            onClick={handleDeleteClick}
-          >
-            Delete Package
-          </Button>
-        </Box>
-      </Box>
+    <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+      <PageHeader
+        breadcrumbs={[
+          { label: 'Admin', href: '/admin/dashboard' },
+          { label: 'Packages', href: '/admin/packages' },
+          { label: packageData.title }
+        ]}
+        title={packageData.title}
+        description={`View and manage details for ${packageData.location}`}
+        actions={
+          <Box sx={{ display: 'flex', gap: 2 }}>
+            <Button
+              startIcon={<Edit />}
+              variant="contained"
+              color="primary"
+              onClick={() => router.push(`/admin/packages/${packageId}/edit`)}
+            >
+              Edit Package
+            </Button>
+            
+            <Button
+              startIcon={<Delete />}
+              variant="outlined"
+              color="error"
+              onClick={handleDeleteClick}
+            >
+              Delete Package
+            </Button>
+          </Box>
+        }
+      />
 
       <Grid container spacing={3}>
         {/* Package Details */}
