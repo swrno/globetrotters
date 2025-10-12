@@ -563,7 +563,7 @@ export default function AdminDashboard() {
                             <IconButton 
                               size="small"
                               color="error"
-                              onClick={() => deletePackage(pkg.id)}
+                              onClick={() => handleDeleteClick(pkg.id, pkg.title)}
                             >
                               <Trash2 size={18} />
                             </IconButton>
