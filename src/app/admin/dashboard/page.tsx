@@ -5,10 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import {
-  AppBar,
-  Toolbar,
   Typography,
-  IconButton,
   Button,
   Box,
   Container,
@@ -24,13 +21,11 @@ import {
   Paper,
   Chip,
   CircularProgress,
-  Switch,
-  FormControlLabel,
   TablePagination,
   Tooltip,
+  IconButton,
 } from '@mui/material';
 import {
-  LogOut,
   Package as PackageIcon,
   Users,
   Mail,
@@ -39,8 +34,6 @@ import {
   Edit,
   Trash2,
   Plus,
-  Moon,
-  Sun,
   Download,
   Phone,
   User,
@@ -177,59 +170,42 @@ export default function AdminDashboard() {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
-      {/* AppBar */}
-      <AppBar position="static" elevation={1}>
-        <Toolbar>
-          <Box component="img" src="/logo.svg" sx={{ width: 40, height: 40, mr: 2 }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Admin Dashboard
-          </Typography>
-          
-          <FormControlLabel
-            control={
-              <Switch
-                checked={darkMode}
-                onChange={toggleDarkMode}
-                icon={<Sun size={18} />}
-                checkedIcon={<Moon size={18} />}
-              />
-            }
-            label=""
-            sx={{ mr: 2 }}
-          />
-          
-          <Typography variant="body2" sx={{ mr: 2 }}>
-            {user.email}
-          </Typography>
-          
-          <Button
-            color="inherit"
-            onClick={logout}
-            startIcon={<LogOut size={18} />}
-            variant="outlined"
-          >
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-
+    <Box sx={{ flexGrow: 1, bgcolor: 'background.default', minHeight: '100vh' }}>
       {/* Main Content */}
       <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
         {/* Stats Cards */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
           <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-            <Card>
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Box sx={{ mr: 2, color: 'primary.main' }}>
-                    <PackageIcon size={32} />
+            <Card sx={{ 
+              height: '100%', 
+              bgcolor: 'rgba(59, 130, 246, 0.1)', 
+              borderColor: 'rgba(59, 130, 246, 0.3)',
+              '&:hover': {
+                bgcolor: 'rgba(59, 130, 246, 0.15)',
+                transform: 'translateY(-2px)',
+                transition: 'all 0.3s ease'
+              }
+            }}>
+              <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 140 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', flex: 1 }}>
+                  <Box sx={{ 
+                    mr: 2, 
+                    color: '#60a5fa', 
+                    flexShrink: 0,
+                    bgcolor: 'rgba(59, 130, 246, 0.2)',
+                    p: 1,
+                    borderRadius: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <PackageIcon size={28} />
                   </Box>
-                  <Box>
-                    <Typography color="textSecondary" gutterBottom variant="overline">
+                  <Box sx={{ flex: 1 }}>
+                    <Typography color="text.secondary" gutterBottom variant="overline" sx={{ lineHeight: 1.2, display: 'block', mb: 1, fontSize: '0.7rem', letterSpacing: 1 }}>
                       Total Packages
                     </Typography>
-                    <Typography variant="h4">
+                    <Typography variant="h3" sx={{ fontWeight: 700, color: '#60a5fa' }}>
                       {packages.length}
                     </Typography>
                   </Box>
@@ -239,17 +215,36 @@ export default function AdminDashboard() {
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-            <Card>
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Box sx={{ mr: 2, color: 'success.main' }}>
-                    <Users size={32} />
+            <Card sx={{ 
+              height: '100%', 
+              bgcolor: 'rgba(34, 197, 94, 0.1)', 
+              borderColor: 'rgba(34, 197, 94, 0.3)',
+              '&:hover': {
+                bgcolor: 'rgba(34, 197, 94, 0.15)',
+                transform: 'translateY(-2px)',
+                transition: 'all 0.3s ease'
+              }
+            }}>
+              <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 140 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', flex: 1 }}>
+                  <Box sx={{ 
+                    mr: 2, 
+                    color: '#4ade80', 
+                    flexShrink: 0,
+                    bgcolor: 'rgba(34, 197, 94, 0.2)',
+                    p: 1,
+                    borderRadius: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Users size={28} />
                   </Box>
-                  <Box>
-                    <Typography color="textSecondary" gutterBottom variant="overline">
+                  <Box sx={{ flex: 1 }}>
+                    <Typography color="text.secondary" gutterBottom variant="overline" sx={{ lineHeight: 1.2, display: 'block', mb: 1, fontSize: '0.7rem', letterSpacing: 1 }}>
                       Total Registrations
                     </Typography>
-                    <Typography variant="h4">
+                    <Typography variant="h3" sx={{ fontWeight: 700, color: '#4ade80' }}>
                       {totalRegistrations}
                     </Typography>
                   </Box>
@@ -259,20 +254,55 @@ export default function AdminDashboard() {
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-            <Card>
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Box sx={{ mr: 2, color: 'info.main' }}>
-                    <Mail size={32} />
+            <Card sx={{ 
+              height: '100%', 
+              bgcolor: 'rgba(14, 165, 233, 0.1)', 
+              borderColor: 'rgba(14, 165, 233, 0.3)',
+              '&:hover': {
+                bgcolor: 'rgba(14, 165, 233, 0.15)',
+                transform: 'translateY(-2px)',
+                transition: 'all 0.3s ease'
+              }
+            }}>
+              <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 140 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', flex: 1 }}>
+                  <Box sx={{ 
+                    mr: 2, 
+                    color: '#38bdf8', 
+                    flexShrink: 0,
+                    bgcolor: 'rgba(14, 165, 233, 0.2)',
+                    p: 1,
+                    borderRadius: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Mail size={28} />
                   </Box>
-                  <Box>
-                    <Typography color="textSecondary" gutterBottom variant="overline">
+                  <Box sx={{ flex: 1 }}>
+                    <Typography color="text.secondary" gutterBottom variant="overline" sx={{ lineHeight: 1.2, display: 'block', mb: 1, fontSize: '0.7rem', letterSpacing: 1 }}>
                       Newsletter
                     </Typography>
                     <Button 
-                      color="primary"
+                      color="info"
                       onClick={() => router.push('/admin/newsletter')}
                       size="small"
+                      variant="contained"
+                      sx={{ 
+                        mt: 0.5,
+                        textTransform: 'none', 
+                        fontSize: '0.75rem', 
+                        fontWeight: 600,
+                        px: 2,
+                        py: 0.5,
+                        borderRadius: 1.5,
+                        bgcolor: '#38bdf8',
+                        color: '#ffffff',
+                        '&:hover': {
+                          bgcolor: '#0ea5e9',
+                          color: '#ffffff'
+                        }
+                      }}
                     >
                       Manage →
                     </Button>
@@ -283,20 +313,54 @@ export default function AdminDashboard() {
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-            <Card>
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Box sx={{ mr: 2, color: 'secondary.main' }}>
-                    <Download size={32} />
+            <Card sx={{ 
+              height: '100%', 
+              bgcolor: 'rgba(168, 85, 247, 0.1)', 
+              borderColor: 'rgba(168, 85, 247, 0.3)',
+              '&:hover': {
+                bgcolor: 'rgba(168, 85, 247, 0.15)',
+                transform: 'translateY(-2px)',
+                transition: 'all 0.3s ease'
+              }
+            }}>
+              <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 140 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', flex: 1 }}>
+                  <Box sx={{ 
+                    mr: 2, 
+                    color: '#a78bfa', 
+                    flexShrink: 0,
+                    bgcolor: 'rgba(168, 85, 247, 0.2)',
+                    p: 1,
+                    borderRadius: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Download size={28} />
                   </Box>
-                  <Box>
-                    <Typography color="textSecondary" gutterBottom variant="overline">
+                  <Box sx={{ flex: 1 }}>
+                    <Typography color="text.secondary" gutterBottom variant="overline" sx={{ lineHeight: 1.2, display: 'block', mb: 1, fontSize: '0.7rem', letterSpacing: 1 }}>
                       Export Data
                     </Typography>
                     <Button 
-                      color="primary"
                       onClick={() => router.push('/admin/registrations')}
                       size="small"
+                      variant="contained"
+                      sx={{ 
+                        mt: 0.5,
+                        textTransform: 'none', 
+                        fontSize: '0.75rem', 
+                        fontWeight: 600,
+                        px: 2,
+                        py: 0.5,
+                        borderRadius: 1.5,
+                        bgcolor: '#a78bfa',
+                        color: '#ffffff',
+                        '&:hover': {
+                          bgcolor: '#8b5cf6',
+                          color: '#ffffff'
+                        }
+                      }}
                     >
                       Download →
                     </Button>
@@ -307,17 +371,36 @@ export default function AdminDashboard() {
           </Grid>
 
           <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
-            <Card>
-              <CardContent>
-                <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Box sx={{ mr: 2, color: 'warning.main' }}>
-                    <Star size={32} />
+            <Card sx={{ 
+              height: '100%', 
+              bgcolor: 'rgba(251, 146, 60, 0.1)', 
+              borderColor: 'rgba(251, 146, 60, 0.3)',
+              '&:hover': {
+                bgcolor: 'rgba(251, 146, 60, 0.15)',
+                transform: 'translateY(-2px)',
+                transition: 'all 0.3s ease'
+              }
+            }}>
+              <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 140 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', flex: 1 }}>
+                  <Box sx={{ 
+                    mr: 2, 
+                    color: '#fb923c', 
+                    flexShrink: 0,
+                    bgcolor: 'rgba(251, 146, 60, 0.2)',
+                    p: 1,
+                    borderRadius: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Star size={28} />
                   </Box>
-                  <Box>
-                    <Typography color="textSecondary" gutterBottom variant="overline">
+                  <Box sx={{ flex: 1 }}>
+                    <Typography color="text.secondary" gutterBottom variant="overline" sx={{ lineHeight: 1.2, display: 'block', mb: 1, fontSize: '0.7rem', letterSpacing: 1 }}>
                       Most Popular
                     </Typography>
-                    <Typography variant="h6">
+                    <Typography variant="h6" sx={{ fontSize: '1.1rem', fontWeight: 600, color: '#fb923c' }}>
                       {mostPopular}
                     </Typography>
                   </Box>
@@ -328,17 +411,23 @@ export default function AdminDashboard() {
         </Grid>
 
         {/* Packages Section */}
-        <Card>
+        <Card sx={{ bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider' }}>
           <CardContent>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-              <Typography variant="h5" component="h2">
-                Travel Packages
-              </Typography>
+              <Box>
+                <Typography variant="h5" component="h2" sx={{ fontWeight: 600, mb: 0.5 }}>
+                  Travel Packages
+                </Typography>
+                <Typography variant="body2" color="text.secondary">
+                  Manage your travel packages and itineraries
+                </Typography>
+              </Box>
               <Box sx={{ display: 'flex', gap: 2 }}>
                 <Button 
                   variant="outlined"
                   startIcon={<Download size={18} />}
                   onClick={() => router.push('/admin/registrations')}
+                  sx={{ borderColor: 'divider', color: 'text.primary' }}
                 >
                   Download Registrations
                 </Button>
@@ -346,6 +435,12 @@ export default function AdminDashboard() {
                   variant="contained"
                   startIcon={<Plus size={18} />}
                   onClick={() => router.push('/admin/packages/new')}
+                  sx={{ 
+                    bgcolor: '#60a5fa',
+                    '&:hover': {
+                      bgcolor: '#3b82f6'
+                    }
+                  }}
                 >
                   Add New Package
                 </Button>
@@ -363,8 +458,21 @@ export default function AdminDashboard() {
                 </Typography>
               </Box>
             ) : (
-              <TableContainer component={Paper} variant="outlined">
-                <Table sx={{ '& .MuiTableCell-root': { borderRight: '1px solid', borderColor: 'divider' } }}>
+              <TableContainer component={Paper} variant="outlined" sx={{ bgcolor: 'transparent', border: '1px solid', borderColor: 'divider' }}>
+                <Table sx={{ 
+                  '& .MuiTableCell-root': { 
+                    borderRight: '1px solid', 
+                    borderColor: 'divider',
+                    py: 2
+                  },
+                  '& .MuiTableHead-root .MuiTableCell-root': {
+                    bgcolor: 'rgba(255, 255, 255, 0.02)',
+                    fontWeight: 600,
+                    fontSize: '0.75rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: 0.5
+                  }
+                }}>
                   <TableHead>
                     <TableRow>
                       <TableCell>Package</TableCell>
@@ -455,14 +563,14 @@ export default function AdminDashboard() {
         </Card>
 
         {/* Registrations Section */}
-        <Card sx={{ mt: 4 }}>
+        <Card sx={{ mt: 4, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider' }}>
           <CardContent>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
               <Box>
-                <Typography variant="h5" component="h2">
+                <Typography variant="h5" component="h2" sx={{ fontWeight: 600, mb: 0.5 }}>
                   Recent Registrations
                 </Typography>
-                <Typography variant="body2" color="textSecondary" sx={{ mt: 0.5 }}>
+                <Typography variant="body2" color="text.secondary">
                   All package registrations across your travel packages
                 </Typography>
               </Box>
@@ -470,6 +578,7 @@ export default function AdminDashboard() {
                 variant="outlined"
                 startIcon={<Download size={18} />}
                 onClick={() => router.push('/admin/registrations')}
+                sx={{ borderColor: 'divider', color: 'text.primary' }}
               >
                 Export All Data
               </Button>
@@ -488,32 +597,45 @@ export default function AdminDashboard() {
               </Box>
             ) : (
               <>
-                <TableContainer component={Paper} variant="outlined">
-                  <Table sx={{ '& .MuiTableCell-root': { borderRight: '1px solid', borderColor: 'divider' } }}>
+                <TableContainer component={Paper} variant="outlined" sx={{ bgcolor: 'transparent', border: '1px solid', borderColor: 'divider' }}>
+                  <Table sx={{ 
+                    '& .MuiTableCell-root': { 
+                      borderRight: '1px solid', 
+                      borderColor: 'divider',
+                      py: 2
+                    },
+                    '& .MuiTableHead-root .MuiTableCell-root': {
+                      bgcolor: 'rgba(255, 255, 255, 0.02)',
+                      fontWeight: 600,
+                      fontSize: '0.75rem',
+                      textTransform: 'uppercase',
+                      letterSpacing: 0.5
+                    }
+                  }}>
                     <TableHead>
                       <TableRow>
                         <TableCell>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <User size={16} />
+                            <User size={14} />
                             <Typography variant="subtitle2">Name</Typography>
                           </Box>
                         </TableCell>
                         <TableCell>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Mail size={16} />
+                            <Mail size={14} />
                             <Typography variant="subtitle2">Email</Typography>
                           </Box>
                         </TableCell>
                         <TableCell>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Phone size={16} />
+                            <Phone size={14} />
                             <Typography variant="subtitle2">Phone</Typography>
                           </Box>
                         </TableCell>
                         <TableCell>Package Details</TableCell>
                         <TableCell sx={{ borderRight: 'none !important' }}>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Calendar size={16} />
+                            <Calendar size={14} />
                             <Typography variant="subtitle2">Registration Date</Typography>
                           </Box>
                         </TableCell>

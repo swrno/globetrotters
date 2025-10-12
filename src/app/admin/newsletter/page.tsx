@@ -23,23 +23,14 @@ import {
   Breadcrumbs,
   Link,
   Chip,
-  Avatar,
-  AppBar,
-  Toolbar,
-  IconButton,
-  Switch,
-  FormControlLabel,
   TablePagination,
 } from '@mui/material';
 import {
-  ArrowBack,
-  Email,
-  Unsubscribe,
-  Dashboard,
-  DarkMode,
-  LightMode,
-  Logout,
-} from '@mui/icons-material';
+  Mail,
+  UserX,
+  LayoutDashboard,
+  Calendar,
+} from 'lucide-react';
 
 interface NewsletterSubscriber {
   _id: string;
@@ -131,51 +122,6 @@ export default function NewsletterAdmin() {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      {/* AppBar */}
-      <AppBar position="static" elevation={1}>
-        <Toolbar>
-          <Avatar src="/logo.svg" sx={{ mr: 2 }} />
-          <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Newsletter Management
-          </Typography>
-          
-          <Button
-            color="inherit"
-            onClick={() => router.push('/admin/dashboard')}
-            startIcon={<Dashboard />}
-            sx={{ mr: 2 }}
-          >
-            Dashboard
-          </Button>
-          
-          <FormControlLabel
-            control={
-              <Switch
-                checked={darkMode}
-                onChange={toggleDarkMode}
-                icon={<LightMode />}
-                checkedIcon={<DarkMode />}
-              />
-            }
-            label=""
-            sx={{ mr: 2 }}
-          />
-          
-          <Typography variant="body2" sx={{ mr: 2 }}>
-            {user?.email}
-          </Typography>
-          
-          <Button
-            color="inherit"
-            onClick={logout}
-            startIcon={<Logout />}
-            variant="outlined"
-          >
-            Logout
-          </Button>
-        </Toolbar>
-      </AppBar>
-
       {/* Main Content */}
       <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
         {/* Breadcrumbs */}
@@ -202,9 +148,17 @@ export default function NewsletterAdmin() {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>
-                    <Email />
-                  </Avatar>
+                  <Box sx={{ 
+                    bgcolor: '#60a5fa', 
+                    borderRadius: 2, 
+                    p: 1.5, 
+                    mr: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Mail size={24} color="white" />
+                  </Box>
                   <Box>
                     <Typography color="textSecondary" gutterBottom variant="overline">
                       Total Subscribers
@@ -222,9 +176,17 @@ export default function NewsletterAdmin() {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar sx={{ bgcolor: 'success.main', mr: 2 }}>
-                    <Dashboard />
-                  </Avatar>
+                  <Box sx={{ 
+                    bgcolor: '#4ade80', 
+                    borderRadius: 2, 
+                    p: 1.5, 
+                    mr: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <LayoutDashboard size={24} color="white" />
+                  </Box>
                   <Box>
                     <Typography color="textSecondary" gutterBottom variant="overline">
                       Footer Signups
@@ -242,9 +204,17 @@ export default function NewsletterAdmin() {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar sx={{ bgcolor: 'info.main', mr: 2 }}>
-                    <Email />
-                  </Avatar>
+                  <Box sx={{ 
+                    bgcolor: '#38bdf8', 
+                    borderRadius: 2, 
+                    p: 1.5, 
+                    mr: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Mail size={24} color="white" />
+                  </Box>
                   <Box>
                     <Typography color="textSecondary" gutterBottom variant="overline">
                       Contact Form
@@ -262,9 +232,17 @@ export default function NewsletterAdmin() {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar sx={{ bgcolor: 'warning.main', mr: 2 }}>
-                    📅
-                  </Avatar>
+                  <Box sx={{ 
+                    bgcolor: '#fb923c', 
+                    borderRadius: 2, 
+                    p: 1.5, 
+                    mr: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Calendar size={24} color="white" />
+                  </Box>
                   <Box>
                     <Typography color="textSecondary" gutterBottom variant="overline">
                       This Week
@@ -301,7 +279,15 @@ export default function NewsletterAdmin() {
             ) : (
               <>
                 <TableContainer component={Paper} variant="outlined">
-                  <Table>
+                  <Table sx={{
+                    '& .MuiTableCell-root': {
+                      borderRight: '1px solid',
+                      borderColor: 'divider',
+                      '&:last-child': {
+                        borderRight: 'none'
+                      }
+                    }
+                  }}>
                     <TableHead>
                       <TableRow>
                         <TableCell>Email</TableCell>
@@ -342,7 +328,7 @@ export default function NewsletterAdmin() {
                               size="small"
                               color="error"
                               variant="outlined"
-                              startIcon={<Unsubscribe />}
+                              startIcon={<UserX size={16} />}
                               onClick={() => unsubscribeUser(subscriber.email)}
                             >
                               Unsubscribe

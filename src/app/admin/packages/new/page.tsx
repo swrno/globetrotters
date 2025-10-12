@@ -360,7 +360,7 @@ export default function NewPackage() {
                     height={250}
                     data-color-mode="light"
                     textareaProps={{
-                      placeholder: 'Enter trip highlights with markdown formatting:\n\n**Scenic Landscapes:** Rohtang Pass, a stunning mountain pass at 3,978 meters, known for its breathtaking views\n\n**Adventure Activities:** Paragliding, skiing, and snowboarding experiences\n\n**Cultural Landmarks:** Ancient temples and local heritage sites',
+                      placeholder: '**Scenic Landscapes:** Rohtang Pass, a stunning mountain pass at 3,978 meters, known for its breathtaking views\n\n**Adventure Activities:** Paragliding, skiing, and snowboarding experiences\n\n**Cultural Landmarks:** Ancient temples and local heritage sites',
                       style: { fontSize: '14px', lineHeight: '1.5' }
                     }}
                     style={{
@@ -424,7 +424,7 @@ export default function NewPackage() {
                     height={300}
                     data-color-mode="light"
                     textareaProps={{
-                      placeholder: 'Enter detailed itinerary with markdown formatting:\n\n**Day 1: Arrival in Shimla**\n\n- Arrive in Shimla and check into hotel\n- Evening stroll on Mall Road\n\n---\n\n**Day 2: Shimla Sightseeing**\n\n- Visit Jakhu Temple\n- Explore local markets\n\n---\n\n**Day 3: Departure**\n\n- Check out from hotel\n- Departure to home',
+                      placeholder: '**Day 1: Arrival in Shimla**\n- Arrive in Shimla and check into hotel\n- Evening stroll on Mall Road\n\n---\n\n**Day 2: Shimla Sightseeing**\n\n- Visit Jakhu Temple\n- Explore local markets\n\n---\n\n**Day 3: Departure**\n\n- Check out from hotel\n- Departure to home',
                       style: { fontSize: '14px', lineHeight: '1.5' }
                     }}
                     style={{

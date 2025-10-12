@@ -37,21 +37,91 @@ export const MaterialUIThemeProvider: React.FC<{ children: React.ReactNode }> = 
     palette: {
       mode: darkMode ? 'dark' : 'light',
       primary: {
-        main: '#1976d2',
+        main: '#60a5fa', // Light blue for primary actions
+        light: '#93c5fd',
+        dark: '#3b82f6',
       },
       secondary: {
-        main: '#dc004e',
+        main: '#a78bfa', // Purple for secondary actions
+        light: '#c4b5fd',
+        dark: '#8b5cf6',
+      },
+      success: {
+        main: '#4ade80', // Green
+        light: '#86efac',
+        dark: '#22c55e',
+      },
+      warning: {
+        main: '#fb923c', // Orange
+        light: '#fdba74',
+        dark: '#f97316',
+      },
+      error: {
+        main: '#f87171', // Red
+        light: '#fca5a5',
+        dark: '#ef4444',
+      },
+      info: {
+        main: '#38bdf8', // Sky blue
+        light: '#7dd3fc',
+        dark: '#0ea5e9',
       },
       background: {
-        default: darkMode ? '#121212' : '#f5f5f5',
-        paper: darkMode ? '#1e1e1e' : '#ffffff',
+        default: darkMode ? '#0f0f0f' : '#f5f5f5',
+        paper: darkMode ? '#1a1a1a' : '#ffffff',
       },
+      text: {
+        primary: darkMode ? '#f5f5f5' : '#1a1a1a',
+        secondary: darkMode ? '#a1a1a1' : '#666666',
+      },
+      divider: darkMode ? '#2a2a2a' : '#e0e0e0',
     },
     typography: {
-      fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
+      fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+      h4: {
+        fontWeight: 600,
+      },
+      h5: {
+        fontWeight: 600,
+      },
+      h6: {
+        fontWeight: 600,
+      },
     },
     shape: {
       borderRadius: 8,
+    },
+    components: {
+      MuiCard: {
+        styleOverrides: {
+          root: {
+            backgroundImage: 'none',
+            backgroundColor: darkMode ? '#1a1a1a' : '#ffffff',
+            border: darkMode ? '1px solid #2a2a2a' : '1px solid #e0e0e0',
+          },
+        },
+      },
+      MuiButton: {
+        styleOverrides: {
+          root: {
+            textTransform: 'none',
+            fontWeight: 500,
+          },
+          contained: {
+            boxShadow: 'none',
+            '&:hover': {
+              boxShadow: 'none',
+            },
+          },
+        },
+      },
+      MuiTableCell: {
+        styleOverrides: {
+          root: {
+            borderColor: darkMode ? '#2a2a2a' : '#e0e0e0',
+          },
+        },
+      },
     },
   });
 

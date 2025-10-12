@@ -56,11 +56,11 @@ export default function AdminLogin() {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          background: 'linear-gradient(135deg, #1e3c72 0%, #2a5298 100%)',
+          background: 'linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)',
         }}
       >
         <Paper
-          elevation={6}
+          elevation={0}
           sx={{
             padding: 4,
             display: 'flex',
@@ -68,23 +68,27 @@ export default function AdminLogin() {
             alignItems: 'center',
             width: '100%',
             maxWidth: 400,
+            bgcolor: '#1a1a1a',
+            border: '1px solid',
+            borderColor: 'divider',
           }}
         >
           <Box sx={{ 
             m: 1, 
-            bgcolor: 'primary.main', 
-            width: 56, 
-            height: 56, 
-            borderRadius: '50%',
+            bgcolor: 'rgba(96, 165, 250, 0.15)', 
+            width: 64, 
+            height: 64, 
+            borderRadius: 2,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            color: 'white'
+            color: '#60a5fa',
+            border: '1px solid rgba(96, 165, 250, 0.3)'
           }}>
-            <Lock size={28} />
+            <Lock size={32} />
           </Box>
           
-          <Typography component="h1" variant="h4" gutterBottom>
+          <Typography component="h1" variant="h4" gutterBottom sx={{ mt: 2, fontWeight: 600 }}>
             Admin Login
           </Typography>
           
@@ -132,7 +136,20 @@ export default function AdminLogin() {
               fullWidth
               variant="contained"
               disabled={loading}
-              sx={{ mt: 3, mb: 2 }}
+              sx={{ 
+                mt: 3, 
+                mb: 2,
+                bgcolor: '#60a5fa',
+                py: 1.5,
+                fontSize: '1rem',
+                fontWeight: 600,
+                '&:hover': {
+                  bgcolor: '#3b82f6'
+                },
+                '&:disabled': {
+                  bgcolor: 'rgba(96, 165, 250, 0.3)'
+                }
+              }}
             >
               {loading ? <CircularProgress size={24} /> : 'Sign In'}
             </Button>

@@ -291,7 +291,7 @@ export default function PackageView() {
           )}
         </Grid>
 
-        {/* Sidebar - Package Info & Registrations */}
+        {/* Sidebar - Package Info */}
         <Grid size={{ xs: 12, md: 4 }}>
           {/* Package Info Card */}
           <Card sx={{ mb: 3 }}>
@@ -317,65 +317,65 @@ export default function PackageView() {
               </Box>
             </CardContent>
           </Card>
-
-          {/* Registrations */}
-          <Paper sx={{ p: 3 }}>
-            <Typography variant="h6" gutterBottom>
-              Registrations ({packageData.registrations.length})
-            </Typography>
-            
-            {packageData.registrations.length === 0 ? (
-              <Typography color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
-                No registrations yet
-              </Typography>
-            ) : (
-              <TableContainer component={Paper} variant="outlined">
-                <Table size="small">
-                  <TableHead>
-                    <TableRow>
-                      <TableCell>Name</TableCell>
-                      <TableCell>Email</TableCell>
-                      <TableCell>Phone</TableCell>
-                      <TableCell>Registration Date</TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    {packageData.registrations.map((registration, index) => (
-                      <TableRow key={registration._id || index}>
-                        <TableCell>
-                          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                            <Avatar sx={{ width: 24, height: 24, mr: 1.5, bgcolor: 'primary.main', fontSize: 12 }}>
-                              {registration.name.charAt(0).toUpperCase()}
-                            </Avatar>
-                            <Typography variant="body2" fontWeight="medium">
-                              {registration.name}
-                            </Typography>
-                          </Box>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2">
-                            {registration.email}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2">
-                            {registration.phone}
-                          </Typography>
-                        </TableCell>
-                        <TableCell>
-                          <Typography variant="body2" color="text.secondary">
-                            {new Date(registration.registeredAt).toLocaleDateString()}
-                          </Typography>
-                        </TableCell>
-                      </TableRow>
-                    ))}
-                  </TableBody>
-                </Table>
-              </TableContainer>
-            )}
-          </Paper>
         </Grid>
       </Grid>
+
+      {/* Registrations - Full Width at Bottom */}
+      <Paper sx={{ p: 3, mt: 3 }}>
+        <Typography variant="h6" gutterBottom>
+          Registrations ({packageData.registrations.length})
+        </Typography>
+        
+        {packageData.registrations.length === 0 ? (
+          <Typography color="text.secondary" sx={{ textAlign: 'center', py: 3 }}>
+            No registrations yet
+          </Typography>
+        ) : (
+          <TableContainer>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Phone</TableCell>
+                  <TableCell>Registration Date</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {packageData.registrations.map((registration, index) => (
+                  <TableRow key={registration._id || index}>
+                    <TableCell>
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Avatar sx={{ width: 24, height: 24, mr: 1.5, bgcolor: 'primary.main', fontSize: 12 }}>
+                          {registration.name.charAt(0).toUpperCase()}
+                        </Avatar>
+                        <Typography variant="body2" fontWeight="medium">
+                          {registration.name}
+                        </Typography>
+                      </Box>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2">
+                        {registration.email}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2">
+                        {registration.phone}
+                      </Typography>
+                    </TableCell>
+                    <TableCell>
+                      <Typography variant="body2" color="text.secondary">
+                        {new Date(registration.registeredAt).toLocaleDateString()}
+                      </Typography>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        )}
+      </Paper>
     </Container>
   );
 }

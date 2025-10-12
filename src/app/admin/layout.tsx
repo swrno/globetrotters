@@ -2,6 +2,7 @@
 
 import { AuthProvider } from '@/contexts/AuthContext';
 import { MaterialUIThemeProvider } from '@/contexts/ThemeContext';
+import AdminNav from '@/components/AdminNav';
 
 export default function AdminLayout({
   children,
@@ -11,6 +12,7 @@ export default function AdminLayout({
   return (
     <AuthProvider>
       <MaterialUIThemeProvider>
+        <AdminNav />
         {children}
       </MaterialUIThemeProvider>
     </AuthProvider>
