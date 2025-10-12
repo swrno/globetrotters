@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import PageHeader from '@/components/PageHeader';
 import {
   Container,
   Paper,
@@ -11,8 +12,6 @@ import {
   Button,
   TextField,
   CircularProgress,
-  Breadcrumbs,
-  Link,
   Grid,
   Alert,
 } from '@mui/material';
@@ -147,41 +146,17 @@ export default function NewPackage() {
   };
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      {/* Breadcrumbs */}
-      <Breadcrumbs sx={{ mb: 3 }}>
-        <Link
-          color="inherit"
-          href="/admin/dashboard"
-          onClick={(e) => {
-            e.preventDefault();
-            router.push('/admin/dashboard');
-          }}
-          sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-        >
-          Admin Dashboard
-        </Link>
-        <Typography color="text.primary">
-          New Package
-        </Typography>
-      </Breadcrumbs>
-
-      {/* Header Actions */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Button
-          startIcon={<ArrowBack />}
-          onClick={() => router.push('/admin/dashboard')}
-          variant="outlined"
-        >
-          Back to Dashboard
-        </Button>
-        
-        <Typography variant="h4" component="h1">
-          Create New Package
-        </Typography>
-        
-        <Box /> {/* Spacer */}
-      </Box>
+    <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+      {/* Page Header */}
+      <PageHeader
+        breadcrumbs={[
+          { label: 'Admin', href: '/admin/dashboard' },
+          { label: 'Packages', href: '/admin/packages' },
+          { label: 'Create New Package' }
+        ]}
+        title="Create New Package"
+        description="Fill in the details below to create a new travel package. All fields marked with * are required."
+      />
 
       {/* Form */}
       <Paper sx={{ p: 4 }}>

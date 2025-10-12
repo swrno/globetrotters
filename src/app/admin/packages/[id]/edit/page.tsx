@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import PageHeader from '@/components/PageHeader';
 import {
   Container,
   Paper,
@@ -11,8 +12,6 @@ import {
   Button,
   TextField,
   CircularProgress,
-  Breadcrumbs,
-  Link,
   Grid,
   Alert,
   FormControl,
@@ -279,52 +278,16 @@ Day 3: Departure
   }
 
   return (
-    <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-      {/* Breadcrumbs */}
-      <Breadcrumbs sx={{ mb: 3 }}>
-        <Link
-          color="inherit"
-          href="/admin/dashboard"
-          onClick={(e) => {
-            e.preventDefault();
-            router.push('/admin/dashboard');
-          }}
-          sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-        >
-          Admin Dashboard
-        </Link>
-        <Link
-          color="inherit"
-          href={`/admin/packages/${packageId}`}
-          onClick={(e) => {
-            e.preventDefault();
-            router.push(`/admin/packages/${packageId}`);
-          }}
-          sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-        >
-          {packageData?.title}
-        </Link>
-        <Typography color="text.primary">
-          Edit
-        </Typography>
-      </Breadcrumbs>
-
-      {/* Header Actions */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Button
-          startIcon={<ArrowBack />}
-          onClick={() => router.push(`/admin/packages/${packageId}`)}
-          variant="outlined"
-        >
-          Back to Package
-        </Button>
-        
-        <Typography variant="h4" component="h1">
-          Edit Package
-        </Typography>
-        
-        <Box /> {/* Spacer */}
-      </Box>
+    <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+      <PageHeader
+        breadcrumbs={[
+          { label: 'Admin', href: '/admin/dashboard' },
+          { label: 'Packages', href: '/admin/packages' },
+          { label: 'Edit Package' }
+        ]}
+        title="Edit Package"
+        description="Update package details below. Changes will be saved to the database."
+      />
 
       {/* Form */}
       <Paper sx={{ p: 4 }}>
