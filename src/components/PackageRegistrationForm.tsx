@@ -136,8 +136,13 @@ export default function PackageRegistrationForm({
           <div className="btnwrap">
             <input 
               type="submit" 
+              className="primaryBtn"
               value={loading ? "Registering..." : "Register Interest"} 
               disabled={loading}
+              style={{
+                cursor: loading ? 'not-allowed' : 'pointer',
+                opacity: loading ? 0.6 : 1,
+              }}
             />
           </div>
         </div>

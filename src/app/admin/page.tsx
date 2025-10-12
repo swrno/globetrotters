@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import {
   Container,
   Paper,
@@ -12,16 +13,20 @@ import {
   Box,
   Alert,
   CircularProgress,
+  IconButton,
+  InputAdornment,
 } from '@mui/material';
-import { Lock } from 'lucide-react';
+import { Lock, Eye, EyeOff, Sun, Moon } from 'lucide-react';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   
   const { login, user } = useAuth();
+  const { darkMode } = useTheme();
   const router = useRouter();
 
   // Redirect if already logged in
@@ -56,11 +61,32 @@ export default function AdminLogin() {
           flexDirection: 'column',
           justifyContent: 'center',
           alignItems: 'center',
-          background: 'linear-gradient(135deg, #0f0f0f 0%, #1a1a1a 100%)',
+          position: 'relative',
         }}
       >
+        {/* Theme Toggle Button */}
+        <Box sx={{ position: 'absolute', top: 20, right: 20 }}>
+          <IconButton
+            onClick={() => {
+              const newMode = !darkMode;
+              localStorage.setItem('darkMode', String(newMode));
+              window.location.reload(); // Simple way to apply theme change
+            }}
+            sx={{
+              bgcolor: 'background.paper',
+              border: '1px solid',
+              borderColor: 'divider',
+              '&:hover': {
+                bgcolor: 'action.hover',
+              }
+            }}
+          >
+            {darkMode ? <Sun size={20} /> : <Moon size={20} />}
+          </IconButton>
+        </Box>
+
         <Paper
-          elevation={0}
+          elevation={3}
           sx={{
             padding: 4,
             display: 'flex',
@@ -68,9 +94,6 @@ export default function AdminLogin() {
             alignItems: 'center',
             width: '100%',
             maxWidth: 400,
-            bgcolor: '#1a1a1a',
-            border: '1px solid',
-            borderColor: 'divider',
           }}
         >
           <Box sx={{ 
@@ -117,12 +140,25 @@ export default function AdminLogin() {
               fullWidth
               name="password"
               label="Password"
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               id="password"
               autoComplete="current-password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Enter your password"
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={() => setShowPassword(!showPassword)}
+                      edge="end"
+                      size="small"
+                    >
+                      {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
             />
 
             {error && (
@@ -157,7 +193,7 @@ export default function AdminLogin() {
 
           <Paper 
             variant="outlined" 
-            sx={{ p: 2, mt: 2, width: '100%', bgcolor: 'background.default' }}
+            sx={{ p: 2, mt: 2, width: '100%' }}
           >
             <Typography variant="body2" color="text.secondary" align="center">
               <strong>Demo credentials:</strong>

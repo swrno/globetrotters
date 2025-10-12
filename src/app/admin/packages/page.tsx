@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import PageHeader from '@/components/PageHeader';
 import {
   Container,
   Typography,
@@ -27,6 +28,13 @@ import {
   FormControl,
   InputLabel,
   Slider,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  Avatar,
 } from '@mui/material';
 import {
   Plus,
@@ -39,6 +47,9 @@ import {
   DollarSign,
   Filter,
   X,
+  Grid3x3,
+  List,
+  LayoutGrid,
 } from 'lucide-react';
 
 interface Package {
@@ -72,6 +83,7 @@ export default function PackagesPage() {
   const [priceRange, setPriceRange] = useState<number[]>([0, 100000]);
   const [durationFilter, setDurationFilter] = useState<string>('all');
   const [showFilters, setShowFilters] = useState(false);
+  const [viewMode, setViewMode] = useState<'grid' | 'table' | 'list'>('grid');
   
   const { user } = useAuth();
   const { darkMode } = useTheme();
@@ -230,53 +242,99 @@ export default function PackagesPage() {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-      {/* Header */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 4 }}>
-        <Typography variant="h4" fontWeight="bold">
-          Travel Packages
-        </Typography>
-        <Button
-          variant="contained"
-          startIcon={<Plus size={20} />}
-          onClick={() => router.push('/admin/packages/new')}
-          sx={{ 
-            bgcolor: '#60a5fa',
-            '&:hover': { bgcolor: '#3b82f6' },
-            color: '#ffffff'
-          }}
-        >
-          Add New Package
-        </Button>
-      </Box>
+      {/* Page Header */}
+      <PageHeader
+        breadcrumbs={[
+          { label: 'Admin', href: '/admin/dashboard' },
+          { label: 'Packages' }
+        ]}
+        title="Travel Packages"
+        description="Manage your travel packages, create new destinations, and track customer registrations."
+        actions={
+          <Button
+            variant="contained"
+            startIcon={<Plus size={20} />}
+            onClick={() => router.push('/admin/packages/new')}
+            sx={{ 
+              bgcolor: '#60a5fa',
+              '&:hover': { bgcolor: '#3b82f6' },
+              color: '#ffffff'
+            }}
+          >
+            Add New Package
+          </Button>
+        }
+      />
 
-      {/* Search Bar */}
+      {/* Stats */}
+      <Grid container spacing={3} sx={{ mb: 4 }}>
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <Card sx={{ bgcolor: darkMode ? 'rgba(96, 165, 250, 0.1)' : 'rgba(96, 165, 250, 0.08)' }}>
+            <CardContent>
+              <Typography variant="h3" fontWeight="bold" color="primary">
+                {packages.length}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Total Packages
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <Card sx={{ bgcolor: darkMode ? 'rgba(74, 222, 128, 0.1)' : 'rgba(74, 222, 128, 0.08)' }}>
+            <CardContent>
+              <Typography variant="h3" fontWeight="bold" color="success.main">
+                {packages.reduce((acc, pkg) => acc + pkg.registrations.length, 0)}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Total Registrations
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid size={{ xs: 12, sm: 4 }}>
+          <Card sx={{ bgcolor: darkMode ? 'rgba(251, 146, 60, 0.1)' : 'rgba(251, 146, 60, 0.08)' }}>
+            <CardContent>
+              <Typography variant="h3" fontWeight="bold" color="warning.main">
+                {new Set(packages.map(pkg => pkg.location)).size}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                Unique Destinations
+              </Typography>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      {/* Search Bar and Filters */}
       <Paper sx={{ p: 3, mb: 4 }}>
-        <TextField
-          fullWidth
-          placeholder="Search packages by title, location, or tags..."
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <Search size={20} />
-              </InputAdornment>
-            ),
-          }}
-        />
-        
-        {/* Filter Toggle Button */}
-        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+          <TextField
+            fullWidth
+            placeholder="Search packages by title, location, or tags..."
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            InputProps={{
+              startAdornment: (
+                <InputAdornment position="start">
+                  <Search size={20} />
+                </InputAdornment>
+              ),
+            }}
+          />
+          
           <Button
             startIcon={<Filter size={18} />}
             onClick={() => setShowFilters(!showFilters)}
-            variant="outlined"
-            size="small"
+            variant={showFilters ? 'contained' : 'outlined'}
+            sx={{ minWidth: '140px', whiteSpace: 'nowrap' }}
           >
             {showFilters ? 'Hide Filters' : 'Show Filters'}
           </Button>
-          
-          {hasActiveFilters && (
+        </Box>
+        
+        {hasActiveFilters && !showFilters && (
+          <Box sx={{ mt: 2, display: 'flex', justifyContent: 'flex-end' }}>
             <Button
               startIcon={<X size={18} />}
               onClick={clearFilters}
@@ -286,8 +344,8 @@ export default function PackagesPage() {
             >
               Clear All Filters
             </Button>
-          )}
-        </Box>
+          </Box>
+        )}
         
         {/* Filters Section */}
         {showFilters && (
@@ -414,47 +472,57 @@ export default function PackagesPage() {
         )}
       </Paper>
 
-      {/* Stats */}
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <Card sx={{ bgcolor: darkMode ? 'rgba(96, 165, 250, 0.1)' : 'rgba(96, 165, 250, 0.08)' }}>
-            <CardContent>
-              <Typography variant="h3" fontWeight="bold" color="primary">
-                {packages.length}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Total Packages
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <Card sx={{ bgcolor: darkMode ? 'rgba(74, 222, 128, 0.1)' : 'rgba(74, 222, 128, 0.08)' }}>
-            <CardContent>
-              <Typography variant="h3" fontWeight="bold" color="success.main">
-                {packages.reduce((acc, pkg) => acc + pkg.registrations.length, 0)}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Total Registrations
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-        <Grid size={{ xs: 12, sm: 4 }}>
-          <Card sx={{ bgcolor: darkMode ? 'rgba(251, 146, 60, 0.1)' : 'rgba(251, 146, 60, 0.08)' }}>
-            <CardContent>
-              <Typography variant="h3" fontWeight="bold" color="warning.main">
-                {new Set(packages.map(pkg => pkg.location)).size}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                Unique Destinations
-              </Typography>
-            </CardContent>
-          </Card>
-        </Grid>
-      </Grid>
+      {/* View Switching and Results Counter */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+        <Box>
+          {hasActiveFilters && (
+            <Typography variant="body2" color="text.secondary">
+              Showing {filteredPackages.length} of {packages.length} packages
+            </Typography>
+          )}
+        </Box>
+        
+        <Box sx={{ display: 'flex', gap: 1 }}>
+          <Tooltip title="Grid View">
+            <IconButton
+              onClick={() => setViewMode('grid')}
+              color={viewMode === 'grid' ? 'primary' : 'default'}
+              sx={{ 
+                bgcolor: viewMode === 'grid' ? 'rgba(96, 165, 250, 0.1)' : 'transparent',
+                '&:hover': { bgcolor: 'rgba(96, 165, 250, 0.15)' }
+              }}
+            >
+              <LayoutGrid size={20} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="List View">
+            <IconButton
+              onClick={() => setViewMode('list')}
+              color={viewMode === 'list' ? 'primary' : 'default'}
+              sx={{ 
+                bgcolor: viewMode === 'list' ? 'rgba(96, 165, 250, 0.1)' : 'transparent',
+                '&:hover': { bgcolor: 'rgba(96, 165, 250, 0.15)' }
+              }}
+            >
+              <List size={20} />
+            </IconButton>
+          </Tooltip>
+          <Tooltip title="Table View">
+            <IconButton
+              onClick={() => setViewMode('table')}
+              color={viewMode === 'table' ? 'primary' : 'default'}
+              sx={{ 
+                bgcolor: viewMode === 'table' ? 'rgba(96, 165, 250, 0.1)' : 'transparent',
+                '&:hover': { bgcolor: 'rgba(96, 165, 250, 0.15)' }
+              }}
+            >
+              <Grid3x3 size={20} />
+            </IconButton>
+          </Tooltip>
+        </Box>
+      </Box>
 
-      {/* Packages Grid */}
+      {/* Packages Display */}
       {filteredPackages.length === 0 ? (
         <Paper sx={{ p: 4, textAlign: 'center' }}>
           <Typography color="text.secondary">
@@ -472,14 +540,9 @@ export default function PackagesPage() {
         </Paper>
       ) : (
         <>
-          {hasActiveFilters && (
-            <Box sx={{ mb: 2 }}>
-              <Typography variant="body2" color="text.secondary">
-                Showing {filteredPackages.length} of {packages.length} packages
-              </Typography>
-            </Box>
-          )}
-          <Grid container spacing={3}>
+          {/* Grid View */}
+          {viewMode === 'grid' && (
+            <Grid container spacing={3}>
           {filteredPackages.map((pkg) => (
             <Grid size={{ xs: 12, sm: 6, md: 4 }} key={pkg._id}>
               <Card sx={{ 
@@ -579,7 +642,208 @@ export default function PackagesPage() {
               </Card>
             </Grid>
           ))}
-        </Grid>
+            </Grid>
+          )}
+
+          {/* List View */}
+          {viewMode === 'list' && (
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+              {filteredPackages.map((pkg) => (
+                <Card key={pkg._id} sx={{ '&:hover': { boxShadow: 4 } }}>
+                  <CardContent>
+                    <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start' }}>
+                      <CardMedia
+                        component="img"
+                        sx={{ width: 200, height: 150, borderRadius: 1, objectFit: 'cover', flexShrink: 0 }}
+                        image={pkg.images[0] || '/placeholder-image.jpg'}
+                        alt={pkg.title}
+                      />
+                      <Box sx={{ flex: 1 }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', mb: 1 }}>
+                          <Typography variant="h6" fontWeight="bold">
+                            {pkg.title}
+                          </Typography>
+                          <Chip 
+                            label={`₹${pkg.cost_per_person.toLocaleString()}`}
+                            color="success"
+                            sx={{ fontWeight: 'bold' }}
+                          />
+                        </Box>
+                        
+                        <Box sx={{ display: 'flex', gap: 2, mb: 2, flexWrap: 'wrap' }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <MapPin size={16} />
+                            <Typography variant="body2" color="text.secondary">
+                              {pkg.location}
+                            </Typography>
+                          </Box>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                            <Calendar size={16} />
+                            <Typography variant="body2" color="text.secondary">
+                              {pkg.days}D/{pkg.nights}N
+                            </Typography>
+                          </Box>
+                          <Chip label={`${pkg.registrations.length} registrations`} size="small" variant="outlined" />
+                        </Box>
+
+                        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                          {getShortDescription(pkg.description, 200)}
+                        </Typography>
+
+                        <Box sx={{ display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 }}>
+                          {pkg.tags.slice(0, 5).map((tag, index) => (
+                            <Chip key={index} label={tag} size="small" variant="outlined" />
+                          ))}
+                        </Box>
+
+                        <Box sx={{ display: 'flex', gap: 1 }}>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            startIcon={<Eye size={16} />}
+                            onClick={() => router.push(`/admin/packages/${pkg.id}`)}
+                          >
+                            View
+                          </Button>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            startIcon={<Edit size={16} />}
+                            onClick={() => router.push(`/admin/packages/${pkg.id}/edit`)}
+                          >
+                            Edit
+                          </Button>
+                          <Button
+                            size="small"
+                            variant="outlined"
+                            color="error"
+                            startIcon={<Trash2 size={16} />}
+                            onClick={() => handleDeleteClick(pkg._id, pkg.title)}
+                          >
+                            Delete
+                          </Button>
+                        </Box>
+                      </Box>
+                    </Box>
+                  </CardContent>
+                </Card>
+              ))}
+            </Box>
+          )}
+
+          {/* Table View */}
+          {viewMode === 'table' && (
+            <TableContainer component={Paper} variant="outlined" sx={{ border: '1px solid', borderColor: 'divider' }}>
+              <Table sx={{
+                '& .MuiTableHead-root': {
+                  bgcolor: darkMode ? 'rgba(96, 165, 250, 0.08)' : 'rgba(96, 165, 250, 0.05)',
+                },
+                '& .MuiTableCell-head': {
+                  fontWeight: 'bold',
+                  borderBottom: '2px solid',
+                  borderColor: 'divider',
+                },
+                '& .MuiTableRow-root': {
+                  borderBottom: '1px solid',
+                  borderColor: 'divider',
+                }
+              }}>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Image</TableCell>
+                    <TableCell>Package</TableCell>
+                    <TableCell>Location</TableCell>
+                    <TableCell>Duration</TableCell>
+                    <TableCell>Price</TableCell>
+                    <TableCell>Registrations</TableCell>
+                    <TableCell>Actions</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {filteredPackages.map((pkg) => (
+                    <TableRow key={pkg._id} sx={{ '&:hover': { bgcolor: 'action.hover' } }}>
+                      <TableCell>
+                        <Avatar
+                          src={pkg.images[0] || '/placeholder-image.jpg'}
+                          alt={pkg.title}
+                          variant="rounded"
+                          sx={{ width: 60, height: 60 }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body2" fontWeight="medium">
+                          {pkg.title}
+                        </Typography>
+                        <Box sx={{ display: 'flex', gap: 0.5, mt: 0.5, flexWrap: 'wrap' }}>
+                          {pkg.tags.slice(0, 2).map((tag, index) => (
+                            <Chip key={index} label={tag} size="small" variant="outlined" />
+                          ))}
+                        </Box>
+                      </TableCell>
+                      <TableCell>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          <MapPin size={14} />
+                          <Typography variant="body2">{pkg.location}</Typography>
+                        </Box>
+                      </TableCell>
+                      <TableCell>
+                        <Typography variant="body2">
+                          {pkg.days}D / {pkg.nights}N
+                        </Typography>
+                      </TableCell>
+                      <TableCell>
+                        <Chip
+                          label={`₹${pkg.cost_per_person.toLocaleString()}`}
+                          size="small"
+                          color="success"
+                          sx={{ fontWeight: 'bold' }}
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Chip
+                          label={pkg.registrations.length}
+                          size="small"
+                          color="primary"
+                          variant="outlined"
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <Box sx={{ display: 'flex', gap: 0.5 }}>
+                          <Tooltip title="View">
+                            <IconButton
+                              size="small"
+                              color="primary"
+                              onClick={() => router.push(`/admin/packages/${pkg.id}`)}
+                            >
+                              <Eye size={16} />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Edit">
+                            <IconButton
+                              size="small"
+                              color="info"
+                              onClick={() => router.push(`/admin/packages/${pkg.id}/edit`)}
+                            >
+                              <Edit size={16} />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Delete">
+                            <IconButton
+                              size="small"
+                              color="error"
+                              onClick={() => handleDeleteClick(pkg._id, pkg.title)}
+                            >
+                              <Trash2 size={16} />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          )}
         </>
       )}
 

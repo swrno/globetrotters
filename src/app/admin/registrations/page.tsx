@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
+import PageHeader from '@/components/PageHeader';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import {
@@ -299,35 +300,22 @@ export default function RegistrationsDownload() {
 
   return (
     <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-      {/* Breadcrumbs */}
-      <Breadcrumbs sx={{ mb: 3 }}>
-        <Link
-          color="inherit"
-          href="/admin/dashboard"
-          onClick={(e) => {
-            e.preventDefault();
-            router.push('/admin/dashboard');
-          }}
-          sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-        >
-          Admin Dashboard
-        </Link>
-        <Typography color="text.primary">
-          Registration Downloads
-        </Typography>
-      </Breadcrumbs>
-
-      {/* Header */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" component="h1">
-          Registration Downloads
-        </Typography>
-        <Chip 
-          label={`${filteredRegistrations.length} Registrations`} 
-          color="primary" 
-          variant="outlined" 
-        />
-      </Box>
+      {/* Page Header */}
+      <PageHeader
+        breadcrumbs={[
+          { label: 'Admin', href: '/admin/dashboard' },
+          { label: 'Registrations' }
+        ]}
+        title="Package Registrations"
+        description="View, filter, and export customer registration data across all travel packages."
+        actions={
+          <Chip 
+            label={`${filteredRegistrations.length} Registrations`} 
+            color="primary" 
+            variant="outlined" 
+          />
+        }
+      />
 
       {error && (
         <Alert severity="error" sx={{ mb: 3 }}>
@@ -456,8 +444,17 @@ export default function RegistrationsDownload() {
           Registration Preview
         </Typography>
         
-        <TableContainer>
-          <MuiTable sx={{ '& .MuiTableCell-root': { borderRight: '1px solid', borderColor: 'divider' } }}>
+        <TableContainer component={Paper} variant="outlined" sx={{ border: '1px solid', borderColor: 'divider' }}>
+          <MuiTable sx={{ 
+            '& .MuiTableCell-root': { 
+              borderRight: '1px solid', 
+              borderColor: 'divider' 
+            },
+            '& .MuiTableHead-root .MuiTableCell-root': {
+              fontWeight: 'bold',
+              bgcolor: 'action.hover'
+            }
+          }}>
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
@@ -470,7 +467,7 @@ export default function RegistrationsDownload() {
             </TableHead>
             <TableBody>
               {paginatedRegistrations.map((registration) => (
-                <TableRow key={registration._id}>
+                <TableRow key={registration._id} sx={{ '&:hover': { bgcolor: 'action.hover' } }}>
                   <TableCell>{registration.name}</TableCell>
                   <TableCell>{registration.email}</TableCell>
                   <TableCell>{registration.phone}</TableCell>

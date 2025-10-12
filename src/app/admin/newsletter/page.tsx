@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import PageHeader from '@/components/PageHeader';
 import {
   Container,
   Paper,
@@ -140,23 +141,15 @@ export default function NewsletterAdmin() {
     <Box sx={{ flexGrow: 1 }}>
       {/* Main Content */}
       <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
-        {/* Breadcrumbs */}
-        <Breadcrumbs sx={{ mb: 3 }}>
-          <Link
-            color="inherit"
-            href="/admin/dashboard"
-            onClick={(e) => {
-              e.preventDefault();
-              router.push('/admin/dashboard');
-            }}
-            sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
-          >
-            Admin Dashboard
-          </Link>
-          <Typography color="text.primary">
-            Newsletter Management
-          </Typography>
-        </Breadcrumbs>
+        {/* Page Header */}
+        <PageHeader
+          breadcrumbs={[
+            { label: 'Admin', href: '/admin/dashboard' },
+            { label: 'Newsletter' }
+          ]}
+          title="Newsletter Subscribers"
+          description="Manage your newsletter subscribers and track subscription growth."
+        />
 
         {/* Stats Cards */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
@@ -294,13 +287,29 @@ export default function NewsletterAdmin() {
               </Box>
             ) : (
               <>
-                <TableContainer component={Paper} variant="outlined">
+                <TableContainer component={Paper} variant="outlined" sx={{ border: '1px solid', borderColor: 'divider' }}>
                   <Table sx={{
                     '& .MuiTableCell-root': {
                       borderRight: '1px solid',
                       borderColor: 'divider',
                       '&:last-child': {
                         borderRight: 'none'
+                      }
+                    },
+                    '& .MuiTableHead-root': {
+                      bgcolor: darkMode ? 'rgba(96, 165, 250, 0.08)' : 'rgba(96, 165, 250, 0.05)',
+                    },
+                    '& .MuiTableCell-head': {
+                      fontWeight: 'bold',
+                      fontSize: '0.875rem',
+                      borderBottom: '2px solid',
+                      borderColor: 'divider',
+                    },
+                    '& .MuiTableRow-root': {
+                      borderBottom: '1px solid',
+                      borderColor: 'divider',
+                      '&:hover': {
+                        bgcolor: 'action.hover',
                       }
                     }
                   }}>

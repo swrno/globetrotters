@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
 import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
+import PageHeader from '@/components/PageHeader';
 import {
   Typography,
   Button,
@@ -189,6 +190,16 @@ export default function AdminDashboard() {
     <Box sx={{ flexGrow: 1, bgcolor: 'background.default', minHeight: '100vh' }}>
       {/* Main Content */}
       <Container maxWidth="xl" sx={{ mt: 4, mb: 4 }}>
+        {/* Page Header */}
+        <PageHeader
+          breadcrumbs={[
+            { label: 'Admin', href: '/admin' },
+            { label: 'Dashboard' }
+          ]}
+          title="Dashboard"
+          description="Welcome to your admin dashboard. Manage packages, view registrations, and monitor your travel business."
+        />
+
         {/* Stats Cards */}
         <Grid container spacing={3} sx={{ mb: 4 }}>
           <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
@@ -481,12 +492,21 @@ export default function AdminDashboard() {
                     borderColor: 'divider',
                     py: 2
                   },
-                  '& .MuiTableHead-root .MuiTableCell-root': {
-                    bgcolor: 'rgba(255, 255, 255, 0.02)',
-                    fontWeight: 600,
-                    fontSize: '0.75rem',
-                    textTransform: 'uppercase',
-                    letterSpacing: 0.5
+                  '& .MuiTableHead-root': {
+                    bgcolor: darkMode ? 'rgba(96, 165, 250, 0.08)' : 'rgba(96, 165, 250, 0.05)',
+                  },
+                  '& .MuiTableCell-head': {
+                    fontWeight: 'bold',
+                    fontSize: '0.875rem',
+                    borderBottom: '2px solid',
+                    borderColor: 'divider',
+                  },
+                  '& .MuiTableRow-root': {
+                    borderBottom: '1px solid',
+                    borderColor: 'divider',
+                    '&:hover': {
+                      bgcolor: 'action.hover',
+                    }
                   }
                 }}>
                   <TableHead>
@@ -620,41 +640,30 @@ export default function AdminDashboard() {
                       borderColor: 'divider',
                       py: 2
                     },
-                    '& .MuiTableHead-root .MuiTableCell-root': {
-                      bgcolor: 'rgba(255, 255, 255, 0.02)',
-                      fontWeight: 600,
-                      fontSize: '0.75rem',
-                      textTransform: 'uppercase',
-                      letterSpacing: 0.5
+                    '& .MuiTableHead-root': {
+                      bgcolor: darkMode ? 'rgba(96, 165, 250, 0.08)' : 'rgba(96, 165, 250, 0.05)',
+                    },
+                    '& .MuiTableCell-head': {
+                      fontWeight: 'bold',
+                      fontSize: '0.875rem',
+                      borderBottom: '2px solid',
+                      borderColor: 'divider',
+                    },
+                    '& .MuiTableRow-root': {
+                      borderBottom: '1px solid',
+                      borderColor: 'divider',
+                      '&:hover': {
+                        bgcolor: 'action.hover',
+                      }
                     }
                   }}>
                     <TableHead>
                       <TableRow>
-                        <TableCell>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <User size={14} />
-                            <Typography variant="subtitle2">Name</Typography>
-                          </Box>
-                        </TableCell>
-                        <TableCell>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Mail size={14} />
-                            <Typography variant="subtitle2">Email</Typography>
-                          </Box>
-                        </TableCell>
-                        <TableCell>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Phone size={14} />
-                            <Typography variant="subtitle2">Phone</Typography>
-                          </Box>
-                        </TableCell>
+                        <TableCell>Name</TableCell>
+                        <TableCell>Email</TableCell>
+                        <TableCell>Phone</TableCell>
                         <TableCell>Package Details</TableCell>
-                        <TableCell sx={{ borderRight: 'none !important' }}>
-                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Calendar size={14} />
-                            <Typography variant="subtitle2">Registration Date</Typography>
-                          </Box>
-                        </TableCell>
+                        <TableCell sx={{ borderRight: 'none !important' }}>Registration Date</TableCell>
                       </TableRow>
                     </TableHead>
                     <TableBody>
