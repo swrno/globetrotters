@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
 import {
   Container,
   Paper,
@@ -56,6 +57,9 @@ export default function NewsletterAdmin() {
     total: 0,
     pages: 0
   });
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [emailToUnsubscribe, setEmailToUnsubscribe] = useState<string | null>(null);
+  const [unsubscribing, setUnsubscribing] = useState(false);
   
   const { user, logout } = useAuth();
   const { darkMode, toggleDarkMode } = useTheme();
@@ -86,10 +90,7 @@ export default function NewsletterAdmin() {
   };
 
   const unsubscribeUser = async (email: string) => {
-    if (!confirm(`Are you sure you want to unsubscribe ${email}?`)) {
-      return;
-    }
-
+    setUnsubscribing(true);
     try {
       const response = await fetch(`/api/newsletter?email=${encodeURIComponent(email)}`, {
         method: 'DELETE',
@@ -101,6 +102,21 @@ export default function NewsletterAdmin() {
       }
     } catch (error) {
       console.error('Error unsubscribing user:', error);
+    } finally {
+      setUnsubscribing(false);
+    }
+  };
+
+  const handleUnsubscribeClick = (email: string) => {
+    setEmailToUnsubscribe(email);
+    setDeleteModalOpen(true);
+  };
+
+  const handleUnsubscribeConfirm = async () => {
+    if (emailToUnsubscribe) {
+      await unsubscribeUser(emailToUnsubscribe);
+      setDeleteModalOpen(false);
+      setEmailToUnsubscribe(null);
     }
   };
 
@@ -329,7 +345,7 @@ export default function NewsletterAdmin() {
                               color="error"
                               variant="outlined"
                               startIcon={<UserX size={16} />}
-                              onClick={() => unsubscribeUser(subscriber.email)}
+                              onClick={() => handleUnsubscribeClick(subscriber.email)}
                             >
                               Unsubscribe
                             </Button>
@@ -358,6 +374,20 @@ export default function NewsletterAdmin() {
           </CardContent>
         </Card>
       </Container>
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        open={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setEmailToUnsubscribe(null);
+        }}
+        onConfirm={handleUnsubscribeConfirm}
+        title="Unsubscribe User"
+        message="This will permanently remove this subscriber from your newsletter list. They will no longer receive emails."
+        itemName={emailToUnsubscribe || ''}
+        loading={unsubscribing}
+      />
     </Box>
   );
 }
