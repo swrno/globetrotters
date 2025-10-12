@@ -22,7 +22,6 @@ import {
   TableCell,
   TableContainer,
   Paper,
-  Avatar,
   Chip,
   CircularProgress,
   Switch,
@@ -31,23 +30,22 @@ import {
   Tooltip,
 } from '@mui/material';
 import {
-  Logout,
-  Inventory,
-  People,
-  Email,
+  LogOut,
+  Package as PackageIcon,
+  Users,
+  Mail,
   Star,
-  Visibility,
+  Eye,
   Edit,
-  Delete,
-  Add,
-  DarkMode,
-  LightMode,
+  Trash2,
+  Plus,
+  Moon,
+  Sun,
   Download,
   Phone,
-  PersonOutline,
-  EmailOutlined,
-  CalendarToday,
-} from '@mui/icons-material';
+  User,
+  Calendar,
+} from 'lucide-react';
 
 interface Package {
   _id: string;
@@ -183,7 +181,7 @@ export default function AdminDashboard() {
       {/* AppBar */}
       <AppBar position="static" elevation={1}>
         <Toolbar>
-          <Avatar src="/logo.svg" sx={{ mr: 2 }} />
+          <Box component="img" src="/logo.svg" sx={{ width: 40, height: 40, mr: 2 }} />
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Admin Dashboard
           </Typography>
@@ -193,8 +191,8 @@ export default function AdminDashboard() {
               <Switch
                 checked={darkMode}
                 onChange={toggleDarkMode}
-                icon={<LightMode />}
-                checkedIcon={<DarkMode />}
+                icon={<Sun size={18} />}
+                checkedIcon={<Moon size={18} />}
               />
             }
             label=""
@@ -208,7 +206,7 @@ export default function AdminDashboard() {
           <Button
             color="inherit"
             onClick={logout}
-            startIcon={<Logout />}
+            startIcon={<LogOut size={18} />}
             variant="outlined"
           >
             Logout
@@ -224,9 +222,9 @@ export default function AdminDashboard() {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar sx={{ bgcolor: 'primary.main', mr: 2 }}>
-                    <Inventory />
-                  </Avatar>
+                  <Box sx={{ mr: 2, color: 'primary.main' }}>
+                    <PackageIcon size={32} />
+                  </Box>
                   <Box>
                     <Typography color="textSecondary" gutterBottom variant="overline">
                       Total Packages
@@ -244,9 +242,9 @@ export default function AdminDashboard() {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar sx={{ bgcolor: 'success.main', mr: 2 }}>
-                    <People />
-                  </Avatar>
+                  <Box sx={{ mr: 2, color: 'success.main' }}>
+                    <Users size={32} />
+                  </Box>
                   <Box>
                     <Typography color="textSecondary" gutterBottom variant="overline">
                       Total Registrations
@@ -264,9 +262,9 @@ export default function AdminDashboard() {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar sx={{ bgcolor: 'info.main', mr: 2 }}>
-                    <Email />
-                  </Avatar>
+                  <Box sx={{ mr: 2, color: 'info.main' }}>
+                    <Mail size={32} />
+                  </Box>
                   <Box>
                     <Typography color="textSecondary" gutterBottom variant="overline">
                       Newsletter
@@ -288,9 +286,9 @@ export default function AdminDashboard() {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar sx={{ bgcolor: 'secondary.main', mr: 2 }}>
-                    <Download />
-                  </Avatar>
+                  <Box sx={{ mr: 2, color: 'secondary.main' }}>
+                    <Download size={32} />
+                  </Box>
                   <Box>
                     <Typography color="textSecondary" gutterBottom variant="overline">
                       Export Data
@@ -312,9 +310,9 @@ export default function AdminDashboard() {
             <Card>
               <CardContent>
                 <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                  <Avatar sx={{ bgcolor: 'warning.main', mr: 2 }}>
-                    <Star />
-                  </Avatar>
+                  <Box sx={{ mr: 2, color: 'warning.main' }}>
+                    <Star size={32} />
+                  </Box>
                   <Box>
                     <Typography color="textSecondary" gutterBottom variant="overline">
                       Most Popular
@@ -339,14 +337,14 @@ export default function AdminDashboard() {
               <Box sx={{ display: 'flex', gap: 2 }}>
                 <Button 
                   variant="outlined"
-                  startIcon={<Download />}
+                  startIcon={<Download size={18} />}
                   onClick={() => router.push('/admin/registrations')}
                 >
                   Download Registrations
                 </Button>
                 <Button 
                   variant="contained"
-                  startIcon={<Add />}
+                  startIcon={<Plus size={18} />}
                   onClick={() => router.push('/admin/packages/new')}
                 >
                   Add New Package
@@ -429,21 +427,21 @@ export default function AdminDashboard() {
                               color="primary"
                               onClick={() => router.push(`/admin/packages/${pkg.id}`)}
                             >
-                              <Visibility />
+                              <Eye size={18} />
                             </IconButton>
                             <IconButton 
                               size="small"
                               color="secondary"
                               onClick={() => router.push(`/admin/packages/${pkg.id}/edit`)}
                             >
-                              <Edit />
+                              <Edit size={18} />
                             </IconButton>
                             <IconButton 
                               size="small"
                               color="error"
                               onClick={() => deletePackage(pkg.id)}
                             >
-                              <Delete />
+                              <Trash2 size={18} />
                             </IconButton>
                           </Box>
                         </TableCell>
@@ -470,7 +468,7 @@ export default function AdminDashboard() {
               </Box>
               <Button 
                 variant="outlined"
-                startIcon={<Download />}
+                startIcon={<Download size={18} />}
                 onClick={() => router.push('/admin/registrations')}
               >
                 Export All Data
@@ -483,7 +481,7 @@ export default function AdminDashboard() {
               </Box>
             ) : registrations.length === 0 ? (
               <Box sx={{ textAlign: 'center', py: 4 }}>
-                <People sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
+                <Users size={48} style={{ color: 'text.secondary', marginBottom: 16 }} />
                 <Typography color="textSecondary">
                   No registrations yet. Share your packages to get started!
                 </Typography>
@@ -496,26 +494,26 @@ export default function AdminDashboard() {
                       <TableRow>
                         <TableCell>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <PersonOutline fontSize="small" />
+                            <User size={16} />
                             <Typography variant="subtitle2">Name</Typography>
                           </Box>
                         </TableCell>
                         <TableCell>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <EmailOutlined fontSize="small" />
+                            <Mail size={16} />
                             <Typography variant="subtitle2">Email</Typography>
                           </Box>
                         </TableCell>
                         <TableCell>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <Phone fontSize="small" />
+                            <Phone size={16} />
                             <Typography variant="subtitle2">Phone</Typography>
                           </Box>
                         </TableCell>
                         <TableCell>Package Details</TableCell>
                         <TableCell sx={{ borderRight: 'none !important' }}>
                           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                            <CalendarToday fontSize="small" />
+                            <Calendar size={16} />
                             <Typography variant="subtitle2">Registration Date</Typography>
                           </Box>
                         </TableCell>
@@ -526,17 +524,23 @@ export default function AdminDashboard() {
                         <TableRow key={registration._id} hover>
                           <TableCell>
                             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                              <Avatar 
+                              <Box 
                                 sx={{ 
                                   width: 32, 
                                   height: 32, 
                                   mr: 1.5,
                                   bgcolor: 'primary.main',
-                                  fontSize: '0.875rem'
+                                  borderRadius: '50%',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  justifyContent: 'center',
+                                  color: 'white',
+                                  fontSize: '0.875rem',
+                                  fontWeight: 'bold'
                                 }}
                               >
                                 {registration.name.charAt(0).toUpperCase()}
-                              </Avatar>
+                              </Box>
                               <Typography variant="body2" fontWeight="medium">
                                 {registration.name}
                               </Typography>

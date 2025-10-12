@@ -11,10 +11,9 @@ import {
   Typography,
   Box,
   Alert,
-  Avatar,
   CircularProgress,
 } from '@mui/material';
-import { LockOutlined } from '@mui/icons-material';
+import { Lock } from 'lucide-react';
 
 export default function AdminLogin() {
   const [email, setEmail] = useState('');
@@ -71,9 +70,19 @@ export default function AdminLogin() {
             maxWidth: 400,
           }}
         >
-          <Avatar sx={{ m: 1, bgcolor: 'primary.main' }}>
-            <LockOutlined />
-          </Avatar>
+          <Box sx={{ 
+            m: 1, 
+            bgcolor: 'primary.main', 
+            width: 56, 
+            height: 56, 
+            borderRadius: '50%',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: 'white'
+          }}>
+            <Lock size={28} />
+          </Box>
           
           <Typography component="h1" variant="h4" gutterBottom>
             Admin Login

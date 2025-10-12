@@ -31,14 +31,15 @@ import {
   TableHead,
   TableRow,
   TablePagination,
+  Table as MuiTable,
 } from '@mui/material';
 import {
   Download,
-  FileDownload,
-  TableChart,
-  DataObject,
-  Assignment,
-} from '@mui/icons-material';
+  FileSpreadsheet,
+  Table as TableIcon,
+  FileJson,
+  FileText,
+} from 'lucide-react';
 
 interface Registration {
   _id: string;
@@ -336,7 +337,7 @@ export default function RegistrationsDownload() {
             <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
               <Button
                 variant="contained"
-                startIcon={<TableChart />}
+                startIcon={<FileSpreadsheet size={18} />}
                 onClick={downloadExcel}
                 disabled={filteredRegistrations.length === 0}
                 sx={{ bgcolor: '#1976d2' }}
@@ -346,7 +347,7 @@ export default function RegistrationsDownload() {
               
               <Button
                 variant="contained"
-                startIcon={<Assignment />}
+                startIcon={<FileText size={18} />}
                 onClick={downloadCSV}
                 disabled={filteredRegistrations.length === 0}
                 sx={{ bgcolor: '#2e7d32' }}
@@ -356,7 +357,7 @@ export default function RegistrationsDownload() {
               
               <Button
                 variant="contained"
-                startIcon={<DataObject />}
+                startIcon={<FileJson size={18} />}
                 onClick={downloadJSON}
                 disabled={filteredRegistrations.length === 0}
                 sx={{ bgcolor: '#ed6c02' }}
@@ -417,7 +418,7 @@ export default function RegistrationsDownload() {
         </Typography>
         
         <TableContainer>
-          <Table sx={{ '& .MuiTableCell-root': { borderRight: '1px solid', borderColor: 'divider' } }}>
+          <MuiTable sx={{ '& .MuiTableCell-root': { borderRight: '1px solid', borderColor: 'divider' } }}>
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
@@ -442,7 +443,7 @@ export default function RegistrationsDownload() {
                 </TableRow>
               ))}
             </TableBody>
-          </Table>
+          </MuiTable>
         </TableContainer>
         
         <TablePagination
