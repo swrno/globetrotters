@@ -417,7 +417,7 @@ export default function RegistrationsDownload() {
         </Typography>
         
         <TableContainer>
-          <Table>
+          <Table sx={{ '& .MuiTableCell-root': { borderRight: '1px solid', borderColor: 'divider' } }}>
             <TableHead>
               <TableRow>
                 <TableCell>Name</TableCell>
@@ -425,7 +425,7 @@ export default function RegistrationsDownload() {
                 <TableCell>Phone</TableCell>
                 <TableCell>Package</TableCell>
                 <TableCell>Location</TableCell>
-                <TableCell>Date</TableCell>
+                <TableCell sx={{ borderRight: 'none !important' }}>Date</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -436,7 +436,7 @@ export default function RegistrationsDownload() {
                   <TableCell>{registration.phone}</TableCell>
                   <TableCell>{registration.packageTitle}</TableCell>
                   <TableCell>{registration.packageLocation}</TableCell>
-                  <TableCell>
+                  <TableCell sx={{ borderRight: 'none !important' }}>
                     {new Date(registration.createdAt).toLocaleDateString()}
                   </TableCell>
                 </TableRow>

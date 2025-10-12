@@ -27,6 +27,8 @@ import {
   CircularProgress,
   Switch,
   FormControlLabel,
+  TablePagination,
+  Tooltip,
 } from '@mui/material';
 import {
   Logout,
@@ -41,6 +43,10 @@ import {
   DarkMode,
   LightMode,
   Download,
+  Phone,
+  PersonOutline,
+  EmailOutlined,
+  CalendarToday,
 } from '@mui/icons-material';
 
 interface Package {
@@ -58,9 +64,23 @@ interface Package {
   updatedAt: string;
 }
 
+interface Registration {
+  _id: string;
+  name: string;
+  email: string;
+  phone: string;
+  packageId: string;
+  packageTitle: string;
+  packageLocation: string;
+  createdAt: string;
+}
+
 export default function AdminDashboard() {
   const [packages, setPackages] = useState<Package[]>([]);
+  const [registrations, setRegistrations] = useState<Registration[]>([]);
   const [loading, setLoading] = useState(true);
+  const [regPage, setRegPage] = useState(0);
+  const [regRowsPerPage, setRegRowsPerPage] = useState(10);
   
   const { user, logout } = useAuth();
   const { darkMode, toggleDarkMode } = useTheme();
@@ -81,6 +101,32 @@ export default function AdminDashboard() {
       const data = await response.json();
       if (data.success) {
         setPackages(data.data);
+        
+        // Flatten registrations from all packages
+        const allRegistrations: Registration[] = [];
+        data.data.forEach((pkg: Package) => {
+          if (pkg.registrations && pkg.registrations.length > 0) {
+            pkg.registrations.forEach((reg: any) => {
+              allRegistrations.push({
+                _id: `${pkg._id}_${reg.email}`,
+                name: reg.name,
+                email: reg.email,
+                phone: reg.phone,
+                packageId: pkg.id,
+                packageTitle: pkg.title,
+                packageLocation: pkg.location,
+                createdAt: reg.createdAt || new Date().toISOString(),
+              });
+            });
+          }
+        });
+        
+        // Sort by most recent first
+        allRegistrations.sort((a, b) => 
+          new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        
+        setRegistrations(allRegistrations);
       }
     } catch (error) {
       console.error('Error fetching packages:', error);
@@ -101,10 +147,21 @@ export default function AdminDashboard() {
       
       if (response.ok) {
         setPackages(packages.filter(pkg => pkg.id !== packageId));
+        // Also remove related registrations
+        setRegistrations(registrations.filter(reg => reg.packageId !== packageId));
       }
     } catch (error) {
       console.error('Error deleting package:', error);
     }
+  };
+
+  const handleRegPageChange = (event: unknown, newPage: number) => {
+    setRegPage(newPage);
+  };
+
+  const handleRegRowsPerPageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRegRowsPerPage(parseInt(event.target.value, 10));
+    setRegPage(0);
   };
 
   if (!user) {
@@ -115,6 +172,11 @@ export default function AdminDashboard() {
   const mostPopular = packages.length > 0 
     ? packages.reduce((a, b) => a.registrations.length > b.registrations.length ? a : b).location
     : 'N/A';
+
+  const paginatedRegistrations = registrations.slice(
+    regPage * regRowsPerPage,
+    regPage * regRowsPerPage + regRowsPerPage
+  );
 
   return (
     <Box sx={{ flexGrow: 1 }}>
@@ -304,14 +366,14 @@ export default function AdminDashboard() {
               </Box>
             ) : (
               <TableContainer component={Paper} variant="outlined">
-                <Table>
+                <Table sx={{ '& .MuiTableCell-root': { borderRight: '1px solid', borderColor: 'divider' } }}>
                   <TableHead>
                     <TableRow>
                       <TableCell>Package</TableCell>
                       <TableCell>Duration</TableCell>
                       <TableCell>Tags</TableCell>
                       <TableCell align="center">Registrations</TableCell>
-                      <TableCell align="center">Actions</TableCell>
+                      <TableCell align="center" sx={{ borderRight: 'none !important' }}>Actions</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
@@ -360,7 +422,7 @@ export default function AdminDashboard() {
                             size="small"
                           />
                         </TableCell>
-                        <TableCell align="center">
+                        <TableCell align="center" sx={{ borderRight: 'none !important' }}>
                           <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
                             <IconButton 
                               size="small"
@@ -390,6 +452,152 @@ export default function AdminDashboard() {
                   </TableBody>
                 </Table>
               </TableContainer>
+            )}
+          </CardContent>
+        </Card>
+
+        {/* Registrations Section */}
+        <Card sx={{ mt: 4 }}>
+          <CardContent>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
+              <Box>
+                <Typography variant="h5" component="h2">
+                  Recent Registrations
+                </Typography>
+                <Typography variant="body2" color="textSecondary" sx={{ mt: 0.5 }}>
+                  All package registrations across your travel packages
+                </Typography>
+              </Box>
+              <Button 
+                variant="outlined"
+                startIcon={<Download />}
+                onClick={() => router.push('/admin/registrations')}
+              >
+                Export All Data
+              </Button>
+            </Box>
+
+            {loading ? (
+              <Box sx={{ display: 'flex', justifyContent: 'center', py: 4 }}>
+                <CircularProgress />
+              </Box>
+            ) : registrations.length === 0 ? (
+              <Box sx={{ textAlign: 'center', py: 4 }}>
+                <People sx={{ fontSize: 48, color: 'text.secondary', mb: 2 }} />
+                <Typography color="textSecondary">
+                  No registrations yet. Share your packages to get started!
+                </Typography>
+              </Box>
+            ) : (
+              <>
+                <TableContainer component={Paper} variant="outlined">
+                  <Table sx={{ '& .MuiTableCell-root': { borderRight: '1px solid', borderColor: 'divider' } }}>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <PersonOutline fontSize="small" />
+                            <Typography variant="subtitle2">Name</Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <EmailOutlined fontSize="small" />
+                            <Typography variant="subtitle2">Email</Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <Phone fontSize="small" />
+                            <Typography variant="subtitle2">Phone</Typography>
+                          </Box>
+                        </TableCell>
+                        <TableCell>Package Details</TableCell>
+                        <TableCell sx={{ borderRight: 'none !important' }}>
+                          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                            <CalendarToday fontSize="small" />
+                            <Typography variant="subtitle2">Registration Date</Typography>
+                          </Box>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {paginatedRegistrations.map((registration) => (
+                        <TableRow key={registration._id} hover>
+                          <TableCell>
+                            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                              <Avatar 
+                                sx={{ 
+                                  width: 32, 
+                                  height: 32, 
+                                  mr: 1.5,
+                                  bgcolor: 'primary.main',
+                                  fontSize: '0.875rem'
+                                }}
+                              >
+                                {registration.name.charAt(0).toUpperCase()}
+                              </Avatar>
+                              <Typography variant="body2" fontWeight="medium">
+                                {registration.name}
+                              </Typography>
+                            </Box>
+                          </TableCell>
+                          <TableCell>
+                            <Tooltip title={registration.email}>
+                              <Typography variant="body2" color="textSecondary">
+                                {registration.email}
+                              </Typography>
+                            </Tooltip>
+                          </TableCell>
+                          <TableCell>
+                            <Typography variant="body2" color="textSecondary">
+                              {registration.phone}
+                            </Typography>
+                          </TableCell>
+                          <TableCell>
+                            <Box>
+                              <Typography variant="body2" fontWeight="medium">
+                                {registration.packageTitle}
+                              </Typography>
+                              <Typography variant="caption" color="textSecondary">
+                                {registration.packageLocation}
+                              </Typography>
+                            </Box>
+                          </TableCell>
+                          <TableCell sx={{ borderRight: 'none !important' }}>
+                            <Box>
+                              <Typography variant="body2">
+                                {new Date(registration.createdAt).toLocaleDateString('en-US', {
+                                  year: 'numeric',
+                                  month: 'short',
+                                  day: 'numeric'
+                                })}
+                              </Typography>
+                              <Typography variant="caption" color="textSecondary">
+                                {new Date(registration.createdAt).toLocaleTimeString('en-US', {
+                                  hour: '2-digit',
+                                  minute: '2-digit'
+                                })}
+                              </Typography>
+                            </Box>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+                
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25, 50]}
+                  component="div"
+                  count={registrations.length}
+                  rowsPerPage={regRowsPerPage}
+                  page={regPage}
+                  onPageChange={handleRegPageChange}
+                  onRowsPerPageChange={handleRegRowsPerPageChange}
+                  sx={{ borderTop: 1, borderColor: 'divider' }}
+                />
+              </>
             )}
           </CardContent>
         </Card>
