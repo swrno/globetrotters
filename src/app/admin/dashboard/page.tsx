@@ -744,6 +744,20 @@ export default function AdminDashboard() {
           </CardContent>
         </Card>
       </Container>
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        open={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setPackageToDelete(null);
+        }}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Package"
+        message="This will permanently delete this package and all its registrations. This action cannot be undone."
+        itemName={packageToDelete?.title}
+        loading={deleting}
+      />
     </Box>
   );
 }

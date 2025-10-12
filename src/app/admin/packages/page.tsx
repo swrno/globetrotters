@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { useTheme } from '@/contexts/ThemeContext';
+import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
 import {
   Container,
   Typography,
@@ -54,6 +55,9 @@ export default function PackagesPage() {
   const [filteredPackages, setFilteredPackages] = useState<Package[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false);
+  const [packageToDelete, setPackageToDelete] = useState<{ id: string; title: string } | null>(null);
+  const [deleting, setDeleting] = useState(false);
   
   const { user } = useAuth();
   const { darkMode } = useTheme();
@@ -100,10 +104,7 @@ export default function PackagesPage() {
   };
 
   const deletePackage = async (id: string) => {
-    if (!confirm('Are you sure you want to delete this package?')) {
-      return;
-    }
-
+    setDeleting(true);
     try {
       const response = await fetch(`/api/packages/${id}`, {
         method: 'DELETE',
@@ -115,6 +116,21 @@ export default function PackagesPage() {
       }
     } catch (error) {
       console.error('Error deleting package:', error);
+    } finally {
+      setDeleting(false);
+    }
+  };
+
+  const handleDeleteClick = (packageId: string, packageTitle: string) => {
+    setPackageToDelete({ id: packageId, title: packageTitle });
+    setDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (packageToDelete) {
+      await deletePackage(packageToDelete.id);
+      setDeleteModalOpen(false);
+      setPackageToDelete(null);
     }
   };
 
@@ -310,7 +326,7 @@ export default function PackagesPage() {
                     <IconButton
                       size="small"
                       color="error"
-                      onClick={() => deletePackage(pkg._id)}
+                      onClick={() => handleDeleteClick(pkg._id, pkg.title)}
                     >
                       <Trash2 size={18} />
                     </IconButton>
@@ -321,6 +337,20 @@ export default function PackagesPage() {
           ))}
         </Grid>
       )}
+
+      {/* Delete Confirmation Modal */}
+      <DeleteConfirmationModal
+        open={deleteModalOpen}
+        onClose={() => {
+          setDeleteModalOpen(false);
+          setPackageToDelete(null);
+        }}
+        onConfirm={handleDeleteConfirm}
+        title="Delete Package"
+        message="This will permanently delete this package and all its registrations. This action cannot be undone."
+        itemName={packageToDelete?.title}
+        loading={deleting}
+      />
     </Container>
   );
 }
