@@ -29,6 +29,7 @@ import {
 import MDEditor from '@uiw/react-md-editor';
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
+import ImageUploader from '@/components/admin/ImageUploader';
 
 interface Package {
   _id: string;
@@ -71,7 +72,6 @@ export default function EditPackage() {
     cost_per_person: '',
     best_time_to_visit: '',
     video_url: '',
-    images: '',
     trip_highlight: '',
     itinerary_description: '',
     itinerary_details: `Day 1: Arrival in Shimla
@@ -88,6 +88,7 @@ Day 3: Departure
     inclusions: '',
     exclusions: '',
   });
+  const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
@@ -127,13 +128,15 @@ Day 3: Departure
           cost_per_person: pkg.cost_per_person?.toString() || '',
           best_time_to_visit: pkg.best_time_to_visit || '',
           video_url: pkg.video_url || '',
-          images: pkg.images.join(', '),
           trip_highlight: tripHighlightStr,
           itinerary_description: pkg.itinerary?.description || '',
           itinerary_details: itineraryDetailsStr,
           inclusions: pkg.inclusions_exclusions?.dos?.join('\n') || '',
           exclusions: pkg.inclusions_exclusions?.donts?.join('\n') || '',
         });
+        
+        // Set images separately
+        setImages(pkg.images || []);
       } else {
         setError('Package not found');
       }
@@ -206,7 +209,7 @@ Day 3: Departure
         best_time_to_visit: formData.best_time_to_visit || 'All Year Round',
         video_url: formData.video_url || undefined,
         tags: formData.tags.split(',').map(tag => tag.trim()).filter(tag => tag),
-        images: formData.images.split(',').map(img => img.trim()).filter(img => img),
+        images: images,
         trip_highlight: tripHighlight,
         itinerary: {
           description: formData.itinerary_description,
@@ -514,20 +517,11 @@ Day 3: Departure
               />
             </Grid>
 
-            <Grid size={{ xs: 12, md: 6 }}>
-              <TextField
-                fullWidth
-                label="Image URLs"
-                name="images"
-                value={formData.images}
-                onChange={handleChange}
-                placeholder="/manali1.jpg, /manali2.jpg, /manali3.jpg"
-                helperText="Comma-separated image URLs for the package"
-                sx={{
-                  '& .MuiInputBase-input': {
-                    padding: '12px 14px',
-                  },
-                }}
+            <Grid size={{ xs: 12 }}>
+              <ImageUploader
+                images={images}
+                onChange={setImages}
+                maxImages={10}
               />
             </Grid>
 
