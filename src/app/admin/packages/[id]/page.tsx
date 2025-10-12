@@ -150,6 +150,22 @@ export default function PackageView() {
     return DOMPurify.sanitize(htmlContent as string);
   };
 
+  const getEmbedUrl = (url: string) => {
+    if (!url) return url;
+    
+    // YouTube URL patterns
+    const youtubeRegex = /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/;
+    const match = url.match(youtubeRegex);
+    
+    if (match && match[1]) {
+      // Convert to embed URL
+      return `https://www.youtube.com/embed/${match[1]}`;
+    }
+    
+    // If already an embed URL or other video platform, return as is
+    return url;
+  };
+
   if (!user) {
     return null;
   }
@@ -306,7 +322,7 @@ export default function PackageView() {
                 </Typography>
                 <Box sx={{ position: 'relative', paddingBottom: '56.25%', height: 0, overflow: 'hidden' }}>
                   <iframe
-                    src={packageData.video_url}
+                    src={getEmbedUrl(packageData.video_url)}
                     style={{
                       position: 'absolute',
                       top: 0,
@@ -316,6 +332,7 @@ export default function PackageView() {
                       border: 'none',
                       borderRadius: '8px'
                     }}
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                     allowFullScreen
                   />
                 </Box>

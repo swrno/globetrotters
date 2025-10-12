@@ -22,6 +22,11 @@ import {
   IconButton,
   Tooltip,
   Paper,
+  MenuItem,
+  Select,
+  FormControl,
+  InputLabel,
+  Slider,
 } from '@mui/material';
 import {
   Plus,
@@ -32,6 +37,8 @@ import {
   Edit,
   Trash2,
   DollarSign,
+  Filter,
+  X,
 } from 'lucide-react';
 
 interface Package {
@@ -59,6 +66,13 @@ export default function PackagesPage() {
   const [packageToDelete, setPackageToDelete] = useState<{ id: string; title: string } | null>(null);
   const [deleting, setDeleting] = useState(false);
   
+  // Filter states
+  const [selectedLocation, setSelectedLocation] = useState<string>('all');
+  const [selectedTag, setSelectedTag] = useState<string>('all');
+  const [priceRange, setPriceRange] = useState<number[]>([0, 100000]);
+  const [durationFilter, setDurationFilter] = useState<string>('all');
+  const [showFilters, setShowFilters] = useState(false);
+  
   const { user } = useAuth();
   const { darkMode } = useTheme();
   const router = useRouter();
@@ -73,19 +87,49 @@ export default function PackagesPage() {
   }, [user, router]);
 
   useEffect(() => {
-    // Filter packages based on search query
-    if (searchQuery.trim() === '') {
-      setFilteredPackages(packages);
-    } else {
+    // Filter packages based on search query and all filters
+    let filtered = [...packages];
+    
+    // Search filter
+    if (searchQuery.trim() !== '') {
       const query = searchQuery.toLowerCase();
-      const filtered = packages.filter(pkg => 
+      filtered = filtered.filter(pkg => 
         pkg.title.toLowerCase().includes(query) ||
         pkg.location.toLowerCase().includes(query) ||
         pkg.tags.some(tag => tag.toLowerCase().includes(query))
       );
-      setFilteredPackages(filtered);
     }
-  }, [searchQuery, packages]);
+    
+    // Location filter
+    if (selectedLocation !== 'all') {
+      filtered = filtered.filter(pkg => pkg.location === selectedLocation);
+    }
+    
+    // Tag filter
+    if (selectedTag !== 'all') {
+      filtered = filtered.filter(pkg => pkg.tags.includes(selectedTag));
+    }
+    
+    // Price range filter
+    filtered = filtered.filter(pkg => 
+      pkg.cost_per_person >= priceRange[0] && pkg.cost_per_person <= priceRange[1]
+    );
+    
+    // Duration filter
+    if (durationFilter !== 'all') {
+      if (durationFilter === '1-3') {
+        filtered = filtered.filter(pkg => pkg.days >= 1 && pkg.days <= 3);
+      } else if (durationFilter === '4-7') {
+        filtered = filtered.filter(pkg => pkg.days >= 4 && pkg.days <= 7);
+      } else if (durationFilter === '8-14') {
+        filtered = filtered.filter(pkg => pkg.days >= 8 && pkg.days <= 14);
+      } else if (durationFilter === '15+') {
+        filtered = filtered.filter(pkg => pkg.days >= 15);
+      }
+    }
+    
+    setFilteredPackages(filtered);
+  }, [searchQuery, packages, selectedLocation, selectedTag, priceRange, durationFilter]);
 
   const fetchPackages = async () => {
     try {
@@ -95,6 +139,14 @@ export default function PackagesPage() {
       if (data.success) {
         setPackages(data.data);
         setFilteredPackages(data.data);
+        
+        // Set initial price range based on actual data
+        if (data.data.length > 0) {
+          const prices = data.data.map((pkg: Package) => pkg.cost_per_person);
+          const minPrice = Math.min(...prices);
+          const maxPrice = Math.max(...prices);
+          setPriceRange([minPrice, maxPrice]);
+        }
       }
     } catch (error) {
       console.error('Error fetching packages:', error);
@@ -141,6 +193,33 @@ export default function PackagesPage() {
       : stripped;
   };
 
+  // Get unique locations and tags
+  const uniqueLocations = Array.from(new Set(packages.map(pkg => pkg.location))).sort();
+  const uniqueTags = Array.from(new Set(packages.flatMap(pkg => pkg.tags))).sort();
+  
+  // Clear all filters
+  const clearFilters = () => {
+    setSelectedLocation('all');
+    setSelectedTag('all');
+    setDurationFilter('all');
+    const prices = packages.map(pkg => pkg.cost_per_person);
+    if (prices.length > 0) {
+      setPriceRange([Math.min(...prices), Math.max(...prices)]);
+    }
+    setSearchQuery('');
+  };
+  
+  // Check if any filters are active
+  const hasActiveFilters = 
+    selectedLocation !== 'all' || 
+    selectedTag !== 'all' || 
+    durationFilter !== 'all' || 
+    searchQuery !== '' ||
+    (packages.length > 0 && (
+      priceRange[0] !== Math.min(...packages.map(p => p.cost_per_person)) ||
+      priceRange[1] !== Math.max(...packages.map(p => p.cost_per_person))
+    ));
+
   if (loading) {
     return (
       <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '60vh' }}>
@@ -185,6 +264,154 @@ export default function PackagesPage() {
             ),
           }}
         />
+        
+        {/* Filter Toggle Button */}
+        <Box sx={{ mt: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Button
+            startIcon={<Filter size={18} />}
+            onClick={() => setShowFilters(!showFilters)}
+            variant="outlined"
+            size="small"
+          >
+            {showFilters ? 'Hide Filters' : 'Show Filters'}
+          </Button>
+          
+          {hasActiveFilters && (
+            <Button
+              startIcon={<X size={18} />}
+              onClick={clearFilters}
+              variant="text"
+              size="small"
+              color="error"
+            >
+              Clear All Filters
+            </Button>
+          )}
+        </Box>
+        
+        {/* Filters Section */}
+        {showFilters && (
+          <Box sx={{ mt: 3 }}>
+            <Grid container spacing={3}>
+              {/* Location Filter */}
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <FormControl fullWidth size="small">
+                  <InputLabel>Location</InputLabel>
+                  <Select
+                    value={selectedLocation}
+                    label="Location"
+                    onChange={(e) => setSelectedLocation(e.target.value)}
+                  >
+                    <MenuItem value="all">All Locations</MenuItem>
+                    {uniqueLocations.map((location) => (
+                      <MenuItem key={location} value={location}>
+                        {location}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              
+              {/* Tag Filter */}
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <FormControl fullWidth size="small">
+                  <InputLabel>Tag</InputLabel>
+                  <Select
+                    value={selectedTag}
+                    label="Tag"
+                    onChange={(e) => setSelectedTag(e.target.value)}
+                  >
+                    <MenuItem value="all">All Tags</MenuItem>
+                    {uniqueTags.map((tag) => (
+                      <MenuItem key={tag} value={tag}>
+                        {tag}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Grid>
+              
+              {/* Duration Filter */}
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <FormControl fullWidth size="small">
+                  <InputLabel>Duration</InputLabel>
+                  <Select
+                    value={durationFilter}
+                    label="Duration"
+                    onChange={(e) => setDurationFilter(e.target.value)}
+                  >
+                    <MenuItem value="all">All Durations</MenuItem>
+                    <MenuItem value="1-3">1-3 Days</MenuItem>
+                    <MenuItem value="4-7">4-7 Days</MenuItem>
+                    <MenuItem value="8-14">8-14 Days</MenuItem>
+                    <MenuItem value="15+">15+ Days</MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+              
+              {/* Price Range Filter */}
+              <Grid size={{ xs: 12, sm: 6, md: 3 }}>
+                <Typography variant="body2" color="text.secondary" gutterBottom>
+                  Price Range: ₹{priceRange[0].toLocaleString()} - ₹{priceRange[1].toLocaleString()}
+                </Typography>
+                <Slider
+                  value={priceRange}
+                  onChange={(_, newValue) => setPriceRange(newValue as number[])}
+                  valueLabelDisplay="auto"
+                  min={0}
+                  max={Math.max(...packages.map(p => p.cost_per_person), 100000)}
+                  step={1000}
+                  valueLabelFormat={(value) => `₹${value.toLocaleString()}`}
+                />
+              </Grid>
+            </Grid>
+            
+            {/* Active Filters Display */}
+            {hasActiveFilters && (
+              <Box sx={{ mt: 2, display: 'flex', gap: 1, flexWrap: 'wrap', alignItems: 'center' }}>
+                <Typography variant="body2" color="text.secondary">
+                  Active Filters:
+                </Typography>
+                {selectedLocation !== 'all' && (
+                  <Chip
+                    label={`Location: ${selectedLocation}`}
+                    onDelete={() => setSelectedLocation('all')}
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                  />
+                )}
+                {selectedTag !== 'all' && (
+                  <Chip
+                    label={`Tag: ${selectedTag}`}
+                    onDelete={() => setSelectedTag('all')}
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                  />
+                )}
+                {durationFilter !== 'all' && (
+                  <Chip
+                    label={`Duration: ${durationFilter} days`}
+                    onDelete={() => setDurationFilter('all')}
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                  />
+                )}
+                {searchQuery && (
+                  <Chip
+                    label={`Search: "${searchQuery}"`}
+                    onDelete={() => setSearchQuery('')}
+                    size="small"
+                    color="primary"
+                    variant="outlined"
+                  />
+                )}
+              </Box>
+            )}
+          </Box>
+        )}
       </Paper>
 
       {/* Stats */}
@@ -231,11 +458,28 @@ export default function PackagesPage() {
       {filteredPackages.length === 0 ? (
         <Paper sx={{ p: 4, textAlign: 'center' }}>
           <Typography color="text.secondary">
-            {searchQuery ? 'No packages found matching your search.' : 'No packages available. Create your first package!'}
+            {hasActiveFilters ? 'No packages found matching your filters.' : 'No packages available. Create your first package!'}
           </Typography>
+          {hasActiveFilters && (
+            <Button
+              variant="outlined"
+              onClick={clearFilters}
+              sx={{ mt: 2 }}
+            >
+              Clear Filters
+            </Button>
+          )}
         </Paper>
       ) : (
-        <Grid container spacing={3}>
+        <>
+          {hasActiveFilters && (
+            <Box sx={{ mb: 2 }}>
+              <Typography variant="body2" color="text.secondary">
+                Showing {filteredPackages.length} of {packages.length} packages
+              </Typography>
+            </Box>
+          )}
+          <Grid container spacing={3}>
           {filteredPackages.map((pkg) => (
             <Grid size={{ xs: 12, sm: 6, md: 4 }} key={pkg._id}>
               <Card sx={{ 
@@ -336,6 +580,7 @@ export default function PackagesPage() {
             </Grid>
           ))}
         </Grid>
+        </>
       )}
 
       {/* Delete Confirmation Modal */}
