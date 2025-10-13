@@ -83,7 +83,7 @@ export default function PackagesPage() {
   const [priceRange, setPriceRange] = useState<number[]>([0, 100000]);
   const [durationFilter, setDurationFilter] = useState<string>('all');
   const [showFilters, setShowFilters] = useState(false);
-  const [viewMode, setViewMode] = useState<'grid' | 'table' | 'list'>('grid');
+  const [viewMode, setViewMode] = useState<'grid' | 'table' | 'list'>('table');
   
   const { user } = useAuth();
   const { darkMode } = useTheme();
