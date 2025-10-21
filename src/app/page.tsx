@@ -21,6 +21,9 @@ export default function Home() {
             <div className="banFormSec">
               <div className="formFields">
                 <SearchBox />
+                <div className="formBtn">
+                  <input type="button" value="Search" />
+                </div>
               </div>
             </div>
           </div>
