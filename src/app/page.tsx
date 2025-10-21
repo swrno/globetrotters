@@ -3,6 +3,7 @@ import NewsletterSignup from '@/components/NewsletterSignup';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TourCategories from '@/components/TourCategories';
+import SearchBox from '@/components/SearchBox';
 
 export default function Home() {
   return (
@@ -19,59 +20,7 @@ export default function Home() {
             </div>
             <div className="banFormSec">
               <div className="formFields">
-                <div className="row">
-                  <div className="col-md-3">
-                    <div className="form-group">
-                      <input type="text" placeholder="Destination" />
-                    </div>
-                  </div>
-                  <div className="col-md-3">
-                    <div className="form-group">
-                      <select>
-                        <option value="">Select Month of Travel</option>
-                        <option value="">Jan</option>
-                        <option value="">Feb</option>
-                        <option value="">Mar</option>
-                        <option value="">Apr</option>
-                        <option value="">May</option>
-                        <option value="">Jun</option>
-                        <option value="">Jul</option>
-                        <option value="">Aug</option>
-                        <option value="">Sep</option>
-                        <option value="">Oct</option>
-                        <option value="">Nov</option>
-                        <option value="">Dec</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-3">
-                    <div className="form-group">
-                      <select>
-                        <option value="">Select Duration of Travel</option>
-                        <option value="">2D/1N</option>
-                        <option value="">3D/2N</option>
-                        <option value="">4D/3N</option>
-                        <option value="">5D/4N</option>
-                        <option value="">6D/5N</option>
-                        <option value="">7D/6N</option>
-                        <option value="">8D+</option>
-                      </select>
-                    </div>
-                  </div>
-                  <div className="col-md-3">
-                    <div className="form-group">
-                      <select>
-                        <option value="">Select Budget per Person</option>
-                        <option value="">Less than ₹20000</option>
-                        <option value="">₹20001 to ₹40000</option>
-                        <option value="">₹40001 to ₹60000</option>
-                        <option value="">₹60001 to ₹80000</option>
-                        <option value="">₹80001 to ₹100000</option>
-                        <option value="">More than ₹100000</option>
-                      </select>
-                    </div>
-                  </div>
-                </div>
+                <SearchBox />
                 <div className="formBtn">
                   <input type="button" value="Search" />
                 </div>
