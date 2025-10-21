@@ -452,6 +452,7 @@ textarea {
     padding-top: 60px;
     background: #fff;
     min-height: 100vh;
+    height: 100%;
   }
 }
 .header.headerMoveDown {
