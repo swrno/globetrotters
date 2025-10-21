@@ -441,7 +441,7 @@ textarea {
     top: 0;
     transform: inherit;
     overflow-y: auto;
-    max-height: 100vh;
+    height: 100vh;
   }
   .header .navbar .navbar-collapse.show {
     left: 0;
@@ -451,6 +451,7 @@ textarea {
     padding: 15px;
     padding-top: 60px;
     background: #fff;
+    min-height: 100vh;
   }
 }
 .header.headerMoveDown {
