@@ -3,6 +3,7 @@ import NewsletterSignup from '@/components/NewsletterSignup';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import TourCategories from '@/components/TourCategories';
+import SearchBox from '@/components/SearchBox';
 
 export default function Home() {
   return (
@@ -20,11 +21,7 @@ export default function Home() {
             <div className="banFormSec">
               <div className="formFields">
                 <div className="row">
-                  <div className="col-md-3">
-                    <div className="form-group">
-                      <input type="text" placeholder="Destination" />
-                    </div>
-                  </div>
+                  <SearchBox />
                   <div className="col-md-3">
                     <div className="form-group">
                       <select>
