@@ -19,12 +19,7 @@ export default function Home() {
               <h1>Strategic Itineraries. Adventurous Memories</h1>
             </div>
             <div className="banFormSec">
-              <div className="formFields">
-                <SearchBox />
-                <div className="formBtn">
-                  <input type="button" value="Search" />
-                </div>
-              </div>
+              <SearchBox />
             </div>
           </div>
         </div>
