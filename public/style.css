@@ -434,18 +434,17 @@ textarea {
   }
   .header .navbar .navbar-collapse {
     position: fixed;
-    left: -100%;
+    right: -100%;
     z-index: 9;
     transition: 0.3s all ease-in-out 0s;
     width: 100vw;
     top: 0;
-    right: 0;
     transform: inherit;
     overflow-y: auto;
     height: 100vh;
   }
   .header .navbar .navbar-collapse.show {
-    left: 0;
+    right: 0;
   }
   .header .navbar .navbar-collapse .navbar-nav {
     margin: 0;
