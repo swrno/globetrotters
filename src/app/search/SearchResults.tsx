@@ -30,6 +30,7 @@ export default function SearchResults() {
 
   useEffect(() => {
     fetchPackages();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
   const fetchPackages = async () => {
