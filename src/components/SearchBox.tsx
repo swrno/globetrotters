@@ -1,154 +1,88 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-interface SearchResult {
-  id: string;
-  location: string;
-  title: string;
-  images: string[];
-  days: number;
-  nights: number;
-}
-
 export default function SearchBox() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [results, setResults] = useState<SearchResult[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [showDropdown, setShowDropdown] = useState(false);
+  const [destination, setDestination] = useState('');
+  const [month, setMonth] = useState('');
+  const [duration, setDuration] = useState('');
+  const [budget, setBudget] = useState('');
   const router = useRouter();
-  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  // Debounce search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      if (searchQuery.trim().length > 0) {
-        performSearch(searchQuery);
-      } else {
-        setResults([]);
-        setShowDropdown(false);
-      }
-    }, 300);
-
-    return () => clearTimeout(timer);
-  }, [searchQuery]);
-
-  // Close dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setShowDropdown(false);
-      }
-    }
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  const performSearch = async (query: string) => {
-    setIsLoading(true);
-    try {
-      const response = await fetch(`/api/packages/search?q=${encodeURIComponent(query)}`);
-      const data = await response.json();
-      
-      if (data.success) {
-        setResults(data.data);
-        setShowDropdown(data.data.length > 0);
-      }
-    } catch (error) {
-      console.error('Search error:', error);
-      setResults([]);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleResultClick = (packageId: string) => {
-    router.push(`/package/${packageId}`);
-    setShowDropdown(false);
-    setSearchQuery('');
+  const handleSearch = () => {
+    const params = new URLSearchParams();
+    if (destination) params.append('destination', destination);
+    if (month) params.append('month', month);
+    if (duration) params.append('duration', duration);
+    if (budget) params.append('budget', budget);
+    
+    router.push(`/search?${params.toString()}`);
   };
 
   return (
-    <div className="form-group" style={{ position: 'relative' }} ref={dropdownRef}>
-      <input
-        type="text"
-        placeholder="Destination"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
-        onFocus={() => {
-          if (results.length > 0) {
-            setShowDropdown(true);
-          }
-        }}
-      />
-      
-      {showDropdown && results.length > 0 && (
-        <div
-          style={{
-            position: 'absolute',
-            top: '100%',
-            left: 0,
-            right: 0,
-            backgroundColor: 'white',
-            borderRadius: '10px',
-            marginTop: '5px',
-            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-            zIndex: 1000,
-            maxHeight: '400px',
-            overflowY: 'auto',
-          }}
-        >
-          {isLoading ? (
-            <div style={{ padding: '15px', textAlign: 'center', color: '#666' }}>
-              Searching...
-            </div>
-          ) : (
-            results.map((result) => (
-              <div
-                key={result.id}
-                onClick={() => handleResultClick(result.id)}
-                style={{
-                  padding: '12px 15px',
-                  cursor: 'pointer',
-                  borderBottom: '1px solid #f0f0f0',
-                  transition: 'background-color 0.2s',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#f8f9fa';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'white';
-                }}
-              >
-                <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
-                  {result.images && result.images[0] && (
-                    <img
-                      src={result.images[0]}
-                      alt={result.title}
-                      style={{
-                        width: '60px',
-                        height: '60px',
-                        objectFit: 'cover',
-                        borderRadius: '8px',
-                      }}
-                    />
-                  )}
-                  <div style={{ flex: 1 }}>
-                    <div style={{ fontWeight: '600', color: '#000735', marginBottom: '4px' }}>
-                      {result.title}
-                    </div>
-                    <div style={{ fontSize: '14px', color: '#666' }}>
-                      {result.location} • {result.days}D/{result.nights}N
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))
-          )}
+    <div className="formFields">
+      <div className="row">
+        <div className="col-md-3">
+          <div className="form-group">
+            <input
+              type="text"
+              placeholder="Destination"
+              value={destination}
+              onChange={(e) => setDestination(e.target.value)}
+            />
+          </div>
         </div>
-      )}
+        <div className="col-md-3">
+          <div className="form-group">
+            <select value={month} onChange={(e) => setMonth(e.target.value)}>
+              <option value="">Select Month of Travel</option>
+              <option value="Jan">Jan</option>
+              <option value="Feb">Feb</option>
+              <option value="Mar">Mar</option>
+              <option value="Apr">Apr</option>
+              <option value="May">May</option>
+              <option value="Jun">Jun</option>
+              <option value="Jul">Jul</option>
+              <option value="Aug">Aug</option>
+              <option value="Sep">Sep</option>
+              <option value="Oct">Oct</option>
+              <option value="Nov">Nov</option>
+              <option value="Dec">Dec</option>
+            </select>
+          </div>
+        </div>
+        <div className="col-md-3">
+          <div className="form-group">
+            <select value={duration} onChange={(e) => setDuration(e.target.value)}>
+              <option value="">Select Duration of Travel</option>
+              <option value="2D/1N">2D/1N</option>
+              <option value="3D/2N">3D/2N</option>
+              <option value="4D/3N">4D/3N</option>
+              <option value="5D/4N">5D/4N</option>
+              <option value="6D/5N">6D/5N</option>
+              <option value="7D/6N">7D/6N</option>
+              <option value="8D+">8D+</option>
+            </select>
+          </div>
+        </div>
+        <div className="col-md-3">
+          <div className="form-group">
+            <select value={budget} onChange={(e) => setBudget(e.target.value)}>
+              <option value="">Select Budget per Person</option>
+              <option value="<20000">Less than ₹20000</option>
+              <option value="20001-40000">₹20001 to ₹40000</option>
+              <option value="40001-60000">₹40001 to ₹60000</option>
+              <option value="60001-80000">₹60001 to ₹80000</option>
+              <option value="80001-100000">₹80001 to ₹100000</option>
+              <option value=">100000">More than ₹100000</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div className="formBtn">
+        <input type="button" value="Search" onClick={handleSearch} />
+      </div>
     </div>
   );
 }
