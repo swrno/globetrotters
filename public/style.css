@@ -437,7 +437,7 @@ textarea {
     left: -100%;
     z-index: 9;
     transition: 0.3s all ease-in-out 0s;
-    width: 300px;
+    width: 100%;
     top: 0;
     transform: inherit;
     overflow-y: auto;
