@@ -206,9 +206,6 @@ textarea {
   font-family: "Poppins", sans-serif;
   border-radius: 30px;
 }
-input[type=text]::-moz-placeholder, input[type=tel]::-moz-placeholder, input[type=number]::-moz-placeholder, input[type=email]::-moz-placeholder, textarea::-moz-placeholder {
-  color: #6A6A6A;
-}
 input[type=text]::placeholder,
 input[type=tel]::placeholder,
 input[type=number]::placeholder,
@@ -340,21 +337,18 @@ textarea {
     width: 50px;
   }
 }
-@media (max-width: 991px) {
-  .header .navbar .navbar-nav {
-    min-height: 100vh;
-  }
-}
 .header .navbar .navbar-nav > li {
   margin-left: 30px;
+}
+.header .navbar .navbar-nav > li:first-child {
+  margin-left: 0;
+}
+.header .navbar .navbar-nav > li {
   font-size: 15px;
   font-style: normal;
   font-weight: 600;
   line-height: 1;
   text-transform: capitalize;
-}
-.header .navbar .navbar-nav > li:first-child {
-  margin-left: 0;
 }
 @media (max-width: 1300px) {
   .header .navbar .navbar-nav > li {
@@ -445,9 +439,8 @@ textarea {
     width: 300px;
     top: 0;
     transform: inherit;
-    min-height: 100vh !important;
     overflow-y: auto;
-    height: 100%;
+    max-height: 100vh;
   }
   .header .navbar .navbar-collapse.show {
     left: 0;
@@ -457,7 +450,6 @@ textarea {
     padding: 15px;
     padding-top: 60px;
     background: #fff;
-    min-height: 100vh;
   }
 }
 .header.headerMoveDown {
@@ -506,8 +498,7 @@ body.menuOpen .navbar-collapse {
 .banner video,
 .banner img {
   height: 100dvh;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   width: 100%;
 }
 @media (max-width: 767px) {
@@ -681,9 +672,7 @@ body.menuOpen .navbar-collapse {
 .banner .bannerCont .banFormSec .formFields select {
   background: url(./images/down-arrow.svg) no-repeat right 15px center #fff;
   background-size: 12px;
-  -webkit-appearance: none;
-     -moz-appearance: none;
-          appearance: none;
+  appearance: none;
 }
 
 .whyGlobetrotters {
@@ -694,8 +683,7 @@ body.menuOpen .navbar-collapse {
   top: 15%;
   right: 0;
   width: 250px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .whyGlobetrotters .whyGlobetrottersTop .row {
   align-items: center;
@@ -727,8 +715,7 @@ body.menuOpen .navbar-collapse {
   grid-column: 1/2;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-top-right-radius: 50px;
   border-bottom-left-radius: 50px;
 }
@@ -752,8 +739,7 @@ body.menuOpen .navbar-collapse {
   grid-column: 2/3;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 50px;
   border-bottom-left-radius: 0;
 }
@@ -777,8 +763,7 @@ body.menuOpen .navbar-collapse {
   grid-column: 2/3;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 50px;
   border-top-left-radius: 0;
 }
@@ -859,8 +844,7 @@ body.menuOpen .navbar-collapse {
 }
 .whyGlobetrotters .whyGlobetrottersBot .whyGlobetrottersBotCont ul li figure img {
   width: 45px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .whyGlobetrotters .whyGlobetrottersBot .whyGlobetrottersBotCont ul li .whyInfoCont {
   flex-basis: calc(100% - 70px);
@@ -900,8 +884,7 @@ body.menuOpen .navbar-collapse {
   width: 100%;
   border-radius: 50px;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 @media (max-width: 991px) {
   .whyGlobetrotters .whyGlobetrottersBot .whyInfoVideo figure .thumbnailImg img,
@@ -980,8 +963,7 @@ body.menuOpen .navbar-collapse {
 .feaHolidayPack .destinationSlider .item figure img {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 40px;
 }
 .feaHolidayPack .destinationSlider .item h3 {
@@ -1027,8 +1009,7 @@ body.menuOpen .navbar-collapse {
 }
 .homeAbout .aboutLftImg img.aboutimgbig {
   width: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .homeAbout .aboutLftImg img.aboutimgsmall {
   position: absolute;
@@ -1038,8 +1019,7 @@ body.menuOpen .navbar-collapse {
   border: 10px solid #fff;
   width: 300px;
   height: 350px;
-  -o-object-fit: none;
-     object-fit: none;
+  object-fit: none;
 }
 @media (max-width: 767px) {
   .homeAbout .aboutLftImg img.aboutimgsmall {
@@ -1093,8 +1073,7 @@ body.menuOpen .navbar-collapse {
 }
 .tourCate .innerTourCate .tourCateSlider .item figure img {
   width: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 50px;
   transform: scale(0.9);
   transform-origin: center;
@@ -1172,8 +1151,7 @@ body.menuOpen .navbar-collapse {
   grid-column: 1/2;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-top-right-radius: 50px;
   border-bottom-left-radius: 50px;
 }
@@ -1182,8 +1160,7 @@ body.menuOpen .navbar-collapse {
   grid-column: 2/3;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 50px;
   border-bottom-left-radius: 0;
 }
@@ -1192,8 +1169,7 @@ body.menuOpen .navbar-collapse {
   grid-column: 2/3;
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 50px;
   border-top-left-radius: 0;
 }
@@ -1205,8 +1181,7 @@ body.menuOpen .navbar-collapse {
 .ourRecentColl .imgGal figure img {
   width: 100%;
   height: 100%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 50px;
 }
 .ourRecentColl .imgGal figure > a {
@@ -1224,8 +1199,7 @@ body.menuOpen .navbar-collapse {
 }
 .ourRecentColl .imgGal figure > a img {
   width: 25px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .ourRecentColl .imgGal figure:hover > a {
   visibility: visible;
@@ -1247,8 +1221,7 @@ body.menuOpen .navbar-collapse {
 .testimonialSec .authorImg img {
   width: 50px;
   height: 50px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
   border-radius: 50%;
   border: 3px solid #fff;
   margin: 0 -8px;
@@ -1357,11 +1330,11 @@ body.menuOpen .navbar-collapse {
   opacity: 1;
 }
 
-.footer {
-  background: #00525B;
-}
 .footer.gapsec {
   padding-bottom: 30px;
+}
+.footer {
+  background: #00525B;
 }
 .footer .footerTop {
   padding-bottom: 30px;
@@ -1400,10 +1373,6 @@ body.menuOpen .navbar-collapse {
   color: #6A6A6A;
   font-size: 15px;
   border-radius: 30px;
-}
-.footer .footerTop .NewsletterForm input[type=email]::-moz-placeholder {
-  color: #6A6A6A;
-  opacity: 1;
 }
 .footer .footerTop .NewsletterForm input[type=email]::placeholder {
   color: #6A6A6A;
@@ -1490,8 +1459,7 @@ body.menuOpen .navbar-collapse {
 .footer .footerBot .socialsec ul li a img {
   width: 20px;
   height: 20px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .footer .footerBot .socialsec ul li a:hover {
   transform: scale(0.9);
@@ -1520,8 +1488,7 @@ body.menuOpen .navbar-collapse {
 @media (max-width: 479px) {
   .innerBanner figure img {
     height: 260px;
-    -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
   }
 }
 .innerBanner .bannerCont {
@@ -1607,8 +1574,7 @@ body.menuOpen .navbar-collapse {
   width: 70px;
   height: 70px;
   border-radius: 50%;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 .expFeaPack .row .item .detail {
   flex-basis: calc(100% - 70px);
@@ -1643,8 +1609,7 @@ body.menuOpen .navbar-collapse {
 .expFeaPack .row .item .detail h4 img {
   margin-right: 8px;
   width: 15px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .expFeaPack .row .item .detail .arrowBtn {
   margin-left: auto;
@@ -1742,8 +1707,7 @@ body.menuOpen .navbar-collapse {
 .beyondLimit .beyondLimitTab .tab-content .row .item figure a img {
   width: 100%;
   border-radius: 70px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 @media (max-width: 1199px) {
   .beyondLimit .beyondLimitTab .tab-content .row .item figure a img {
@@ -1816,8 +1780,7 @@ body.menuOpen .navbar-collapse {
 @media (max-width: 991px) {
   .trustTheExp .innerTrustExp .lftimg figure img {
     width: 400px;
-    -o-object-fit: contain;
-       object-fit: contain;
+    object-fit: contain;
   }
 }
 @media (max-width: 479px) {
@@ -1879,8 +1842,7 @@ body.menuOpen .navbar-collapse {
 }
 .durationCostTime .innerCont .row .item figure img {
   width: 40px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 @media (max-width: 991px) {
   .durationCostTime .innerCont .row .item figure img {
@@ -1949,8 +1911,7 @@ body.menuOpen .navbar-collapse {
   .overView .overViewRight figure img {
     border-radius: 50px;
     height: 300px;
-    -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
   }
 }
 .overView .overViewRight figure .playtn {
@@ -1964,8 +1925,7 @@ body.menuOpen .navbar-collapse {
 }
 .overView .overViewRight figure .playtn img {
   width: 60px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 
 .gallerysecHoliday .row {
@@ -1979,8 +1939,7 @@ body.menuOpen .navbar-collapse {
   width: 100%;
   height: 100%;
   border-radius: 70px;
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 @media (max-width: 479px) {
   .gallerysecHoliday .row > div img {
@@ -2228,8 +2187,7 @@ body.menuOpen .navbar-collapse {
 .trustedPartners .row .item figure img {
   width: 40px;
   height: 40px;
-  -o-object-fit: contain;
-     object-fit: contain;
+  object-fit: contain;
 }
 .trustedPartners .row .item h4 {
   font-weight: 500;
@@ -2306,8 +2264,7 @@ body.menuOpen .navbar-collapse {
   .expTheWorld .innerExpTheWorld figure img {
     border-radius: 30px;
     height: 250px;
-    -o-object-fit: cover;
-       object-fit: cover;
+    object-fit: cover;
   }
 }
 .expTheWorld .innerExpTheWorld .expCont {
@@ -2437,4 +2394,6 @@ body.menuOpen .navbar-collapse {
 
 .fancybox__footer {
   display: none;
-}/*# sourceMappingURL=style.css.map */
+}
+
+/*# sourceMappingURL=style.css.map */
