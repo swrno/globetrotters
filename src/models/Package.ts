@@ -27,8 +27,8 @@ export interface IPackage extends Document {
     };
   };
   inclusions_exclusions: {
-    dos: string[];
-    donts: string[];
+    inclusions: string[];
+    exclusions: string[];
   };
   registrations: IRegistration[];
   images: string[];
@@ -61,8 +61,8 @@ const PackageSchema = new Schema<IPackage>({
     details: { type: Map, of: String, default: {} }
   },
   inclusions_exclusions: {
-    dos: [{ type: String }],
-    donts: [{ type: String }]
+    inclusions: [{ type: String }],
+    exclusions: [{ type: String }]
   },
   registrations: [RegistrationSchema],
   images: [{ type: String }],

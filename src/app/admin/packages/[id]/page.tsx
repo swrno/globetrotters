@@ -60,8 +60,8 @@ interface Package {
     };
   };
   inclusions_exclusions: {
-    dos: string[];
-    donts: string[];
+    inclusions: string[];
+    exclusions: string[];
   };
   registrations: Array<{
     _id: string;
@@ -388,14 +388,14 @@ export default function PackageView() {
                   Inclusions & Exclusions
                 </Typography>
                 <Grid container spacing={3} sx={{ mt: 1 }}>
-                  {packageData.inclusions_exclusions.dos && packageData.inclusions_exclusions.dos.length > 0 && (
+                  {packageData.inclusions_exclusions.inclusions && packageData.inclusions_exclusions.inclusions.length > 0 && (
                     <Grid size={{ xs: 12, md: 6 }}>
                       <Paper sx={{ p: 2, bgcolor: 'success.50', borderLeft: '4px solid', borderColor: 'success.main' }}>
                         <Typography variant="subtitle1" fontWeight="bold" color="success.main" sx={{ mb: 1 }}>
                           ✓ Included
                         </Typography>
                         <Box component="ul" sx={{ m: 0, pl: 3 }}>
-                          {packageData.inclusions_exclusions.dos.map((item, index) => (
+                          {packageData.inclusions_exclusions.inclusions.map((item, index) => (
                             <li key={index}>
                               <Typography variant="body2">{item}</Typography>
                             </li>
@@ -404,14 +404,14 @@ export default function PackageView() {
                       </Paper>
                     </Grid>
                   )}
-                  {packageData.inclusions_exclusions.donts && packageData.inclusions_exclusions.donts.length > 0 && (
+                  {packageData.inclusions_exclusions.exclusions && packageData.inclusions_exclusions.exclusions.length > 0 && (
                     <Grid size={{ xs: 12, md: 6 }}>
                       <Paper sx={{ p: 2, bgcolor: 'error.50', borderLeft: '4px solid', borderColor: 'error.main' }}>
                         <Typography variant="subtitle1" fontWeight="bold" color="error.main" sx={{ mb: 1 }}>
                           ✗ Not Included
                         </Typography>
                         <Box component="ul" sx={{ m: 0, pl: 3 }}>
-                          {packageData.inclusions_exclusions.donts.map((item, index) => (
+                          {packageData.inclusions_exclusions.exclusions.map((item, index) => (
                             <li key={index}>
                               <Typography variant="body2">{item}</Typography>
                             </li>

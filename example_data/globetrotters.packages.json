@@ -1,0 +1,192 @@
+[{
+  "_id": {
+    "$oid": "68eb7ac7bde393c0270219e0"
+  },
+  "id": "7ddf210a-dcea-46e1-986d-f82937a258b0",
+  "location": "Kashmir",
+  "title": "Kashmir Heaven View",
+  "description": "Experience the timeless beauty of Kashmir, where snow-capped peaks, lush valleys, and serene lakes come together to create nature’s masterpiece. From houseboats on Dal Lake to the meadows of Gulmarg and Pahalgam, this package blends peace, adventure, and romance — all in one unforgettable journey.\n\n\n",
+  "tags": [
+    "houseboat",
+    "shikara",
+    "gondola",
+    "valleys"
+  ],
+  "days": 14,
+  "nights": 14,
+  "cost_per_person": 5000,
+  "best_time_to_visit": "All Year Round",
+  "video_url": "https://www.youtube.com/watch?v=S5tGX6o84us",
+  "trip_highlight": {
+    "houseboat": "Stay in a traditional Kashmiri houseboat on Dal Lake",
+    "shikara": "Enjoy a romantic Shikara ride with serene mountain views",
+    "gondola": "Experience the breathtaking Gondola cable car at Gulmarg",
+    "valleys": "Explore the lush valleys of Pahalgam and Sonmarg",
+    "cuisine": "Indulge in authentic Kashmiri cuisine and local handicrafts",
+    "attractions": "Visit famous spots like Aru Valley, Betaab Valley & Chandanwari",
+    "heritage": "Witness saffron fields and ancient Avantipur ruins en route",
+    "experience": "Relish the blend of adventure, tranquility, and natural beauty"
+  },
+  "itinerary": {
+    "description": "Demo Description",
+    "details": {
+      "Day 1": "**Arrival in Bali – Kuta / Seminyak**\n• Meet and greet at Ngurah Rai International Airport.\n• Private transfer to your hotel in Kuta or Seminyak.\n• Leisure time: Explore the nearby beach, relax at the hotel, or stroll through local markets.",
+      "Day 2": "**Ubud and Central Bali Tour**\n•Visit Tegallalang Rice Terraces for scenic views and photo stops.\n• Explore the Ubud Monkey Forest Sanctuary.\n• Stop at Goa Gajah (Elephant Cave) to admire ancient carvings.\n• Enjoy free time at Ubud Art Market for handicraft shopping.\n• Optional: Balinese massage in Ubud.",
+      "Day 3": "**Mount Batur Sunrise Trek & Coffee Plantation**\n• Early morning pick-up for Mount Batur trek.\n• Hike to the summit to watch a spectacular sunrise.\n• Visit a local coffee plantation to sample Bali’s famous Luwak coffee.\n• Afternoon at leisure to recover and relax.",
+      "Day 4": "**Nusa Dua Water Sports & Uluwatu Sunset**\n• Morning: Enjoy banana boat ride, jet skiing, or parasailing at Nusa Dua beach.\n• Afternoon: Visit Uluwatu Temple.\n• Evening: Watch the Kecak Fire Dance against a sunset backdrop over the Indian Ocean.",
+      "Day 5": "**Nusa Penida Island Tour**\n• Full day excursion by fast boat to Nusa Penida.\n• Explore Kelingking Beach, Angel’s Billabong, and Broken Beach.\n• Snorkeling at Crystal Bay (optional).\n• Return to Bali in the evening.",
+      "✈ Day 6": "**Departure**\n• Breakfast at the hotel.\n• Transfer to airport for your onward flight."
+    }
+  },
+  "inclusions_exclusions": {
+    "inclusions": [
+      "* Accommodation in deluxe hotels/houseboats",
+      "* Daily breakfast and dinner",
+      "* Private cab for sightseeing and transfers",
+      "* Shikara ride on Dal Lake",
+      "* All applicable taxes"
+    ],
+    "exclusions": [
+      "* Airfare/train tickets",
+      "* Gondola ride, pony rides, and entry fees",
+      "* Personal expenses (laundry, tips, etc.)",
+      "* Travel insurance"
+    ]
+  },
+  "registrations": [
+    {
+      "name": "Swarnendu Bhandari",
+      "email": "contact@swarnendu.wiki",
+      "phone": "12344",
+      "registeredAt": {
+        "$date": "2025-10-12T09:58:52.869Z"
+      },
+      "_id": {
+        "$oid": "68eb7bdcbde393c027021a02"
+      }
+    },
+    {
+      "name": "Rahul ",
+      "email": "rahul@gmail.com",
+      "phone": "1234567",
+      "registeredAt": {
+        "$date": "2025-10-12T15:18:11.296Z"
+      },
+      "_id": {
+        "$oid": "68ebc6b398eda572bd260d48"
+      }
+    },
+    {
+      "name": "Testing",
+      "email": "Testing@testing.com",
+      "phone": "123456789",
+      "registeredAt": {
+        "$date": "2025-10-14T17:29:19.507Z"
+      },
+      "_id": {
+        "$oid": "68ee886f02dfb4bd8560ca3e"
+      }
+    }
+  ],
+  "images": [
+    "https://static.toiimg.com/photo/msid-91918900,width-96,height-65.cms",
+    "https://in.musafir.com/uploads/1_1_1_8a4b22b915.webp",
+    "https://media.istockphoto.com/id/1020385928/photo/beautiful-mountain-view-of-sonamarg-mountains.jpg?s=612x612&w=0&k=20&c=Q0NDG1UMd9KwY3zFXbRSZjtUTV1tHyFIEjzgmglhpi8=",
+    "https://charzanholidays.com/wp-content/uploads/2024/08/Tourism-kashmir-gulmarg_charzan_holidays.jpg",
+    "https://www.captureatrip.com/_next/image?url=https%3A%2F%2Fd1zvcmhypeawxj.cloudfront.net%2Flocation%2FJammu%20Kashmir%2Fblogs%2Fwinter-vacation-in-jammu-and-kashmir-87cabb6b44-wvs1iu-webp-41083f2acf-1752060125119.webp&w=3840&q=50",
+    "https://ekaxp.in/wp-content/uploads/2021/05/6.-eka-Experiences-kashmir-travel-road-trip.jpg"
+  ],
+  "createdAt": {
+    "$date": "2025-10-12T09:54:15.790Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-27T16:48:43.320Z"
+  },
+  "__v": 3
+},
+{
+  "_id": {
+    "$oid": "68fd08352ed300bfb399f1f6"
+  },
+  "id": "b2ea0062-2c14-4c60-ac27-acce514da410",
+  "location": "Bali, Indonesia",
+  "title": "Bali Holiday Package",
+  "description": "Bali, the enchanting Island of the Gods, is a destination that captivates the senses with its diverse landscapes, vibrant culture, and spiritual heritage. This 5 Nights / 6 Days tour is designed to immerse you in Bali’s best — from the artistic heart of Ubud to the golden beaches of Nusa Dua, and the mystical temples perched dramatically on cliffs and shores. Whether you seek relaxation, adventure, or cultural discovery, Bali promises an unforgettable journey of contrasts and beauty.\nHighlights include breathtaking rice terraces, sacred temples like Tanah Lot and Uluwatu, the towering Mount Batur, and lively beach scenes in Kuta and Seminyak. Embrace the island’s traditional dance performances, savor its delicious cuisine, and experience the warm hospitality that Bali is known for.",
+  "tags": [
+    "Bali",
+    "6D/5N",
+    "Beach"
+  ],
+  "days": 6,
+  "nights": 5,
+  "cost_per_person": 55000,
+  "best_time_to_visit": "April, May, June, July, August, September, October,",
+  "trip_highlight": {
+    "Scenic Landscapes": "**Bali’s** rich spiritual heritage is beautifully reflected in its *iconic temples* and ancient sanctuaries. The Tanah Lot Temple, dramatically set on a rocky outcrop surrounded by the sea, is one of the island’s most photographed landmarks, especially during sunset when the sky ignites in golden hues. Equally mesmerizing is the Uluwatu Temple, perched atop a towering cliff overlooking the Indian Ocean, where visitors can witness the captivating Kecak fire dance as the sun dips below the horizon. \n\n**• Tegallalang Rice Terraces**, Marvel at the emerald green rice paddies set in a stunning stepped landscape. \n**• Mount Batur**, Witness a breathtaking sunrise over the volcanic peaks, with panoramic views of Lake Batur. \n**• Nusa Penida Island Dramatic cliffs**, hidden beaches, and crystal-clear waters offer perfect photo opportunities.\n\nThese sacred sites embody the essence of Balinese culture, where spirituality and natural beauty intertwine seamlessly.",
+    "Adventure Activities": "• **White Water Rafting on Ayung River**, Navigate rapids surrounded by lush rainforests and waterfalls. \n• **Surfing at Kuta Beach**, Ride the waves on one of Bali’s most iconic surf spots.\n• **Snorkeling at Blue Lagoon,** Explore vibrant coral gardens and diverse marine life.",
+    "Cultural & Historical Landmarks": "• **Tanah Lot Temple**, One of Bali’s most photographed sea temples, known for its magnificent sunset views. \n• **Uluwatu Temple & Kecak Dance** Perched on a cliff edge, this temple offers spiritual ambiance paired with traditional fire dances. \n• **Goa Gajah (Elephant Cave)**: A 9th-century sanctuary with intricate carvings and sacred bathing pools.",
+    "Natural Attractions": "• **Tegenungan Waterfall,** A picturesque cascade hidden in the jungle, perfect for a refreshing dip. \n• **Sacred Monkey Forest Sanctuary in Ubud,** Home to hundreds of long-tailed macaques in a mystical forest setting. \n• **Sekumpul Waterfalls** A cluster of beautiful waterfalls surrounded by lush greenery and trekking trails.**"
+  },
+  "itinerary": {
+    "description": "6 Days and 5 Nights well-planned Bali Trip to enjoy your Leisure and Family time",
+    "details": {
+      "Day 1 Arrival in Bali – Kuta / Seminyak": "• Meet and greet at Ngurah Rai International Airport.\n• Private transfer to your hotel in Kuta or Seminyak.\n• Leisure time: Explore the nearby beach, relax at the hotel, or stroll through local markets.",
+      "Day 2 Ubud and Central Bali Tour": "•Visit Tegallalang Rice Terraces for scenic views and photo stops.\n• Explore the Ubud Monkey Forest Sanctuary.\n• Stop at Goa Gajah (Elephant Cave) to admire ancient carvings.\n• Enjoy free time at Ubud Art Market for handicraft shopping.\n• Optional: Balinese massage in Ubud.",
+      "Day 3": "**Mount Batur Sunrise Trek & Coffee Plantation**\n• Early morning pick-up for Mount Batur trek.\n• Hike to the summit to watch a spectacular sunrise.\n• Visit a local coffee plantation to sample Bali’s famous Luwak coffee.\n• Afternoon at leisure to recover and relax.",
+      "Day 4": "**Nusa Dua Water Sports & Uluwatu Sunset**\n• Morning: Enjoy banana boat ride, jet skiing, or parasailing at Nusa Dua beach.\n• Afternoon: Visit Uluwatu Temple.\n• Evening: Watch the Kecak Fire Dance against a sunset backdrop over the Indian Ocean.",
+      "Day 5": "**Nusa Penida Island Tour**\n• Full day excursion by fast boat to Nusa Penida.\n• Explore Kelingking Beach, Angel’s Billabong, and Broken Beach.\n• Snorkeling at Crystal Bay (optional).\n• Return to Bali in the evening.",
+      "✈ Day 6": "**Departure**\n• Breakfast at the hotel.\n• Transfer to airport for your onward flight."
+    }
+  },
+  "inclusions_exclusions": {
+    "inclusions": [
+      "• 5 nights hotel accommodation in 3-star / 4-star / 5-star options (as per selection).",
+      "• Daily breakfast and 2 dinners.",
+      "• All transfers and sightseeing in private air-conditioned vehicle.",
+      "• Entrance fees to all monuments and attractions listed in itinerary.",
+      "• Professional English-speaking guide.",
+      "• Mount Batur trek with guide and light breakfast.",
+      "• Fast boat to Nusa Penida with island tour.",
+      "• Water sports package at Nusa Dua (banana boat + jet ski or parasailing)."
+    ],
+    "exclusions": [
+      "• International airfare.",
+      "• Visa on arrival fee (if applicable).",
+      "• Travel insurance.",
+      "• Personal expenses (laundry, drinks, tips).",
+      "• Meals other than those specified.",
+      "• Optional activities not listed in inclusions (e.g., spa, diving).",
+      "• Early check-in and late check-out charges."
+    ]
+  },
+  "registrations": [
+    {
+      "name": "Demo name",
+      "email": "demo@website.com",
+      "phone": "123456789",
+      "registeredAt": {
+        "$date": "2025-10-25T18:49:14.927Z"
+      },
+      "_id": {
+        "$oid": "68fd1baa0e35200837401c10"
+      }
+    }
+  ],
+  "images": [
+    "https://res.cloudinary.com/dvtippmi1/image/upload/v1761412660/globetrotters/packages/ed82eau9ye4a98jkkvsc.jpg",
+    "https://res.cloudinary.com/dvtippmi1/image/upload/v1761412670/globetrotters/packages/lhnjy2igqrhclkj0yh5p.jpg",
+    "https://res.cloudinary.com/dvtippmi1/image/upload/v1761412678/globetrotters/packages/ch81oauvxxt1awqmczjd.jpg",
+    "https://res.cloudinary.com/dvtippmi1/image/upload/v1761412688/globetrotters/packages/kaopdhkl2x2llrjcr4np.jpg",
+    "https://res.cloudinary.com/dvtippmi1/image/upload/v1761417762/globetrotters/packages/u5idvlghx7wnwezd0rel.jpg",
+    "https://res.cloudinary.com/dvtippmi1/image/upload/v1761417787/globetrotters/packages/hf2boeb0ir9rlbofdqhe.webp"
+  ],
+  "createdAt": {
+    "$date": "2025-10-25T17:26:13.841Z"
+  },
+  "updatedAt": {
+    "$date": "2025-10-27T17:07:54.464Z"
+  },
+  "__v": 1,
+  "video_url": "https://www.youtube.com/watch?v=kZ06nOhdr6Q&t=4s",
+  "category": "international"
+}]

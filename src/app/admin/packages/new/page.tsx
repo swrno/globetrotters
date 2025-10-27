@@ -122,8 +122,8 @@ export default function NewPackage() {
           details: itineraryDetails
         },
         inclusions_exclusions: {
-          dos: formData.inclusions.split('\n').map(item => item.trim()).filter(item => item),
-          donts: formData.exclusions.split('\n').map(item => item.trim()).filter(item => item)
+          inclusions: formData.inclusions.split('\n').map(item => item.trim()).filter(item => item),
+          exclusions: formData.exclusions.split('\n').map(item => item.trim()).filter(item => item)
         }
       };
 

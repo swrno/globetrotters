@@ -42,7 +42,7 @@ const mockPackageData = {
     }
   },
   inclusions_exclusions: {
-    dos: [
+    inclusions: [
       "Accommodation for 5 nights (double sharing basis)",
       "Daily breakfast and dinner",
       "Transportation by private vehicle",
@@ -50,7 +50,7 @@ const mockPackageData = {
       "All permits and entry fees",
       "Professional driver cum guide"
     ],
-    donts: [
+    exclusions: [
       "Airfare or train fare",
       "Lunch and personal expenses",
       "Adventure activity charges",
@@ -350,7 +350,7 @@ export default function PackageDetailsDemo() {
       )}
 
       {/* Inclusions/Exclusions Section */}
-      {(packageData.inclusions_exclusions?.dos?.length > 0 || packageData.inclusions_exclusions?.donts?.length > 0) && (
+      {(packageData.inclusions_exclusions?.inclusions?.length > 0 || packageData.inclusions_exclusions?.exclusions?.length > 0) && (
         <div className="includeExclude gapsec">
           <div className="container">
             <div className="headingsec">
@@ -358,24 +358,24 @@ export default function PackageDetailsDemo() {
               <p>To help you plan your trip, we have put together a list of what&apos;s included and what&apos;s not included in your tour package. This will give you a clear understanding of what to expect and help you make any necessary arrangements before your journey begins.</p>
             </div>
             <div className="row">
-              {packageData.inclusions_exclusions.dos?.length > 0 && (
+              {packageData.inclusions_exclusions.inclusions?.length > 0 && (
                 <div className="col-md-6">
                   <div className="itemInclude">
                     <h4>Inclusions</h4>
                     <ul>
-                      {packageData.inclusions_exclusions.dos.map((item, index) => (
+                      {packageData.inclusions_exclusions.inclusions.map((item: string, index: number) => (
                         <li key={index}>{item}</li>
                       ))}
                     </ul>
                   </div>
                 </div>
               )}
-              {packageData.inclusions_exclusions.donts?.length > 0 && (
+              {packageData.inclusions_exclusions.exclusions?.length > 0 && (
                 <div className="col-md-6">
                   <div className="itemExclude">
                     <h4>Exclusions</h4>
                     <ul>
-                      {packageData.inclusions_exclusions.donts.map((item, index) => (
+                      {packageData.inclusions_exclusions.exclusions.map((item: string, index: number) => (
                         <li key={index}>{item}</li>
                       ))}
                     </ul>

@@ -51,8 +51,8 @@ interface Package {
     };
   };
   inclusions_exclusions: {
-    dos: string[];
-    donts: string[];
+    inclusions: string[];
+    exclusions: string[];
   };
   registrations: any[];
   images: string[];
@@ -133,8 +133,8 @@ Day 3: Departure
           trip_highlight: tripHighlightStr,
           itinerary_description: pkg.itinerary?.description || '',
           itinerary_details: itineraryDetailsStr,
-          inclusions: pkg.inclusions_exclusions?.dos?.join('\n') || '',
-          exclusions: pkg.inclusions_exclusions?.donts?.join('\n') || '',
+          inclusions: pkg.inclusions_exclusions?.inclusions?.join('\n') || '',
+          exclusions: pkg.inclusions_exclusions?.exclusions?.join('\n') || '',
         });
         
         // Set images separately
@@ -220,8 +220,8 @@ Day 3: Departure
           details: itineraryDetails
         },
         inclusions_exclusions: {
-          dos: formData.inclusions.split('\n').map(item => item.trim()).filter(item => item),
-          donts: formData.exclusions.split('\n').map(item => item.trim()).filter(item => item)
+          inclusions: formData.inclusions.split('\n').map(item => item.trim()).filter(item => item),
+          exclusions: formData.exclusions.split('\n').map(item => item.trim()).filter(item => item)
         }
       };
 
