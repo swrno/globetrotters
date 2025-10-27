@@ -14,6 +14,7 @@ interface Package {
   nights: number;
   images: string[];
   registrations: { name: string; email: string; phone: string }[];
+  cost_per_person?: number; // Price per person in INR
 }
 
 export default function SearchResults() {
@@ -74,8 +75,25 @@ export default function SearchResults() {
         }
       }
 
-      // Note: Month and Budget filtering would require additional package metadata
-      // For now, we'll just filter by destination and duration
+      // Filter by budget (cost per person)
+      // Note: Budget filtering requires 'cost_per_person' field in package data
+      // If cost data is not available, all packages pass the budget filter
+      if (budget && pkg.cost_per_person !== undefined) {
+        const cost = pkg.cost_per_person;
+        let withinBudget = false;
+        
+        if (budget === '<20000') withinBudget = cost < 20000;
+        else if (budget === '20001-40000') withinBudget = cost >= 20001 && cost <= 40000;
+        else if (budget === '40001-60000') withinBudget = cost >= 40001 && cost <= 60000;
+        else if (budget === '60001-80000') withinBudget = cost >= 60001 && cost <= 80000;
+        else if (budget === '80001-100000') withinBudget = cost >= 80001 && cost <= 100000;
+        else if (budget === '>100000') withinBudget = cost > 100000;
+        
+        if (!withinBudget) return false;
+      }
+
+      // Filter by month (this would require package availability data)
+      // For now, month filtering is not implemented
 
       return true;
     });
