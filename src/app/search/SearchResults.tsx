@@ -180,39 +180,49 @@ export default function SearchResults() {
           <div className="searchResultsCount" style={{ marginBottom: '20px' }}>
             <h3>Found {packages.length} package{packages.length !== 1 ? 's' : ''}</h3>
           </div>
+        </div>
+      </div>
 
-          {loading ? (
-            <div className="text-center py-5">
-              <div className="text-gray-500">Loading packages...</div>
-            </div>
-          ) : packages.length === 0 ? (
-            <div className="text-center py-5">
-              <div className="text-gray-500">No packages found matching your criteria.</div>
-            </div>
-          ) : (
-            <div className="row">
-              {packages.map((pkg) => (
-                <div key={pkg.id} className="col-lg-4 col-md-6" style={{ marginBottom: '30px' }}>
-                  <div className="item">
-                    <figure>
-                      <Link href={`/package/${pkg.id}`}>
-                        <img src={pkg.images[0] || '/destinationimg1.png'} alt={pkg.title} />
-                      </Link>
-                    </figure>
-                    <h3>{pkg.location}</h3>
-                    <p>{pkg.description}</p>
-                    <div className="durationBestTime">
-                      <ul>
-                        <li><span>Duration:</span> {pkg.nights} Nights / {pkg.days} Days</li>
-                        <li><span>Best Time to Visit:</span> All Year Round</li>
-                      </ul>
-                    </div>
-                    <Link href={`/package/${pkg.id}`} className="primaryBtn">Enquire</Link>
+      <div className="beyondLimit" style={{ marginTop: '-40px', marginBottom: '60px' }}>
+        <div className="container">
+          <div className="beyondLimitTab">
+            <div className="tab-content">
+              <div className="tab-pane fade show active">
+                {loading ? (
+                  <div className="text-center py-5">
+                    <div className="text-gray-500">Loading packages...</div>
                   </div>
-                </div>
-              ))}
+                ) : packages.length === 0 ? (
+                  <div className="text-center py-5">
+                    <div className="text-gray-500">No packages found matching your criteria.</div>
+                  </div>
+                ) : (
+                  <div className="row">
+                    {packages.map((pkg) => (
+                      <div key={pkg.id} className="col-lg-4 col-md-6">
+                        <div className="item">
+                          <figure>
+                            <Link href={`/package/${pkg.id}`}>
+                              <img src={pkg.images[0] || '/destinationimg1.png'} alt={pkg.title} />
+                            </Link>
+                          </figure>
+                          <h3>{pkg.location}</h3>
+                          <p>{pkg.description}</p>
+                          <div className="durationBestTime">
+                            <ul>
+                              <li><span>Duration:</span> {pkg.nights} Nights / {pkg.days} Days</li>
+                              <li><span>Best Time to Visit:</span> All Year Round</li>
+                            </ul>
+                          </div>
+                          <Link href={`/package/${pkg.id}`} className="primaryBtn">Enquire</Link>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </>
