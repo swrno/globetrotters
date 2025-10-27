@@ -37,6 +37,7 @@ interface Package {
   title: string;
   description: string;
   tags: string[];
+  category: 'domestic' | 'international';
   days: number;
   nights: number;
   cost_per_person: number;
@@ -66,6 +67,7 @@ export default function EditPackage() {
     title: '',
     description: '',
     tags: '',
+    category: 'domestic',
     days: '',
     nights: '',
     cost_per_person: '',
@@ -122,6 +124,7 @@ Day 3: Departure
           title: pkg.title,
           description: pkg.description,
           tags: pkg.tags.join(', '),
+          category: pkg.category || 'domestic',
           days: pkg.days.toString(),
           nights: pkg.nights.toString(),
           cost_per_person: pkg.cost_per_person?.toString() || '',
@@ -156,7 +159,7 @@ Day 3: Departure
     fetchPackage();
   }, [user, router, packageId, fetchPackage]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | any) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -203,6 +206,7 @@ Day 3: Departure
         location: formData.location,
         title: formData.title,
         description: formData.description,
+        category: formData.category,
         days: parseInt(formData.days),
         nights: parseInt(formData.nights),
         cost_per_person: parseFloat(formData.cost_per_person) || 0,
@@ -230,6 +234,8 @@ Day 3: Departure
       });
 
       const data = await response.json();
+
+      console.log('Server response:', data);
 
       if (data.success) {
         setSuccess(true);
@@ -479,6 +485,24 @@ Day 3: Departure
                   },
                 }}
               />
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>Package Category</InputLabel>
+                <Select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  label="Package Category"
+                >
+                  <MenuItem value="domestic">Domestic</MenuItem>
+                  <MenuItem value="international">International</MenuItem>
+                </Select>
+              </FormControl>
+              <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                Select whether this is a domestic or international package
+              </Typography>
             </Grid>
 
             <Grid size={{ xs: 12 }}>

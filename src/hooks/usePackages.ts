@@ -9,6 +9,7 @@ interface Package {
   title: string;
   description: string;
   tags: string[];
+  category: 'domestic' | 'international';
   days: number;
   nights: number;
   registrations: any[];

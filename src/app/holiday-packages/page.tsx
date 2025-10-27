@@ -10,15 +10,10 @@ export default function HolidayPackages() {
   const [activeTab, setActiveTab] = useState('all');
   const { packages, loading, error } = usePackages();
 
-  // Determine if a package is domestic or international based on tags
-  const getDomesticInternational = (tags: string[]) => {
-    const internationalTags = ['international', 'europe', 'asia', 'africa', 'america', 'thailand', 'dubai', 'singapore', 'malaysia'];
-    return tags.some(tag => internationalTags.includes(tag.toLowerCase())) ? 'international' : 'domestic';
-  };
-
+  // Filter packages by category
   const filteredPackages = activeTab === 'all' 
     ? packages 
-    : packages.filter(pkg => getDomesticInternational(pkg.tags) === activeTab);
+    : packages.filter(pkg => (pkg.category || 'domestic') === activeTab);
 
   // Featured packages are just the first 3 packages from database
   const featuredPackages = packages.slice(0, 3);
@@ -77,7 +72,7 @@ export default function HolidayPackages() {
                       <img src={pkg.images[0] || '/destinationimg1.png'} alt={pkg.title} />
                     </figure>
                     <div className="detail">
-                      <h3>{pkg.location} <span className="tag">{getDomesticInternational(pkg.tags) === 'domestic' ? 'Domestic' : 'International'}</span></h3>
+                      <h3>{pkg.location} <span className="tag">{pkg.category === 'international' ? 'International' : 'Domestic'}</span></h3>
                       <h4><img src="/searchic.svg" alt="" /> {pkg.registrations.length} Registrations</h4>
                       <Link href={`/package/${pkg.id}`} className="arrowBtn">
                         <img src="/arrowbtn.svg" alt="" />

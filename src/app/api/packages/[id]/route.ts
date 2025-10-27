@@ -41,10 +41,28 @@ export const PUT = withAuth(async (
     const { id } = await params;
     const body = await request.json();
     
+    // Remove fields that shouldn't be updated
+    const { _id, createdAt, updatedAt, ...updateData } = body;
+    
+    // Ensure category is always in the update data
+    if (!updateData.category) {
+      updateData.category = 'domestic'; // Default value
+    }
+    
+    // Use findOneAndUpdate with explicit $set to ensure all fields including category are updated
     const updatedPackage = await Package.findOneAndUpdate(
       { id },
-      body,
-      { new: true, runValidators: true }
+      { 
+        $set: {
+          ...updateData,
+          category: updateData.category // Explicitly ensure category is set
+        }
+      },
+      { 
+        new: true, 
+        runValidators: true,
+        upsert: false
+      }
     );
 
     if (!updatedPackage) {
@@ -57,8 +75,9 @@ export const PUT = withAuth(async (
     return NextResponse.json({ success: true, data: updatedPackage });
   } catch (error) {
     console.error('Error updating package:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
     return NextResponse.json(
-      { success: false, error: 'Failed to update package' },
+      { success: false, error: 'Failed to update package', details: errorMessage },
       { status: 500 }
     );
   }

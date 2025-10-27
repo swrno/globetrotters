@@ -13,6 +13,7 @@ export interface IPackage extends Document {
   title: string;
   description: string; // Markdown string
   tags: string[];
+  category: 'domestic' | 'international'; // Package category
   days: number;
   nights: number;
   cost_per_person: number;
@@ -48,6 +49,7 @@ const PackageSchema = new Schema<IPackage>({
   title: { type: String, required: true },
   description: { type: String, required: true },
   tags: [{ type: String }],
+  category: { type: String, enum: ['domestic', 'international'], default: 'domestic' },
   days: { type: Number, required: true },
   nights: { type: Number, required: true },
   cost_per_person: { type: Number, required: true, default: 0 },
@@ -71,6 +73,7 @@ const PackageSchema = new Schema<IPackage>({
 // Add indexes for better performance
 PackageSchema.index({ location: 1 });
 PackageSchema.index({ tags: 1 });
+PackageSchema.index({ category: 1 });
 PackageSchema.index({ createdAt: -1 });
 
 export default mongoose.models.Package || mongoose.model<IPackage>('Package', PackageSchema);

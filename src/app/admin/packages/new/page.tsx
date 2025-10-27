@@ -14,6 +14,10 @@ import {
   CircularProgress,
   Grid,
   Alert,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import {
   ArrowBack,
@@ -32,6 +36,7 @@ export default function NewPackage() {
     title: '',
     description: '',
     tags: '',
+    category: 'domestic',
     days: '',
     nights: '',
     cost_per_person: '',
@@ -56,7 +61,7 @@ export default function NewPackage() {
     return null;
   }
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement> | any) => {
     setFormData(prev => ({
       ...prev,
       [e.target.name]: e.target.value
@@ -103,6 +108,7 @@ export default function NewPackage() {
         location: formData.location,
         title: formData.title,
         description: formData.description,
+        category: formData.category,
         days: parseInt(formData.days),
         nights: parseInt(formData.nights),
         cost_per_person: parseFloat(formData.cost_per_person) || 0,
@@ -308,6 +314,24 @@ export default function NewPackage() {
                 placeholder="adventure, mountains, trekking, snow"
                 helperText="Comma-separated tags to categorize the package"
               />
+            </Grid>
+
+            <Grid size={{ xs: 12, md: 6 }}>
+              <FormControl fullWidth>
+                <InputLabel>Package Category</InputLabel>
+                <Select
+                  name="category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  label="Package Category"
+                >
+                  <MenuItem value="domestic">Domestic</MenuItem>
+                  <MenuItem value="international">International</MenuItem>
+                </Select>
+              </FormControl>
+              <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                Select whether this is a domestic or international package
+              </Typography>
             </Grid>
 
             <Grid size={{ xs: 12 }}>
