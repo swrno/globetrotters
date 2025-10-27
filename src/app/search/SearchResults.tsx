@@ -126,7 +126,11 @@ export default function SearchResults() {
                 </div>
                 <div className="col-md-3">
                   <div className="form-group">
-                    <select value={month} onChange={(e) => setMonth(e.target.value)}>
+                    <select 
+                      value={month} 
+                      onChange={(e) => setMonth(e.target.value)}
+                      style={{ borderRadius: '30px' }}
+                    >
                       <option value="">Select Month of Travel</option>
                       <option value="Jan">Jan</option>
                       <option value="Feb">Feb</option>
@@ -145,7 +149,11 @@ export default function SearchResults() {
                 </div>
                 <div className="col-md-3">
                   <div className="form-group">
-                    <select value={duration} onChange={(e) => setDuration(e.target.value)}>
+                    <select 
+                      value={duration} 
+                      onChange={(e) => setDuration(e.target.value)}
+                      style={{ borderRadius: '30px' }}
+                    >
                       <option value="">Select Duration of Travel</option>
                       <option value="2D/1N">2D/1N</option>
                       <option value="3D/2N">3D/2N</option>
@@ -159,7 +167,11 @@ export default function SearchResults() {
                 </div>
                 <div className="col-md-3">
                   <div className="form-group">
-                    <select value={budget} onChange={(e) => setBudget(e.target.value)}>
+                    <select 
+                      value={budget} 
+                      onChange={(e) => setBudget(e.target.value)}
+                      style={{ borderRadius: '30px' }}
+                    >
                       <option value="">Select Budget per Person</option>
                       <option value="<20000">Less than ₹20000</option>
                       <option value="20001-40000">₹20001 to ₹40000</option>
