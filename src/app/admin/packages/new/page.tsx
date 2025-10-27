@@ -70,16 +70,17 @@ export default function NewPackage() {
     setSuccess(false);
 
     try {
-      // Parse trip highlights
+      // Parse trip highlights - split by ## headings
       const tripHighlight: Record<string, string> = {};
       if (formData.trip_highlight.trim()) {
-        const highlights = formData.trip_highlight.split('\n');
-        highlights.forEach((highlight, index) => {
-          if (highlight.trim()) {
-            const [key, ...valueParts] = highlight.split(':');
-            if (key && valueParts.length > 0) {
-              tripHighlight[key.trim()] = valueParts.join(':').trim();
-            }
+        // Split by ## heading markers to get sections
+        const sections = formData.trip_highlight.split(/^##\s+/m).filter(s => s.trim());
+        sections.forEach((section) => {
+          const lines = section.split('\n');
+          const key = lines[0].trim(); // First line is the category name
+          const value = lines.slice(1).join('\n').trim(); // Rest is the content
+          if (key && value) {
+            tripHighlight[key] = value;
           }
         });
       }
@@ -332,10 +333,10 @@ export default function NewPackage() {
                       }));
                     }}
                     preview="edit"
-                    height={250}
+                    height={350}
                     data-color-mode="light"
                     textareaProps={{
-                      placeholder: '**Scenic Landscapes:** Rohtang Pass, a stunning mountain pass at 3,978 meters, known for its breathtaking views\n\n**Adventure Activities:** Paragliding, skiing, and snowboarding experiences\n\n**Cultural Landmarks:** Ancient temples and local heritage sites',
+                      placeholder: '## Scenic Landscapes\n• Rohtang Pass at 3,978 meters with breathtaking views\n• Pine forests and alpine meadows\n• Snow-capped mountain peaks\n\n## Adventure Activities\n1. Paragliding experiences\n2. Skiing and snowboarding\n3. Trekking trails\n\n## Cultural Landmarks\nVisit ancient temples and local heritage sites\n\nExplore vibrant local markets and traditions',
                       style: { fontSize: '14px', lineHeight: '1.5' }
                     }}
                     style={{
@@ -344,7 +345,7 @@ export default function NewPackage() {
                   />
                 </Paper>
                 <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                  Enter highlights with markdown formatting. Use **bold** for categories and bullet points for details.
+                  Format: Use ## for category headings, then use bullet points (•, -, *), numbered lists (1. 2. 3.), or paragraphs for content. Supports markdown formatting.
                 </Typography>
               </Box>
             </Grid>
