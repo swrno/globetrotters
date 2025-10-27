@@ -136,3 +136,40 @@
   text-overflow: ellipsis;
   max-height: 3.2em; /* Approximate height for 2 lines */
 }
+
+/* Primary button styling - matches design reference */
+.primaryBtn,
+input[type="button"],
+input[type="submit"] {
+  display: inline-block;
+  padding: 5px 45px;
+  border-radius: 40px;
+  background: #00525B;
+  color: #fff;
+  font-size: 16px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 32px;
+  border: 1px solid #00525B;
+  transition: 0.3s all ease-in-out 0s;
+  cursor: pointer;
+}
+
+.primaryBtn:hover,
+input[type="button"]:hover,
+input[type="submit"]:hover {
+  color: #00525B;
+  background-color: transparent;
+  transition: 0.3s all ease-in-out 0s;
+}
+
+/* Contact form button wrapper */
+.contactPg .contactBot .formSec .btnwrap {
+  text-align: center;
+}
+
+@media (max-width: 767px) {
+  .contactPg .contactBot .formSec .btnwrap input[type="submit"] {
+    width: 100%;
+  }
+}
