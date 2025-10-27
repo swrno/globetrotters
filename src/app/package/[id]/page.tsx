@@ -130,7 +130,7 @@ export default function PackageDetails() {
       <Header currentPage="" />
 
       <div className="innerBanner">
-        <figure className="overflow-hidden h-96">
+        <figure className="overflow-hidden">
           <img
             src={
               images && images.length > 0
@@ -138,7 +138,7 @@ export default function PackageDetails() {
                 : "/default-package.jpg"
             }
             alt={packageData.title}
-            className="h-96 w-full object-cover object-center scale-110"
+            className="w-full object-cover object-center"
           />
         </figure>
         <div className="bannerCont container">

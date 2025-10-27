@@ -1509,15 +1509,23 @@ body.menuOpen .navbar-collapse {
 }
 .innerBanner figure {
   margin-bottom: 0;
+  height: 384px;
+  overflow: hidden;
 }
 .innerBanner figure img {
   width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+@media (max-width: 767px) {
+  .innerBanner figure {
+    height: 300px;
+  }
 }
 @media (max-width: 479px) {
-  .innerBanner figure img {
+  .innerBanner figure {
     height: 260px;
-    -o-object-fit: cover;
-       object-fit: cover;
   }
 }
 .innerBanner .bannerCont {
