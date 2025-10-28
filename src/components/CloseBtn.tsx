@@ -5,16 +5,16 @@ import React from 'react';
 const closeMenuBtn = () => {
   
   
-   let bodyTag= document.querySelector<HTMLDivElement>('body');
+   const bodyTag= document.querySelector<HTMLDivElement>('body');
       if(bodyTag){
                 bodyTag.classList.remove('menuOpen');
       }
-   let navbarToggler = document.querySelector<HTMLDivElement>('.navbar-toggler')
+   const navbarToggler = document.querySelector<HTMLDivElement>('.navbar-toggler')
         if(navbarToggler) {
          navbarToggler.classList.add('collapsed');
         }
 
-    let navbarCollapse=  document.querySelector<HTMLDivElement>('.navbar-collapse')
+    const navbarCollapse=  document.querySelector<HTMLDivElement>('.navbar-collapse')
         if(navbarCollapse){
           navbarCollapse.classList.remove('show');
         }
