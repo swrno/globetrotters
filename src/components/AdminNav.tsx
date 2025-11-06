@@ -20,6 +20,7 @@ import {
   Moon,
   Sun,
   LogOut,
+  MessageSquare,
 } from 'lucide-react';
 
 export default function AdminNav() {
@@ -37,6 +38,7 @@ export default function AdminNav() {
     { label: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
     { label: 'Packages', path: '/admin/packages', icon: Package },
     { label: 'Registrations', path: '/admin/registrations', icon: Users },
+    { label: 'Contact Us', path: '/admin/contact', icon: MessageSquare },
     { label: 'Newsletter', path: '/admin/newsletter', icon: Mail },
   ];
 

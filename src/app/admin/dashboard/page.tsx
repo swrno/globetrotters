@@ -40,6 +40,7 @@ import {
   Phone,
   User,
   Calendar,
+  MessageSquare,
 } from 'lucide-react';
 
 interface Package {
@@ -304,15 +305,15 @@ export default function AdminDashboard() {
                     alignItems: 'center',
                     justifyContent: 'center'
                   }}>
-                    <Mail size={28} />
+                    <MessageSquare size={28} />
                   </Box>
                   <Box sx={{ flex: 1 }}>
                     <Typography color="text.secondary" gutterBottom variant="overline" sx={{ lineHeight: 1.2, display: 'block', mb: 1, fontSize: '0.7rem', letterSpacing: 1 }}>
-                      Newsletter
+                      Contact Us
                     </Typography>
                     <Button 
                       color="info"
-                      onClick={() => router.push('/admin/newsletter')}
+                      onClick={() => router.push('/admin/contact')}
                       size="small"
                       variant="contained"
                       sx={{ 
