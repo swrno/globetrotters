@@ -5,11 +5,11 @@ import Contact from '@/models/Contact';
 // DELETE /api/contact/[id] - Delete a contact submission
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await dbConnect();
-    const { id } = params;
+    const { id } = await params;
 
     const deletedContact = await Contact.findByIdAndDelete(id);
 
@@ -40,11 +40,11 @@ export async function DELETE(
 // GET /api/contact/[id] - Get a single contact submission
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
     await dbConnect();
-    const { id } = params;
+    const { id } = await params;
 
     const contact = await Contact.findById(id);
 
