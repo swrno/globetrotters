@@ -47,7 +47,7 @@ export async function POST(req: Request) {
     const packages = await Package.find({}).select('id title location description cost_per_person days nights category best_time_to_visit images');
 
     const packageContext = packages.map(pkg => 
-      `- ID: ${pkg.id}. ${pkg.title} (${pkg.location}): ${pkg.days} days, ${pkg.nights} nights. Cost: ${pkg.cost_per_person}. Best time: ${pkg.best_time_to_visit}. Category: ${pkg.category}. Images: ${pkg.images?.join(', ')}`
+      `- ID: ${pkg.id}. ${pkg.title} (${pkg.location}): ${pkg.days} days, ${pkg.nights} nights. Cost: ${pkg.cost_per_person}. Best time: ${pkg.best_time_to_visit}. Category: ${pkg.category}. Images: ${pkg.images?.join(', ')}. Link: /package/${pkg.id}`
     ).join('\n');
 
     const systemPrompt = `You are a helpful travel assistant for Globetrotters. 
@@ -59,6 +59,8 @@ export async function POST(req: Request) {
     ALWAYS use Markdown for your responses. Use headings, lists, bold text, and tables where appropriate to make the response visually appealing and easy to read.
     If you want to show an image of a package, use the markdown format: ![Image Description](image_url). 
     Only use images provided in the package details.
+    
+    **IMPORTANT**: When discussing a specific package, provide a link to its details page using the format: [View Package Details](Link) ONLY if the user explicitly asks for more details, asks for a link, or if you are providing a comprehensive overview requested by the user. Do not include it in every mention.
     
     RESPONSE FORMAT:
     You must ALWAYS return a JSON object with the following structure. Do not output any text outside this JSON object.

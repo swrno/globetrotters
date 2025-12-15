@@ -43,11 +43,7 @@ export default function Home() {
                     <h3>Elevate your travel experience</h3>
                     <h2>Why Globetrotters</h2>
                   </div>
-                  <p>Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac
-                    aliquet odio mattis.Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et
-                    velit interdum, ac aliquet odio mattis.Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-                    vulputate libero et velit interdum, ac aliquet odio mattis.Nunc vulputate libero et velit interdum, ac
-                    aliquet odio mattis.</p>
+                  <p>We believe that travel is not just about visiting new places, but about creating unforgettable memories. Our team of experts curates every journey to ensure you experience the best each destination has to offer, with seamless planning and personalized service. Whether you seek adventure or relaxation, we craft the perfect itinerary for you.</p>
                 </div>
               </div>
             </div>
@@ -61,24 +57,21 @@ export default function Home() {
                       <figure><img src="/invoice.svg" alt="" /></figure>
                       <div className="whyInfoCont">
                         <h4>Centralized Information</h4>
-                        <p> Nunc vulputate libero et velit interdum, ac aliquet odio mattis.Nunc vulputate libero et velit
-                          interdum, ac aliquet odio mattis.</p>
+                        <p>Access all your travel details, from flight tickets to hotel bookings, in one secure and easy-to-manage platform.</p>
                       </div>
                     </li>
                     <li>
                       <figure><img src="/network.svg" alt="" /></figure>
                       <div className="whyInfoCont">
                         <h4>Worldwide Connectivity</h4>
-                        <p> Nunc vulputate libero et velit interdum, ac aliquet odio mattis.Nunc vulputate libero et velit
-                          interdum, ac aliquet odio mattis.</p>
+                        <p>Our extensive network of local partners ensures you have support and authentic experiences wherever you go.</p>
                       </div>
                     </li>
                     <li>
                       <figure><img src="/deflation.svg" alt="" /></figure>
                       <div className="whyInfoCont">
                         <h4>Cost Saving</h4>
-                        <p> Nunc vulputate libero et velit interdum, ac aliquet odio mattis.Nunc vulputate libero et velit
-                          interdum, ac aliquet odio mattis.</p>
+                        <p>We negotiate the best rates and exclusive deals to give you the most value for your travel budget.</p>
                       </div>
                     </li>
                   </ul>
@@ -110,11 +103,7 @@ export default function Home() {
                   <h3>Uncover hidden gems with us</h3>
                   <h2>Featured Holiday Packages</h2>
                 </div>
-                <p>Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac
-                  aliquet odio mattis.Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et
-                  velit interdum, ac aliquet odio mattis.Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc
-                  vulputate libero et velit interdum, ac aliquet odio mattis.Nunc vulputate libero et velit interdum, ac
-                  aliquet odio mattis.</p>
+                <p>Discover our hand-picked selection of the most breathtaking destinations around the globe. From serene beaches to majestic mountains, our packages are designed to provide you with the ultimate travel experience. Let us take you to places you've only dreamed of.</p>
                 <a href="/holiday-packages" className="primaryBtn">Explore</a>
               </div>
             </div>
@@ -140,16 +129,8 @@ export default function Home() {
                 <h3>Know our Story</h3>
                 <h2>About Us</h2>
               </div>
-              <p>Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac
-                aliquet odio mattis.Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit
-                interdum, ac aliquet odio mattis.Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate
-                libero et velit interdum, ac aliquet odio mattis.Nunc vulputate libero et velit interdum, ac aliquet odio
-                mattis.</p>
-              <p>Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac
-                aliquet odio mattis.Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit
-                interdum, ac aliquet odio mattis.Dorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate
-                libero et velit interdum, ac aliquet odio mattis.Nunc vulputate libero et velit interdum, ac aliquet odio
-                mattis.</p>
+              <p>Globetrotters was born out of a passion for exploration and a desire to share the world's wonders with others. We started as a small group of travel enthusiasts and have grown into a trusted agency dedicated to making your dream vacations a reality.</p>
+              <p>Our mission is to inspire and enable people to explore the world with confidence. We strive to take the stress out of travel planning, allowing you to focus on what truly matters – immersing yourself in new cultures and creating lifelong memories.</p>
               <a href="/about" className="primaryBtn">Know more</a>
             </div>
           </div>
@@ -221,27 +202,18 @@ export default function Home() {
               <div className="swiper-wrapper">
                 <div className="swiper-slide">
                   <figure><img src="/commaimg.png" alt="" /></figure>
-                  <p>Horem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac
-                    aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-                    himenaeos. Curabitur tempus urna at turpis condimentum lobortis. Horem ipsum dolor sit amet, consectetur
-                    adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. </p>
-                  <h3>John Doe</h3>
+                  <p>"Globetrotters planned the perfect honeymoon for us! Every detail was taken care of, from the flights to the romantic dinners. We didn't have to worry about a thing. Highly recommended!"</p>
+                  <h3>Sarah & Mike</h3>
                 </div>
                 <div className="swiper-slide">
                   <figure><img src="/commaimg.png" alt="" /></figure>
-                  <p>Horem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac
-                    aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-                    himenaeos. Curabitur tempus urna at turpis condimentum lobortis. Horem ipsum dolor sit amet, consectetur
-                    adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. </p>
-                  <h3>John Doe</h3>
+                  <p>"I've used many travel agencies before, but Globetrotters is by far the best. Their team is knowledgeable, responsive, and truly cares about making your trip special. Can't wait for my next adventure!"</p>
+                  <h3>Emily R.</h3>
                 </div>
                 <div className="swiper-slide">
                   <figure><img src="/commaimg.png" alt="" /></figure>
-                  <p>Horem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vulputate libero et velit interdum, ac
-                    aliquet odio mattis. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos
-                    himenaeos. Curabitur tempus urna at turpis condimentum lobortis. Horem ipsum dolor sit amet, consectetur
-                    adipiscing elit. Nunc vulputate libero et velit interdum, ac aliquet odio mattis. </p>
-                  <h3>John Doe</h3>
+                  <p>"The 'Himalayan Adventure' package was absolutely breathtaking. The itinerary was well-paced, the hotels were excellent, and the guide was fantastic. Thank you, Globetrotters!"</p>
+                  <h3>David K.</h3>
                 </div>
               </div>
               <div className="swiper-pagination"></div>

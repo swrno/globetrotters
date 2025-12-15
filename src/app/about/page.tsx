@@ -64,8 +64,8 @@ export default function About() {
                   <h3>Stepping Stones to Success</h3>
                   <h2>Our History, Your Journey</h2>
                 </div>
-                <p>Corem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus.</p>
-                <p>Curabitur tempor quis eros tempus lacinia. Nam bibendum pellentesque quam a convallis. Sed ut vulputate nisi. Integer in felis sed leo vestibulum venenatis. Suspendisse quis arcu sem. Aenean feugiat ex eu vestibulum vestibulum. Morbi a eleifend magna. Nam metus lacus, porttitor eu mauris a, blandit ultrices nibh. Mauris sit amet magna non ligula vestibulum eleifend. Nulla varius volutpat turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo</p>
+                <p>Founded in 2010, Globetrotters began with a simple mission: to make travel accessible and extraordinary for everyone. Over the years, we have expanded our reach to cover over 50 countries, partnering with top-rated hotels and local guides to ensure authentic experiences. Our journey has been defined by our commitment to quality and customer satisfaction.</p>
+                <p>From humble beginnings as a small startup, we have grown into a global team of travel experts. We believe that every journey is a story waiting to be told, and we are here to help you write yours. Whether it's a solo adventure, a family vacation, or a corporate retreat, we handle every detail with care and precision.</p>
               </div>
             </div>
           </div>
@@ -80,7 +80,7 @@ export default function About() {
                 <div className="headingsec">
                   <h3>Your trusted partner in travel</h3>
                   <h2>Globetrotters</h2>
-                  <p>Corem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus.</p>
+                  <p>As your trusted travel partner, we go the extra mile to ensure your safety and comfort. We work tirelessly to negotiate the best rates and exclusive perks for our clients.</p>
                 </div>
               </div>
             </div>
@@ -105,8 +105,8 @@ export default function About() {
                 <h3>To Make Travel Planning a Breeze</h3>
                 <h2>Our Mission</h2>
               </div>
-              <p>Corem ipsum dolor sit amet, consectetur adipiscing elit. Etiam eu turpis molestie, dictum est a, mattis tellus. Sed dignissim, metus nec fringilla accumsan, risus sem sollicitudin lacus, ut interdum tellus elit sed risus. Maecenas eget condimentum velit, sit amet feugiat lectus. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Praesent auctor purus luctus enim egestas, ac scelerisque ante pulvinar. Donec ut rhoncus ex. Suspendisse ac rhoncus nisl, eu tempor urna. Curabitur vel bibendum lorem. Morbi convallis convallis diam sit amet lacinia. Aliquam in elementum tellus.</p>
-              <p>Curabitur tempor quis eros tempus lacinia. Nam bibendum pellentesque quam a convallis. Sed ut vulputate nisi. Integer in felis sed leo vestibulum venenatis. Suspendisse quis arcu sem. Aenean feugiat ex eu vestibulum vestibulum. Morbi a eleifend magna. Nam metus lacus, porttitor eu mauris a, blandit ultrices nibh. Mauris sit amet magna non ligula vestibulum eleifend. Nulla varius volutpat turpis sed lacinia. Nam eget mi in purus lobortis eleifend. Sed nec ante dictum sem condimentum ullamcorper quis venenatis nisi. Proin vitae facilisis nisi, ac posuere leo.</p>
+              <p>Our mission is to inspire and enable people to explore the world with confidence. We strive to take the stress out of travel planning, allowing you to focus on what truly matters – immersing yourself in new cultures and creating lifelong memories.</p>
+              <p>We are dedicated to sustainable tourism practices that respect local communities and the environment. By choosing Globetrotters, you are not only seeing the world but also contributing to its preservation for future generations.</p>
             </div>
             <div className="col-lg-6">
               <figure><img src="/missionrightimg.png" alt="" /></figure>
