@@ -12,7 +12,73 @@ interface Message {
   content: string;
   timestamp: string;
   suggestions?: string[];
+  showBookingForm?: boolean;
+  packageId?: string;
+  isBookingSubmitted?: boolean;
 }
+
+interface BookingFormProps {
+  packageId: string;
+  onSubmit: (data: { name: string; email: string; phone: string }) => void;
+  isSubmitting: boolean;
+}
+
+const BookingForm: React.FC<BookingFormProps> = ({ packageId, onSubmit, isSubmitting }) => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit({ name, email, phone });
+  };
+
+  return (
+    <form onSubmit={handleSubmit} className="mt-3 bg-gray-50 p-4 rounded-lg border border-gray-200 space-y-3">
+      <h4 className="font-semibold text-sm text-gray-700 mb-2">Booking Details</h4>
+      <div>
+        <input
+          type="text"
+          placeholder="Full Name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#1a1f2e]"
+          disabled={isSubmitting}
+        />
+      </div>
+      <div>
+        <input
+          type="email"
+          placeholder="Email Address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#1a1f2e]"
+          disabled={isSubmitting}
+        />
+      </div>
+      <div>
+        <input
+          type="tel"
+          placeholder="Phone Number"
+          value={phone}
+          onChange={(e) => setPhone(e.target.value)}
+          required
+          className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:border-[#1a1f2e]"
+          disabled={isSubmitting}
+        />
+      </div>
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full bg-[#1a1f2e] text-white py-2 rounded-md text-sm font-medium hover:bg-[#2a3142] transition-colors disabled:opacity-50"
+      >
+        {isSubmitting ? 'Processing...' : 'Confirm Booking'}
+      </button>
+    </form>
+  );
+};
 
 export default function Chatbot() {
   const [isOpen, setIsOpen] = useState(false);
@@ -47,6 +113,53 @@ export default function Chatbot() {
     return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   };
 
+  const handleBookingSubmit = async (packageId: string, formData: { name: string; email: string; phone: string }) => {
+    setIsLoading(true);
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ 
+          bookingData: {
+            packageId,
+            ...formData
+          }
+        }),
+      });
+
+      const data = await response.json();
+
+      // Mark the form as submitted in the messages
+      setMessages(prev => prev.map(msg => {
+        if (msg.packageId === packageId && msg.showBookingForm) {
+          return { ...msg, isBookingSubmitted: true };
+        }
+        return msg;
+      }));
+
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: data.response,
+        timestamp: getTimestamp()
+      }]);
+
+      if (data.bookingSuccess) {
+        setShowSuccess(true);
+      }
+    } catch (error) {
+      console.error("Failed to submit booking:", error);
+      setMessages(prev => [...prev, { 
+        role: 'assistant', 
+        content: "Sorry, failed to process your booking. Please try again.",
+        timestamp: getTimestamp()
+      }]);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const sendMessage = async (text: string = input) => {
     if (!text.trim()) return;
 
@@ -76,12 +189,10 @@ export default function Chatbot() {
           role: 'assistant', 
           content: data.response,
           timestamp: getTimestamp(),
-          suggestions: data.suggestions
+          suggestions: data.suggestions,
+          showBookingForm: data.showBookingForm,
+          packageId: data.packageId
         }]);
-
-        if (data.bookingSuccess) {
-          setShowSuccess(true);
-        }
       } else {
          setMessages(prev => [...prev, { 
            role: 'assistant', 
@@ -219,6 +330,15 @@ export default function Chatbot() {
                       className="chatbot-content"
                       dangerouslySetInnerHTML={renderContent(msg.content)} 
                     />
+                    
+                    {/* Booking Form */}
+                    {msg.showBookingForm && msg.packageId && !msg.isBookingSubmitted && (
+                      <BookingForm 
+                        packageId={msg.packageId} 
+                        onSubmit={(data) => handleBookingSubmit(msg.packageId!, data)}
+                        isSubmitting={isLoading}
+                      />
+                    )}
                   </div>
                   
                   {/* Suggestions */}

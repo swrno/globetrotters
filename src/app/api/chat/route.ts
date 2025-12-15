@@ -8,7 +8,40 @@ const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 export async function POST(req: Request) {
   try {
     await dbConnect();
-    const { messages } = await req.json();
+    const { messages, bookingData } = await req.json();
+
+    // Handle Direct Booking Submission
+    if (bookingData) {
+      const { packageId, name, email, phone } = bookingData;
+      
+      const packageDoc = await Package.findOne({ id: packageId });
+      if (packageDoc) {
+        const existingRegistration = packageDoc.registrations.find(
+          (reg: any) => reg.email === email
+        );
+
+        if (existingRegistration) {
+          return NextResponse.json({ 
+            response: `I see you are already registered for the **${packageDoc.title}**. Is there anything else I can help you with?`,
+            bookingSuccess: false
+          });
+        } else {
+          packageDoc.registrations.push({
+            name,
+            email,
+            phone,
+            registeredAt: new Date(),
+          });
+          await packageDoc.save();
+          return NextResponse.json({ 
+            response: `Great news, ${name}! We have successfully registered your interest for the **${packageDoc.title}**. We will contact you shortly at ${email} or ${phone}.`,
+            bookingSuccess: true
+          });
+        }
+      } else {
+        return NextResponse.json({ response: "I apologize, but I couldn't find the package you requested. Please try again." });
+      }
+    }
 
     // Fetch all packages to provide context
     const packages = await Package.find({}).select('id title location description cost_per_person days nights category best_time_to_visit images');
@@ -31,25 +64,15 @@ export async function POST(req: Request) {
     You must ALWAYS return a JSON object with the following structure. Do not output any text outside this JSON object.
     {
       "response": "Your response content in Markdown",
-      "suggestions": ["Predictive Question 1", "Predictive Question 2", "Predictive Question 3"], // Generate 3 short, predictive follow-up questions that the user is likely to ask next based on the current context. These should be phrased as if the user is asking them (e.g., 'What is the cost?', 'Show me images', 'How do I book?').
-      "booking": { // Optional, ONLY include if user provided ALL details (Name, Email, Phone) for booking
-        "packageId": "PACKAGE_ID",
-        "name": "User Name",
-        "email": "User Email",
-        "phone": "User Phone"
-      }
+      "suggestions": ["Predictive Question 1", "Predictive Question 2", "Predictive Question 3"], // Generate 3 short, predictive follow-up questions.
+      "showBookingForm": false, // Set to true ONLY if the user explicitly says they want to book a SPECIFIC package.
+      "packageId": "PACKAGE_ID" // Required if showBookingForm is true. The ID of the package to book.
     }
 
     Booking Rules:
-    1. If a user wants to book, ask for **Full Name**, **Email Address**, and **Phone Number**.
-    2. **VALIDATION**:
-       - **Name**: Must be a full name (at least two words). Reject single names like "John".
-       - **Email**: Must appear to be a valid email address. Reject inputs like "no", "test", or invalid formats.
-       - **Phone**: Must be a valid phone number (at least 10 digits). Reject short numbers.
-       - If any input is invalid, politely ask the user to correct it.
-    3. Do NOT include the "booking" object until you have ALL three VALID details.
-    4. If details are missing or invalid, ask for them in the "response" field.
-    4. ONLY include the "booking" object ONCE when you first collect all details. If the user continues the conversation after booking, do NOT include the "booking" object again.
+    1. If a user says "I want to book [Package Name]" or "Book this", set "showBookingForm": true and provide the correct "packageId".
+    2. Do NOT ask for name, email, or phone number in the text response. The form will handle that.
+    3. If the user wants to book but hasn't specified a package, ask them which package they would like to book.
     
     If a user asks about something not in the list or if you don't have the information, politely apologize and suggest they contact support at **+91 96740 25615**.`;
 
@@ -59,7 +82,7 @@ export async function POST(req: Request) {
         ...messages
       ],
       model: 'meta-llama/llama-4-maverick-17b-128e-instruct',
-      response_format: { type: "json_object" } // Force JSON mode if supported, otherwise prompt handles it
+      response_format: { type: "json_object" }
     });
 
     const rawContent = chatCompletion.choices[0]?.message?.content || "{}";
@@ -69,7 +92,6 @@ export async function POST(req: Request) {
       parsedData = JSON.parse(rawContent);
     } catch (e) {
       console.error("Failed to parse LLM response:", e);
-      // Fallback: try to find JSON block if strict JSON failed
       const jsonMatch = rawContent.match(/```json\n([\s\S]*?)\n```/) || rawContent.match(/{[\s\S]*}/);
       if (jsonMatch) {
         try {
@@ -79,35 +101,6 @@ export async function POST(req: Request) {
         }
       } else {
          parsedData = { response: rawContent, suggestions: [] };
-      }
-    }
-
-    // Handle Booking
-    if (parsedData.booking) {
-      const { packageId, name, email, phone } = parsedData.booking;
-      
-      // Perform registration
-      const packageDoc = await Package.findOne({ id: packageId });
-      if (packageDoc) {
-        const existingRegistration = packageDoc.registrations.find(
-          (reg: any) => reg.email === email
-        );
-
-        if (existingRegistration) {
-          parsedData.response = `I see you are already registered for the **${packageDoc.title}**. Is there anything else I can help you with?`;
-        } else {
-          packageDoc.registrations.push({
-            name,
-            email,
-            phone,
-            registeredAt: new Date(),
-          });
-          await packageDoc.save();
-          parsedData.response = `Great news, ${name}! I have successfully registered your interest for the **${packageDoc.title}**. We will contact you shortly at ${email} or ${phone}.`;
-          parsedData.bookingSuccess = true;
-        }
-      } else {
-        parsedData.response = "I apologize, but I couldn't find the package you requested. Please try again.";
       }
     }
 
