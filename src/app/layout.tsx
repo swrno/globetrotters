@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import PublicStyles from "@/components/PublicStyles";
-import Chatbot from "@/components/Chatbot";
+import PublicStyles from "../components/PublicStyles";
+import Chatbot from "../components/Chatbot";
 
 export const metadata: Metadata = {
   title: "Globetrotters - Travel Agency",

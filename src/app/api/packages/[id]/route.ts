@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
-import Package from '@/models/Package';
-import { withAuth } from '@/lib/middleware';
-import { extractPublicId, deleteImages } from '@/lib/cloudinary';
+import dbConnect from '../../../../lib/mongodb';
+import Package from '../../../../models/Package';
+import { withAuth } from '../../../../lib/middleware';
+import { extractPublicId, deleteImages } from '../../../../lib/cloudinary';
 
 // GET /api/packages/[id] - Fetch a single package by ID
 export async function GET(

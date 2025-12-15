@@ -2,9 +2,9 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import { usePackages } from '@/hooks/usePackages';
+import Header from '../../components/Header';
+import Footer from '../../components/Footer';
+import { usePackages } from '../../hooks/usePackages';
 
 export default function HolidayPackages() {
   const [activeTab, setActiveTab] = useState('all');

@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
-import Package from '@/models/Package';
+import dbConnect from '../../../lib/mongodb';
+import Package from '../../../models/Package';
 import { v4 as uuidv4 } from 'uuid';
-import { withAuth } from '@/lib/middleware';
+import { withAuth } from '../../../lib/middleware';
 
 // GET /api/packages - Fetch all packages
 export async function GET() {

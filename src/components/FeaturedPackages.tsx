@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { usePackages } from '@/hooks/usePackages';
+import { usePackages } from '../hooks/usePackages';
 import PackageCard from './PackageCard';
 
 export default function FeaturedPackages() {

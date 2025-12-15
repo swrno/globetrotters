@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
-import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
-import PageHeader from '@/components/PageHeader';
+import { useAuth } from '../../../../contexts/AuthContext';
+import DeleteConfirmationModal from '../../../../components/DeleteConfirmationModal';
+import PageHeader from '../../../../components/PageHeader';
 import {
   Container,
   Paper,

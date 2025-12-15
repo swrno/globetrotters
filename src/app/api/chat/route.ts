@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import Groq from 'groq-sdk';
-import dbConnect from '@/lib/mongodb';
-import Package from '@/models/Package';
+import dbConnect from '../../../lib/mongodb';
+import Package from '../../../models/Package';
 
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 

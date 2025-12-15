@@ -1,9 +1,9 @@
-import FeaturedPackages from '@/components/FeaturedPackages';
-import NewsletterSignup from '@/components/NewsletterSignup';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import TourCategories from '@/components/TourCategories';
-import SearchBox from '@/components/SearchBox';
+import FeaturedPackages from '../components/FeaturedPackages';
+import NewsletterSignup from '../components/NewsletterSignup';
+import Header from '../components/Header';
+import Footer from '../components/Footer';
+import TourCategories from '../components/TourCategories';
+import SearchBox from '../components/SearchBox';
 
 export default function Home() {
   return (

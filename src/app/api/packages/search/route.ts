@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
-import Package from '@/models/Package';
+import dbConnect from '../../../../lib/mongodb';
+import Package from '../../../../models/Package';
 
 // GET /api/packages/search - Search packages by destination/location
 export async function GET(request: NextRequest) {

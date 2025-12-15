@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
-import PageHeader from '@/components/PageHeader';
+import { useAuth } from '../../../../../contexts/AuthContext';
+import PageHeader from '../../../../../components/PageHeader';
 import {
   Container,
   Paper,
@@ -28,7 +28,7 @@ import {
 import MDEditor from '@uiw/react-md-editor';
 import '@uiw/react-md-editor/markdown-editor.css';
 import '@uiw/react-markdown-preview/markdown.css';
-import ImageUploader from '@/components/admin/ImageUploader';
+import ImageUploader from '../../../../../components/admin/ImageUploader';
 
 interface Package {
   _id: string;

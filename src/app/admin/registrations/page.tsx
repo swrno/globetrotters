@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
-import PageHeader from '@/components/PageHeader';
+import { useAuth } from '../../../contexts/AuthContext';
+import PageHeader from '../../../components/PageHeader';
 import * as XLSX from 'xlsx';
 import { saveAs } from 'file-saver';
 import {

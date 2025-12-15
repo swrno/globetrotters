@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
-import Package from '@/models/Package';
+import dbConnect from '../../../../../lib/mongodb';
+import Package from '../../../../../models/Package';
 
 // POST /api/packages/[id]/register - Register interest in a package
 export async function POST(

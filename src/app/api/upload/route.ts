@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { uploadImage } from '@/lib/cloudinary';
-import { withAuth } from '@/lib/middleware';
+import { uploadImage } from '../../../lib/cloudinary';
+import { withAuth } from '../../../lib/middleware';
 
 // POST /api/upload - Upload image to Cloudinary (Protected)
 export const POST = withAuth(async (request: NextRequest) => {

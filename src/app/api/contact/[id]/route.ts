@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import dbConnect from '@/lib/mongodb';
-import Contact from '@/models/Contact';
+import dbConnect from '../../../../lib/mongodb';
+import Contact from '../../../../models/Contact';
 
 // DELETE /api/contact/[id] - Delete a contact submission
 export async function DELETE(

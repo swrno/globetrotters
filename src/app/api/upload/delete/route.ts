@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { deleteImage, extractPublicId } from '@/lib/cloudinary';
-import { withAuth } from '@/lib/middleware';
-import dbConnect from '@/lib/mongodb';
-import Package from '@/models/Package';
+import { deleteImage, extractPublicId } from '../../../../lib/cloudinary';
+import { withAuth } from '../../../../lib/middleware';
+import dbConnect from '../../../../lib/mongodb';
+import Package from '../../../../models/Package';
 
 // POST /api/upload/delete - Delete image from Cloudinary and MongoDB (Protected)
 export const POST = withAuth(async (request: NextRequest) => {
