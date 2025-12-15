@@ -156,7 +156,7 @@ export default function Chatbot() {
     <div className="fixed bottom-6 right-6 z-50 font-sans">
       {/* Chat Window */}
       {isOpen && (
-        <div className="bg-gray-50 rounded-lg shadow-2xl w-96 sm:w-[600px] h-[600px] flex flex-col mb-4 overflow-hidden border border-gray-200 transition-all duration-300 ease-in-out relative">
+        <div className="bg-gray-50 rounded-lg shadow-2xl w-80 sm:w-[600px] h-[500px] sm:h-[600px] flex flex-col mb-4 overflow-hidden border border-gray-200 transition-all duration-300 ease-in-out relative">
           
           {/* Success Overlay */}
           {showSuccess && (
