@@ -1,6 +1,5 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
@@ -76,7 +75,7 @@ export default function FAQ() {
                 <div key={faq.id} className="accordion-item">
                   <h2 className="accordion-header">
                     <button 
-                      className={`accordion-button ${openAccordion !== index ? 'collapsed' : ''}`}
+                      className={`accordion-button w-full flex justify-between items-center text-left relative ${openAccordion !== index ? 'collapsed' : ''} after:transition-transform after:duration-300 ${openAccordion === index ? 'after:rotate-180' : ''}`}
                       type="button" 
                       onClick={() => toggleAccordion(index)}
                       aria-expanded={openAccordion === index}
@@ -85,11 +84,12 @@ export default function FAQ() {
                     </button>
                   </h2>
                   <div 
-                    className={`accordion-collapse collapse ${openAccordion === index ? 'show' : ''}`}
-                    style={{ display: openAccordion === index ? 'block' : 'none' }}
+                    className={`grid transition-[grid-template-rows] duration-300 ease-out ${openAccordion === index ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'}`}
                   >
-                    <div className="accordion-body">
-                      <p>{faq.answer}</p>
+                    <div className="overflow-hidden">
+                      <div className="accordion-body">
+                        <p>{faq.answer}</p>
+                      </div>
                     </div>
                   </div>
                 </div>
