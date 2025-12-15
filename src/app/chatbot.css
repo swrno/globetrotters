@@ -1,0 +1,208 @@
+/* Chatbot Custom Styles */
+
+.chatbot-content {
+  font-size: 14px;
+  line-height: 1.6;
+  color: inherit;
+}
+
+.chatbot-content p {
+  margin-bottom: 0.75em;
+}
+
+.chatbot-content p:last-child {
+  margin-bottom: 0;
+}
+
+.chatbot-content h1, 
+.chatbot-content h2, 
+.chatbot-content h3, 
+.chatbot-content h4 {
+  font-weight: 600;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  color: inherit;
+  line-height: 1.4;
+}
+
+.chatbot-content h1 { font-size: 1.25em; }
+.chatbot-content h2 { font-size: 1.15em; }
+.chatbot-content h3 { font-size: 1.1em; }
+.chatbot-content h4 { font-size: 1em; }
+
+.chatbot-content ul, 
+.chatbot-content ol {
+  margin-bottom: 0.75em;
+  padding-left: 1.5em;
+  display: block; /* Ensure block display */
+}
+
+.chatbot-content ul {
+  list-style: disc outside;
+}
+
+.chatbot-content ol {
+  list-style: decimal outside;
+}
+
+.chatbot-content li {
+  margin-bottom: 0.25em;
+  display: list-item; /* Ensure list-item display */
+}
+
+.chatbot-content strong {
+  font-weight: 600;
+}
+
+.chatbot-content a {
+  color: #2563eb;
+  text-decoration: underline;
+}
+
+.chatbot-content blockquote {
+  border-left: 4px solid #e5e7eb;
+  padding-left: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  font-style: italic;
+  color: #6b7280;
+}
+
+/* Table Styling */
+.chatbot-content table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  font-size: 13px;
+}
+
+.chatbot-content th, 
+.chatbot-content td {
+  border: 1px solid #e5e7eb;
+  padding: 8px 12px;
+  text-align: left;
+}
+
+.chatbot-content th {
+  background-color: #f9fafb;
+  font-weight: 600;
+  color: #111827;
+  white-space: nowrap;
+}
+
+.chatbot-content td {
+  color: #374151;
+  white-space: nowrap; /* Prevent wrapping for better table layout */
+}
+
+/* Images */
+.chatbot-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+.image-scroller {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding-bottom: 8px; /* Space for scrollbar */
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  scrollbar-width: thin; /* Firefox */
+}
+
+.image-scroller::-webkit-scrollbar {
+  height: 6px;
+}
+
+.image-scroller::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 3px;
+}
+
+.image-scroller img {
+  flex: 0 0 auto;
+  max-width: 250px; /* Fixed width for scroller items */
+  height: 180px; /* Fixed height for consistency */
+  object-fit: cover;
+  margin: 0; /* Override default margin */
+}
+
+/* Suggestion Buttons */
+.suggestion-btn {
+  display: inline-block;
+  margin-top: 8px;
+  margin-right: 8px;
+  padding: 6px 12px;
+  background-color: #f3f4f6;
+  color: #374151;
+  border-radius: 16px;
+  font-size: 12px;
+  cursor: pointer;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s ease;
+}
+
+.suggestion-btn:hover {
+  background-color: #e5e7eb;
+  color: #111827;
+}
+
+/* Booking Success Animation */
+@keyframes fadeInOut {
+  0% { opacity: 0; transform: scale(0.8); }
+  20% { opacity: 1; transform: scale(1); }
+  80% { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.8); }
+}
+
+.booking-success-overlay {
+  position: absolute;
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  animation: fadeInOut 3s ease-in-out forwards;
+  pointer-events: none;
+}
+
+.success-icon {
+  color: #10b981; /* Green-500 */
+  width: 64px;
+  height: 64px;
+  margin-bottom: 16px;
+}
+
+.success-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #111827;
+}
+
+/* User message specific overrides if needed */
+.bg-\[\#1a1f2e\] .chatbot-content th {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: white;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.bg-\[\#1a1f2e\] .chatbot-content td {
+  color: white;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.bg-\[\#1a1f2e\] .chatbot-content a {
+  color: #60a5fa;
+}
+
+.bg-\[\#1a1f2e\] .chatbot-content blockquote {
+  border-color: rgba(255, 255, 255, 0.3);
+  color: rgba(255, 255, 255, 0.8);
+}
