@@ -65,7 +65,7 @@ export default function About() {
                   <h2>Our History, Your Journey</h2>
                 </div>
                 <p>Founded in 2010, Globetrotters began with a simple mission: to make travel accessible and extraordinary for everyone. Over the years, we have expanded our reach to cover over 50 countries, partnering with top-rated hotels and local guides to ensure authentic experiences. Our journey has been defined by our commitment to quality and customer satisfaction.</p>
-                <p>From humble beginnings as a small startup, we have grown into a global team of travel experts. We believe that every journey is a story waiting to be told, and we are here to help you write yours. Whether it's a solo adventure, a family vacation, or a corporate retreat, we handle every detail with care and precision.</p>
+                <p>From humble beginnings as a small startup, we have grown into a global team of travel experts. We believe that every journey is a story waiting to be told, and we are here to help you write yours. Whether it&apos;s a solo adventure, a family vacation, or a corporate retreat, we handle every detail with care and precision.</p>
               </div>
             </div>
           </div>

@@ -40,9 +40,9 @@ export default function HolidayPackages() {
             <h3>Collect Moments</h3>
             <h2>Explore. Dream. Discover</h2>
           </div>
-          <p>Travel opens your heart, broadens your mind, and fills your life with stories to tell. Whether you're seeking adventure, relaxation, or cultural immersion, we have the perfect itinerary for you. Let us guide you to the world's most enchanting corners.</p>
+          <p>Travel opens your heart, broadens your mind, and fills your life with stories to tell. Whether you&apos;re seeking adventure, relaxation, or cultural immersion, we have the perfect itinerary for you. Let us guide you to the world&apos;s most enchanting corners.</p>
           <p>Our packages are designed to offer a blend of iconic landmarks and hidden gems. We believe in slow travel, allowing you to truly connect with the places you visit. From the bustling streets of Tokyo to the serene beaches of Bali, every destination has a unique charm waiting to be discovered.</p>
-          <p>Don't just dream about your next vacation – make it a reality. With our expert planning and local insights, you can explore the world with confidence and ease. Join us on a journey of discovery and create memories that will last a lifetime.</p>
+          <p>Don&apos;t just dream about your next vacation – make it a reality. With our expert planning and local insights, you can explore the world with confidence and ease. Join us on a journey of discovery and create memories that will last a lifetime.</p>
         </div>
       </div>
 

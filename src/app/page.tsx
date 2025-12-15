@@ -103,7 +103,7 @@ export default function Home() {
                   <h3>Uncover hidden gems with us</h3>
                   <h2>Featured Holiday Packages</h2>
                 </div>
-                <p>Discover our hand-picked selection of the most breathtaking destinations around the globe. From serene beaches to majestic mountains, our packages are designed to provide you with the ultimate travel experience. Let us take you to places you've only dreamed of.</p>
+                <p>Discover our hand-picked selection of the most breathtaking destinations around the globe. From serene beaches to majestic mountains, our packages are designed to provide you with the ultimate travel experience. Let us take you to places you&apos;ve only dreamed of.</p>
                 <a href="/holiday-packages" className="primaryBtn">Explore</a>
               </div>
             </div>
@@ -129,7 +129,7 @@ export default function Home() {
                 <h3>Know our Story</h3>
                 <h2>About Us</h2>
               </div>
-              <p>Globetrotters was born out of a passion for exploration and a desire to share the world's wonders with others. We started as a small group of travel enthusiasts and have grown into a trusted agency dedicated to making your dream vacations a reality.</p>
+              <p>Globetrotters was born out of a passion for exploration and a desire to share the world&apos;s wonders with others. We started as a small group of travel enthusiasts and have grown into a trusted agency dedicated to making your dream vacations a reality.</p>
               <p>Our mission is to inspire and enable people to explore the world with confidence. We strive to take the stress out of travel planning, allowing you to focus on what truly matters – immersing yourself in new cultures and creating lifelong memories.</p>
               <a href="/about" className="primaryBtn">Know more</a>
             </div>
@@ -202,17 +202,17 @@ export default function Home() {
               <div className="swiper-wrapper">
                 <div className="swiper-slide">
                   <figure><img src="/commaimg.png" alt="" /></figure>
-                  <p>"Globetrotters planned the perfect honeymoon for us! Every detail was taken care of, from the flights to the romantic dinners. We didn't have to worry about a thing. Highly recommended!"</p>
+                  <p>&quot;Globetrotters planned the perfect honeymoon for us! Every detail was taken care of, from the flights to the romantic dinners. We didn&apos;t have to worry about a thing. Highly recommended!&quot;</p>
                   <h3>Sarah & Mike</h3>
                 </div>
                 <div className="swiper-slide">
                   <figure><img src="/commaimg.png" alt="" /></figure>
-                  <p>"I've used many travel agencies before, but Globetrotters is by far the best. Their team is knowledgeable, responsive, and truly cares about making your trip special. Can't wait for my next adventure!"</p>
+                  <p>&quot;I&apos;ve used many travel agencies before, but Globetrotters is by far the best. Their team is knowledgeable, responsive, and truly cares about making your trip special. Can&apos;t wait for my next adventure!&quot;</p>
                   <h3>Emily R.</h3>
                 </div>
                 <div className="swiper-slide">
                   <figure><img src="/commaimg.png" alt="" /></figure>
-                  <p>"The 'Himalayan Adventure' package was absolutely breathtaking. The itinerary was well-paced, the hotels were excellent, and the guide was fantastic. Thank you, Globetrotters!"</p>
+                  <p>&quot;The &apos;Himalayan Adventure&apos; package was absolutely breathtaking. The itinerary was well-paced, the hotels were excellent, and the guide was fantastic. Thank you, Globetrotters!&quot;</p>
                   <h3>David K.</h3>
                 </div>
               </div>
