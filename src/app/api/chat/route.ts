@@ -62,7 +62,7 @@ export async function POST(req: Request) {
       response_format: { type: "json_object" } // Force JSON mode if supported, otherwise prompt handles it
     });
 
-    let rawContent = chatCompletion.choices[0]?.message?.content || "{}";
+    const rawContent = chatCompletion.choices[0]?.message?.content || "{}";
     let parsedData: any = { response: "I'm sorry, I couldn't generate a response.", suggestions: [] };
 
     try {
