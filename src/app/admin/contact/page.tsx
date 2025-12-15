@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useAuth } from '@/contexts/AuthContext';
-import { useTheme } from '@/contexts/ThemeContext';
-import DeleteConfirmationModal from '@/components/DeleteConfirmationModal';
-import PageHeader from '@/components/PageHeader';
+import { useAuth } from '../../../contexts/AuthContext';
+import { useTheme } from '../../../contexts/ThemeContext';
+import DeleteConfirmationModal from '../../../components/DeleteConfirmationModal';
+import PageHeader from '../../../components/PageHeader';
 import {
   Container,
   Paper,
