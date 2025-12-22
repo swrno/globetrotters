@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+/* Ensure underlines are visible */
+u {
+  text-decoration: underline;
+}
+
 /* Fix navigation visibility */
 @media (min-width: 992px) {
   .navbar-collapse {

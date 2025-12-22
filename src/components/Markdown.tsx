@@ -29,7 +29,7 @@ const Markdown: React.FC<MarkdownProps> = ({
     const parseAndSanitize = async () => {
       try {
         const rawHTML = marked.parse(content) as string;
-        const sanitized = DOMPurify.sanitize(rawHTML);
+        const sanitized = DOMPurify.sanitize(rawHTML, { ADD_TAGS: ['u'] });
         setHtmlContent(sanitized);
       } catch (error) {
         console.error("Error parsing markdown:", error);
