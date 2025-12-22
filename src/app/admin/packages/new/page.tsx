@@ -25,10 +25,12 @@ import {
   Cancel,
   Add,
 } from '@mui/icons-material';
-import RichTextEditor from '../../../../components/admin/RichTextEditor';
 import ImageUploader from '../../../../components/admin/ImageUploader';
 import DynamicSectionEditor, { SectionItem } from '../../../../components/admin/DynamicSectionEditor';
 import DynamicListEditor from '../../../../components/admin/DynamicListEditor';
+import dynamic from 'next/dynamic';
+
+const RichTextEditor = dynamic(() => import('../../../../components/admin/RichTextEditor'), { ssr: false });
 
 export default function NewPackage() {
   const [formData, setFormData] = useState({

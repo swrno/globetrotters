@@ -3,7 +3,9 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, IconButton, TextField, Typography, Paper, Tabs, Tab } from '@mui/material';
 import { Add, Delete, Close } from '@mui/icons-material';
-import RichTextEditor from './RichTextEditor';
+import dynamic from 'next/dynamic';
+
+const RichTextEditor = dynamic(() => import('./RichTextEditor'), { ssr: false });
 
 export interface SectionItem {
   title: string;
