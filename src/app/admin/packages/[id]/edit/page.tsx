@@ -1,5 +1,6 @@
 'use client';
 
+import { marked } from 'marked';
 import { useState, useEffect, useCallback } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import { useAuth } from '../../../../../contexts/AuthContext';
@@ -25,10 +26,10 @@ import {
   Save,
   Cancel,
 } from '@mui/icons-material';
-import MDEditor from '@uiw/react-md-editor';
-import '@uiw/react-md-editor/markdown-editor.css';
-import '@uiw/react-markdown-preview/markdown.css';
+import RichTextEditor from '../../../../../components/admin/RichTextEditor';
 import ImageUploader from '../../../../../components/admin/ImageUploader';
+import DynamicSectionEditor, { SectionItem } from '../../../../../components/admin/DynamicSectionEditor';
+import DynamicListEditor from '../../../../../components/admin/DynamicListEditor';
 
 interface Package {
   _id: string;
@@ -73,21 +74,11 @@ export default function EditPackage() {
     cost_per_person: '',
     best_time_to_visit: '',
     video_url: '',
-    trip_highlight: '',
+    trip_highlight: [] as SectionItem[],
     itinerary_description: '',
-    itinerary_details: `Day 1: Arrival in Shimla
-- Arrive in Shimla and check into hotel
-- Evening stroll on Mall Road
----
-Day 2: Shimla Sightseeing
-- Visit Jakhu Temple
-- Explore local markets
----
-Day 3: Departure
-- Check out from hotel
-- Departure to home`,
-    inclusions: '',
-    exclusions: '',
+    itinerary_details: [] as SectionItem[],
+    inclusions: [] as string[],
+    exclusions: [] as string[],
   });
   const [images, setImages] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
@@ -109,20 +100,18 @@ Day 3: Departure
         const pkg = data.data;
         setPackageData(pkg);
         
-        // Convert trip_highlight object to string format with ## headings
-        const tripHighlightStr = Object.entries(pkg.trip_highlight || {})
-          .map(([key, value]) => `## ${key}\n${value}`)
-          .join('\n\n');
+        // Convert trip_highlight object to array
+        const tripHighlightArray = Object.entries(pkg.trip_highlight || {})
+          .map(([title, description]) => ({ title, description: description ? (marked.parse(description as string) as string) : '' }));
         
-        // Convert itinerary details to string format
-        const itineraryDetailsStr = Object.entries(pkg.itinerary?.details || {})
-          .map(([key, value]) => `${key}: ${value}`)
-          .join('\n---\n');
+        // Convert itinerary details to array
+        const itineraryDetailsArray = Object.entries(pkg.itinerary?.details || {})
+          .map(([title, description]) => ({ title, description: description ? (marked.parse(description as string) as string) : '' }));
         
         setFormData({
           location: pkg.location,
           title: pkg.title,
-          description: pkg.description,
+          description: pkg.description ? (marked.parse(pkg.description) as string) : '',
           tags: pkg.tags.join(', '),
           category: pkg.category || 'domestic',
           days: pkg.days.toString(),
@@ -130,11 +119,11 @@ Day 3: Departure
           cost_per_person: pkg.cost_per_person?.toString() || '',
           best_time_to_visit: pkg.best_time_to_visit || '',
           video_url: pkg.video_url || '',
-          trip_highlight: tripHighlightStr,
-          itinerary_description: pkg.itinerary?.description || '',
-          itinerary_details: itineraryDetailsStr,
-          inclusions: pkg.inclusions_exclusions?.inclusions?.join('\n') || '',
-          exclusions: pkg.inclusions_exclusions?.exclusions?.join('\n') || '',
+          trip_highlight: tripHighlightArray,
+          itinerary_description: pkg.itinerary?.description ? (marked.parse(pkg.itinerary.description) as string) : '',
+          itinerary_details: itineraryDetailsArray,
+          inclusions: pkg.inclusions_exclusions?.inclusions || [],
+          exclusions: pkg.inclusions_exclusions?.exclusions || [],
         });
         
         // Set images separately
@@ -173,34 +162,21 @@ Day 3: Departure
     setSuccess(false);
 
     try {
-      // Parse trip highlights - split by ## headings
+      // Parse trip highlights
       const tripHighlight: Record<string, string> = {};
-      if (formData.trip_highlight.trim()) {
-        // Split by ## heading markers to get sections
-        const sections = formData.trip_highlight.split(/^##\s+/m).filter(s => s.trim());
-        sections.forEach((section) => {
-          const lines = section.split('\n');
-          const key = lines[0].trim(); // First line is the category name
-          const value = lines.slice(1).join('\n').trim(); // Rest is the content
-          if (key && value) {
-            tripHighlight[key] = value;
-          }
-        });
-      }
+      formData.trip_highlight.forEach(item => {
+        if (item.title && item.description) {
+          tripHighlight[item.title] = item.description;
+        }
+      });
 
       // Parse itinerary details
       const itineraryDetails: Record<string, string> = {};
-      if (formData.itinerary_details.trim()) {
-        const details = formData.itinerary_details.split('\n---\n');
-        details.forEach((detail, index) => {
-          if (detail.trim()) {
-            const [key, ...valueParts] = detail.split(':');
-            if (key && valueParts.length > 0) {
-              itineraryDetails[key.trim()] = valueParts.join(':').trim();
-            }
-          }
-        });
-      }
+      formData.itinerary_details.forEach(item => {
+        if (item.title && item.description) {
+          itineraryDetails[item.title] = item.description;
+        }
+      });
 
       const packageData = {
         location: formData.location,
@@ -220,8 +196,8 @@ Day 3: Departure
           details: itineraryDetails
         },
         inclusions_exclusions: {
-          inclusions: formData.inclusions.split('\n').map(item => item.trim()).filter(item => item),
-          exclusions: formData.exclusions.split('\n').map(item => item.trim()).filter(item => item)
+          inclusions: formData.inclusions.filter(item => item.trim()),
+          exclusions: formData.exclusions.filter(item => item.trim())
         }
       };
 
@@ -440,34 +416,20 @@ Day 3: Departure
 
             <Grid size={{ xs: 12 }}>
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle2" gutterBottom sx={{ mb: 1 }}>
-                  Description *
-                </Typography>
-                <Paper sx={{ border: '1px solid #e0e0e0', borderRadius: 1, overflow: 'hidden' }}>
-                  <MDEditor
+                <RichTextEditor
                     value={formData.description}
-                    onChange={(value?: string) => {
+                    onChange={(value: string) => {
                       setFormData(prev => ({
                         ...prev,
                         description: value || ''
                       }));
                     }}
-                    preview="edit"
-                    height={350}
-                    data-color-mode="light"
-                    textareaProps={{
-                      placeholder: 'Enter package description in markdown format...\n\n## Example:\n\n**Explore the magnificent beauty** of this destination with our comprehensive package.\n\n### Highlights\n- Amazing scenic views\n- Cultural experiences\n- Adventure activities\n\n> This trip offers unforgettable memories and experiences that will last a lifetime.',
-                      style: { fontSize: '14px', lineHeight: '1.5' }
-                    }}
-                    style={{
-                      backgroundColor: '#fafafa'
-                    }}
+                    label="Description *"
                   />
-                </Paper>
-                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                  Detailed description of the package. Use Markdown for formatting: **bold**, *italic*, ## headings, - lists, {'>'}quotes, etc.
-                </Typography>
-              </Box>
+                  <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                    Detailed description of the package.
+                  </Typography>
+                </Box>
             </Grid>
 
             <Grid size={{ xs: 12, md: 6 }}>
@@ -514,163 +476,61 @@ Day 3: Departure
             </Grid>
 
             <Grid size={{ xs: 12 }}>
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle2" gutterBottom sx={{ mb: 1 }}>
-                  Trip Highlights
-                </Typography>
-                <Paper sx={{ border: '1px solid #e0e0e0', borderRadius: 1, overflow: 'hidden' }}>
-                  <MDEditor
-                    value={formData.trip_highlight}
-                    onChange={(value?: string) => {
-                      setFormData(prev => ({
-                        ...prev,
-                        trip_highlight: value || ''
-                      }));
-                    }}
-                    preview="edit"
-                    height={350}
-                    data-color-mode="light"
-                    textareaProps={{
-                      placeholder: '## Scenic Landscapes\n• Rohtang Pass at 3,978 meters with breathtaking views\n• Pine forests and alpine meadows\n• Snow-capped mountain peaks\n\n## Adventure Activities\n1. Paragliding experiences\n2. Skiing and snowboarding\n3. Trekking trails\n\n## Cultural Landmarks\nVisit ancient temples and local heritage sites\n\nExplore vibrant local markets and traditions',
-                      style: { fontSize: '14px', lineHeight: '1.5' }
-                    }}
-                    style={{
-                      backgroundColor: '#fafafa'
-                    }}
-                  />
-                </Paper>
-                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                  Format: Use ## for category headings, then use bullet points (•, -, *), numbered lists (1. 2. 3.), or paragraphs for content. Supports markdown formatting.
-                </Typography>
-              </Box>
+              <DynamicSectionEditor
+                items={formData.trip_highlight}
+                onChange={(items) => setFormData(prev => ({ ...prev, trip_highlight: items }))}
+                titleLabel="Highlight Title"
+                descriptionLabel="Highlight Description"
+                sectionTitle="Trip Highlights"
+              />
             </Grid>
 
             <Grid size={{ xs: 12 }}>
               <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle2" gutterBottom sx={{ mb: 1 }}>
-                  Itinerary Description
-                </Typography>
-                <Paper sx={{ border: '1px solid #e0e0e0', borderRadius: 1, overflow: 'hidden' }}>
-                  <MDEditor
+                <RichTextEditor
                     value={formData.itinerary_description}
-                    onChange={(value?: string) => {
+                    onChange={(value: string) => {
                       setFormData(prev => ({
                         ...prev,
                         itinerary_description: value || ''
                       }));
                     }}
-                    preview="edit"
-                    height={200}
-                    data-color-mode="light"
-                    textareaProps={{
-                      placeholder: 'A detailed overview of the trip itinerary...\n\nExample: **Himachal Pradesh**, known as \'Dev Bhoomi\' (Land of Gods), is a paradise in the Himalayas, offering serene landscapes, vibrant culture, and thrilling adventures.',
-                      style: { fontSize: '14px', lineHeight: '1.5' }
-                    }}
-                    style={{
-                      backgroundColor: '#fafafa'
-                    }}
+                    label="Itinerary Description"
                   />
-                </Paper>
-                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                  General description of the itinerary with markdown formatting support.
-                </Typography>
-              </Box>
+                  <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
+                    General description of the itinerary.
+                  </Typography>
+                </Box>
             </Grid>
 
             <Grid size={{ xs: 12 }}>
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle2" gutterBottom sx={{ mb: 1 }}>
-                  Itinerary Details
-                </Typography>
-                <Paper sx={{ border: '1px solid #e0e0e0', borderRadius: 1, overflow: 'hidden' }}>
-                  <MDEditor
-                    value={formData.itinerary_details}
-                    onChange={(value?: string) => {
-                      setFormData(prev => ({
-                        ...prev,
-                        itinerary_details: value || ''
-                      }));
-                    }}
-                    preview="edit"
-                    height={300}
-                    data-color-mode="light"
-                    textareaProps={{
-                      placeholder: 'Enter detailed itinerary with markdown formatting:\n\n**Day 1: Arrival in Shimla**\n\n- Arrive in Shimla and check into hotel\n- Evening stroll on Mall Road\n\n---\n\n**Day 2: Shimla Sightseeing**\n\n- Visit Jakhu Temple\n- Explore local markets\n\n---\n\n**Day 3: Departure**\n\n- Check out from hotel\n- Departure to home',
-                      style: { fontSize: '14px', lineHeight: '1.5' }
-                    }}
-                    style={{
-                      backgroundColor: '#fafafa'
-                    }}
-                  />
-                </Paper>
-                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                  Enter itinerary as **Day X: Title** followed by details, separate days with --- (horizontal rule).
-                </Typography>
-              </Box>
+              <DynamicSectionEditor
+                items={formData.itinerary_details}
+                onChange={(items) => setFormData(prev => ({ ...prev, itinerary_details: items }))}
+                titleLabel="Day Title (e.g., Day 1: Arrival)"
+                descriptionLabel="Day Description"
+                sectionTitle="Itinerary Details"
+              />
             </Grid>
 
             <Grid size={{ xs: 12, md: 6 }}>
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle2" gutterBottom sx={{ mb: 1 }}>
-                  Inclusions
-                </Typography>
-                <Paper sx={{ border: '1px solid #e0e0e0', borderRadius: 1, overflow: 'hidden' }}>
-                  <MDEditor
-                    value={formData.inclusions}
-                    onChange={(value?: string) => {
-                      setFormData(prev => ({
-                        ...prev,
-                        inclusions: value || ''
-                      }));
-                    }}
-                    preview="edit"
-                    height={250}
-                    data-color-mode="light"
-                    textareaProps={{
-                      placeholder: 'Enter inclusions with markdown formatting:\n\n- **Accommodation** for 5 nights (double sharing basis)\n- **Daily breakfast and dinner**\n- **Local transportation**\n- **Professional guide services**\n- All permit fees\n- Travel insurance',
-                      style: { fontSize: '14px', lineHeight: '1.5' }
-                    }}
-                    style={{
-                      backgroundColor: '#fafafa'
-                    }}
-                  />
-                </Paper>
-                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                  Enter inclusions with markdown formatting. Use bullet points and **bold** for emphasis.
-                </Typography>
-              </Box>
+              <DynamicListEditor
+                items={formData.inclusions}
+                onChange={(items) => setFormData(prev => ({ ...prev, inclusions: items }))}
+                label="Inclusion"
+                sectionTitle="Inclusions"
+                placeholder="e.g., Accommodation"
+              />
             </Grid>
 
             <Grid size={{ xs: 12, md: 6 }}>
-              <Box sx={{ mb: 2 }}>
-                <Typography variant="subtitle2" gutterBottom sx={{ mb: 1 }}>
-                  Exclusions
-                </Typography>
-                <Paper sx={{ border: '1px solid #e0e0e0', borderRadius: 1, overflow: 'hidden' }}>
-                  <MDEditor
-                    value={formData.exclusions}
-                    onChange={(value?: string) => {
-                      setFormData(prev => ({
-                        ...prev,
-                        exclusions: value || ''
-                      }));
-                    }}
-                    preview="edit"
-                    height={250}
-                    data-color-mode="light"
-                    textareaProps={{
-                      placeholder: 'Enter exclusions with markdown formatting:\n\n- **Airfare or train fare**\n- Personal expenses\n- Additional meals not mentioned\n- Tips and gratuities\n- Adventure activity charges\n- Emergency evacuation',
-                      style: { fontSize: '14px', lineHeight: '1.5' }
-                    }}
-                    style={{
-                      backgroundColor: '#fafafa'
-                    }}
-                  />
-                </Paper>
-                <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-                  Enter exclusions with markdown formatting. Use bullet points and **bold** for emphasis.
-                </Typography>
-              </Box>
+              <DynamicListEditor
+                items={formData.exclusions}
+                onChange={(items) => setFormData(prev => ({ ...prev, exclusions: items }))}
+                label="Exclusion"
+                sectionTitle="Exclusions"
+                placeholder="e.g., Airfare"
+              />
             </Grid>
 
             {packageData && (
