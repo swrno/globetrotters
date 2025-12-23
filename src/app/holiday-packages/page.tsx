@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
+import DOMPurify from 'dompurify';
 import Header from '../../components/Header';
 import Footer from '../../components/Footer';
 import { usePackages } from '../../hooks/usePackages';
@@ -150,7 +151,12 @@ export default function HolidayPackages() {
                             </Link>
                           </figure>
                           <h3>{pkg.location}</h3>
-                          <p>{pkg.description}</p>
+                          <div 
+                            className="package-description"
+                            dangerouslySetInnerHTML={{ 
+                              __html: DOMPurify.sanitize(pkg.description) 
+                            }} 
+                          />
                           <div className="durationBestTime">
                             <ul>
                               <li><span>Duration:</span> {pkg.nights} Nights / {pkg.days} Days</li>

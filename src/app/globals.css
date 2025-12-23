@@ -132,7 +132,8 @@ u {
 }
 
 /* Limit package description to 2 lines */
-.beyondLimitTab .item p {
+.beyondLimitTab .item p,
+.beyondLimitTab .item .package-description {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
