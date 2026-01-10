@@ -56,13 +56,6 @@ export default function PublicStyles() {
     return null;
   }
 
-  return (
-    <>
-      <link rel="stylesheet" href="/css/bootstrap.min.css" />
-      <link rel="stylesheet" href="/css/swiper.css" />
-      <link rel="stylesheet" href="/css/fancybox.css" />
-      <link rel="stylesheet" href="/css/easy-responsive-tabs.css" />
-      <link rel="stylesheet" href="/style.css" />
-    </>
-  );
+  // This component only injects scripts now; styles are added server-side in the layout
+  return null;
 }

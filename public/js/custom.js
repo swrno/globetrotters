@@ -1,9 +1,9 @@
 
-   document.addEventListener("DOMContentLoaded", function (e) {
+function initCustom() {
+  // $(document).ready(function () {
 
-// $(document).ready(function () {
-
-document.querySelector('.navbar-toggler').addEventListener("click", menubtn);
+  const toggler = document.querySelector('.navbar-toggler');
+  if (toggler) toggler.addEventListener("click", menubtn);
 function menubtn(){
   document.querySelector('body').classList.add('menuOpen')
 }
@@ -133,4 +133,10 @@ const swiper2 = new Swiper(".testimonialSlider .swiper", {
     el: ".swiper-pagination",
   },
 });
-})
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCustom);
+} else {
+  initCustom();
+}
