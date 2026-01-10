@@ -10,36 +10,36 @@ export default function PublicStyles() {
   useEffect(() => {
     // Only load Bootstrap and other static styles for non-admin routes
     if (!isAdminRoute) {
-      // Load Bootstrap scripts
+      // Load Bootstrap and other scripts in-order (disable async so execution order is preserved)
       const jqueryScript = document.createElement('script');
       jqueryScript.src = '/js/jquery.min.js';
-      jqueryScript.async = true;
+      jqueryScript.async = false;
       document.body.appendChild(jqueryScript);
 
       jqueryScript.onload = () => {
         const bootstrapScript = document.createElement('script');
         bootstrapScript.src = '/js/bootstrap.min.js';
-        bootstrapScript.async = true;
+        bootstrapScript.async = false;
         document.body.appendChild(bootstrapScript);
 
         const swiperScript = document.createElement('script');
         swiperScript.src = '/js/swiper-bundle.min.js';
-        swiperScript.async = true;
+        swiperScript.async = false;
         document.body.appendChild(swiperScript);
 
         const fancyboxScript = document.createElement('script');
         fancyboxScript.src = '/js/fancybox.umd.js';
-        fancyboxScript.async = true;
+        fancyboxScript.async = false;
         document.body.appendChild(fancyboxScript);
 
         const tabsScript = document.createElement('script');
         tabsScript.src = '/js/easyResponsiveTabs.js';
-        tabsScript.async = true;
+        tabsScript.async = false;
         document.body.appendChild(tabsScript);
 
         const customScript = document.createElement('script');
         customScript.src = '/js/custom.js';
-        customScript.async = true;
+        customScript.async = false;
         document.body.appendChild(customScript);
       };
 
