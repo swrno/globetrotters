@@ -9,31 +9,73 @@ export default function FeaturedPackages() {
   const swiperRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Initialize Swiper after component mounts
-    if (typeof window !== 'undefined' && window.Swiper && swiperRef.current) {
-      new window.Swiper(swiperRef.current, {
-        loop: true,
-        slidesPerView: 2.5,
-        spaceBetween: 30,
-        autoplay: {
-          delay: 3000,
+    // Initialize Swiper after component mounts. Try global first, then dynamic import.
+    let swInstance: any = null;
+    let mounted = true;
+
+    const options = {
+      loop: true,
+      slidesPerView: 2.5,
+      spaceBetween: 30,
+      autoplay: {
+        delay: 3000,
+      },
+      breakpoints: {
+        0: {
+          slidesPerView: 1.2,
+          spaceBetween: 15,
         },
-        breakpoints: {
-          0: {
-            slidesPerView: 1.2,
-            spaceBetween: 15,
-          },
-          768: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-          },
-          1024: {
-            slidesPerView: 2.5,
-            spaceBetween: 30,
-          },
+        768: {
+          slidesPerView: 2,
+          spaceBetween: 20,
         },
-      });
+        1024: {
+          slidesPerView: 2.5,
+          spaceBetween: 30,
+        },
+      },
+    };
+
+    async function initSwiper() {
+      if (!swiperRef.current) return;
+
+      // If the global script provided Swiper, use it
+      if (typeof window !== 'undefined' && (window as any).Swiper) {
+        swInstance = new (window as any).Swiper(swiperRef.current, options);
+        return;
+      }
+
+      // Otherwise dynamically import the module
+      try {
+        const mod = await import('swiper');
+        const { Autoplay } = await import('swiper/modules');
+        const SwiperCtor = (mod && (mod.default || mod.Swiper)) as any;
+        const modules: any[] = [Autoplay];
+        if (!mounted) return;
+        if (SwiperCtor && swiperRef.current) {
+          // Pass modules when using the ESM build so features like autoplay work
+          const opts = { ...options, modules };
+          swInstance = new SwiperCtor(swiperRef.current, opts);
+        }
+      } catch (err) {
+        // Fail silently but log to console to help debugging
+        // eslint-disable-next-line no-console
+        console.error('Failed to initialize Swiper:', err);
+      }
     }
+
+    initSwiper();
+
+    return () => {
+      mounted = false;
+      if (swInstance && typeof swInstance.destroy === 'function') {
+        try {
+          swInstance.destroy(true, true);
+        } catch (e) {
+          // ignore
+        }
+      }
+    };
   }, [packages]); // Re-initialize when packages change
 
   if (loading) {

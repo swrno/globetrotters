@@ -32,7 +32,7 @@ u {
 .feaHolidayPack .destinationSlider .item {
   position: relative;
   cursor: pointer;
-  height: 585px; /* Match the natural height of manali.png (470x585) */
+  height: calc(100% - 10px); /* Match the natural height of manali.png (470x585) */
 }
 
 .feaHolidayPack .destinationSlider .item::before {
