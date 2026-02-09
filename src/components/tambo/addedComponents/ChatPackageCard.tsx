@@ -25,12 +25,7 @@ export function ChatPackageCard({ id }: ChatPackageCardProps) {
   }
 
   if (error || !pkg) {
-    return (
-      <div className="text-sm text-destructive p-4 border border-destructive/20 rounded bg-destructive/5 flex items-center gap-2">
-        <Info className="h-4 w-4" />
-        <span>Could not find package details. It might have been removed.</span>
-      </div>
-    );
+    return null;
   }
 
   return (

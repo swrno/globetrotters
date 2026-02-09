@@ -7,6 +7,7 @@ import { TamboTool } from "@tambo-ai/react";
 import { navigateSchema, navigateToolAction } from "@/components/tambo/tools/Navigate";
 import { getCurrentPageSchema, getCurrentPageAction } from "@/components/tambo/tools/GetCurrentPage";
 import { searchPackagesSchema, searchPackagesAction } from "@/components/tambo/tools/SearchTool";
+import { getDateTimeSchema, getDateTimeAction } from "@/components/tambo/tools/GetDateTime";
 
 export const components = [
   {
@@ -37,7 +38,7 @@ export const components = [
   },
   {
     name: "ChatPackageCard",
-    description: "Display rich details for a single package. Must provide the 'id' from search results.",
+    description: "Display rich details for a single package. Use ONLY when the user asks for details about a specific package from search results. DO NOT USE if the user is already on the individual package page unless they explicitly ask for a search-result style card.",
     component: ChatPackageCard,
     propsSchema: z.object({
       id: z.string().optional().describe("The unique ID of the package to display. Required for showing details."),
@@ -71,6 +72,13 @@ export const tools: TamboTool[] = [
     description: "Retrieves the current URL path context.",
     tool: getCurrentPageAction,
     inputSchema: getCurrentPageSchema,
+    outputSchema: z.any(),
+  },
+  {
+    name: "get_date_time",
+    description: "Get the current date and time context.",
+    tool: getDateTimeAction,
+    inputSchema: getDateTimeSchema,
     outputSchema: z.any(),
   },
 ];
