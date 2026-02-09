@@ -3,9 +3,10 @@ import { z } from "zod";
 
 export const searchPackagesSchema = z.object({
   query: z.string().optional().describe("The search query (keywords, location, etc.)"),
+  category: z.enum(['domestic', 'international', 'all']).optional().describe("Filter by category (domestic, international, or all)"),
 });
 
-export const searchPackagesAction = async ({ query }: { query?: string }) => {
+export const searchPackagesAction = async ({ query, category }: { query?: string, category?: 'domestic' | 'international' | 'all' }) => {
   try {
     const res = await fetch('/api/packages');
     if (!res.ok) throw new Error('Failed to fetch');
@@ -15,7 +16,12 @@ export const searchPackagesAction = async ({ query }: { query?: string }) => {
       throw new Error(responseData.error || "Invalid response format");
     }
     
-    const packages = responseData.data;
+    let packages = responseData.data;
+
+    // Filter by category if specified and not 'all'
+    if (category && category !== 'all') {
+      packages = packages.filter((pkg: any) => pkg.category === category);
+    }
 
     const formatPackage = (pkg: any) => ({
       id: pkg.id,
