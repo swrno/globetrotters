@@ -1,9 +1,9 @@
 
-   document.addEventListener("DOMContentLoaded", function (e) {
+function initCustom() {
+  // $(document).ready(function () {
 
-// $(document).ready(function () {
-
-document.querySelector('.navbar-toggler').addEventListener("click", menubtn);
+  const toggler = document.querySelector('.navbar-toggler');
+  if (toggler) toggler.addEventListener("click", menubtn);
 function menubtn(){
   document.querySelector('body').classList.add('menuOpen')
 }
@@ -41,11 +41,33 @@ menuItem.forEach((item)=>{
    });
 
   
-  Fancybox.bind('[data-fancybox="gallery"]', {});
-  Fancybox.bind('[data-fancybox="overviewVideo"]', {});
-  Fancybox.bind('[data-fancybox="gallery-a"]', {
+  // Bind Fancybox when available. If Fancybox hasn't loaded yet (script loaded async),
+  // poll for it briefly and bind once ready to avoid "Fancybox is not defined" runtime errors.
+  (function tryBindFancybox() {
+    const doBind = () => {
+      try {
+        if (window.Fancybox) {
+          Fancybox.bind('[data-fancybox="gallery"]', {});
+          Fancybox.bind('[data-fancybox="overviewVideo"]', {});
+          Fancybox.bind('[data-fancybox="gallery-a"]', {});
+          return true;
+        }
+      } catch (e) {
+        // ignore
+      }
+      return false;
+    };
 
-  });
+    if (doBind()) return;
+
+    let attempts = 0;
+    const iv = setInterval(() => {
+      attempts += 1;
+      if (doBind() || attempts > 50) {
+        clearInterval(iv);
+      }
+    }, 100);
+  })();
   $('#parentHorizontalTab').easyResponsiveTabs({
     type: 'default', //Types: default, vertical, accordion
     width: 'auto', //auto or any width like 600px
@@ -133,4 +155,10 @@ const swiper2 = new Swiper(".testimonialSlider .swiper", {
     el: ".swiper-pagination",
   },
 });
-})
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initCustom);
+} else {
+  initCustom();
+}
