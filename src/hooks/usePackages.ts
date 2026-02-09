@@ -15,6 +15,10 @@ interface Package {
   cost_per_person: number;
   registrations: any[];
   images: string[];
+  inclusions_exclusions: {
+    inclusions: string[];
+    exclusions: string[];
+  };
   createdAt: string;
   updatedAt: string;
 }

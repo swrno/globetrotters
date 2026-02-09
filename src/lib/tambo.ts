@@ -3,6 +3,7 @@ import { ChatPackageList } from "@/components/tambo/addedComponents/ChatPackageL
 import { ChatPackageCard } from "@/components/tambo/addedComponents/ChatPackageCard";
 import { LocationPermissionCard } from "@/components/tambo/addedComponents/LocationPermissionCard";
 import { SmartRecommendations } from "@/components/tambo/addedComponents/SmartRecommendations";
+import { PackageCustomizer } from "@/components/tambo/addedComponents/PackageCustomizer";
 import { NavigationTool } from "@/components/tambo/tools/NavigationTool";
 import { z } from "zod";
 import { TamboTool } from "@tambo-ai/react";
@@ -20,6 +21,14 @@ export const components = [
     propsSchema: z.object({
       packageId: z.string().optional().describe("The ID of the package"),
       packageTitle: z.string().optional().describe("The title of the package"),
+    }),
+  },
+  {
+    name: "PackageCustomizer",
+    description: "Show this specifically when a user asks to CUSTOMIZE, change, or modify a package. This is a rich interactive tool for personalization.",
+    component: PackageCustomizer,
+    propsSchema: z.object({
+      packageId: z.string().describe("The ID of the package to customize."),
     }),
   },
   {
