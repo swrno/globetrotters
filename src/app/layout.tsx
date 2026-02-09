@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import PublicStyles from "../components/PublicStyles";
+import TamboWrapper from "../components/TamboWrapperDynamic";
 
 
 export const metadata: Metadata = {
@@ -20,8 +21,9 @@ export default function RootLayout({
         <PublicStyles />
       </head>
       <body className="antialiased">
-        {children}
-
+        <TamboWrapper>
+          {children}
+        </TamboWrapper>
       </body>
     </html>
   );
