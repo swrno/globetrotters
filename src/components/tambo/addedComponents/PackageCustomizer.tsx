@@ -6,7 +6,7 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription }
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
+import { Textarea } from "../../ui/textarea";
 import { 
   Loader2, 
   CheckCircle2, 
@@ -21,11 +21,23 @@ import {
 } from "lucide-react";
 
 interface PackageCustomizerProps {
-  packageId: string;
+  packageId?: string;
 }
 
-export function PackageCustomizer({ packageId }: PackageCustomizerProps) {
+export function PackageCustomizer({ packageId: propPackageId }: PackageCustomizerProps) {
+  const [packageId, setPackageId] = useState<string | undefined>(propPackageId);
   const { packages, loading } = usePackages();
+
+  // Try to detect packageId from URL if not provided
+  useEffect(() => {
+    if (!packageId && typeof window !== "undefined") {
+      const match = window.location.pathname.match(/\/package\/([^/]+)/);
+      if (match && match[1]) {
+        setPackageId(match[1]);
+      }
+    }
+  }, [packageId]);
+
   const pkg = useMemo(() => packages.find(p => p.id === packageId), [packages, packageId]);
 
   const [step, setStep] = useState(1);
@@ -89,7 +101,19 @@ export function PackageCustomizer({ packageId }: PackageCustomizerProps) {
     </Card>
   );
 
-  if (!pkg) return null;
+  if (!pkg) return (
+    <Card className="w-full my-4 border-dashed bg-muted/20">
+      <CardContent className="pt-6 text-center space-y-3">
+        <Sparkles className="h-8 w-8 text-primary mx-auto opacity-50" />
+        <div className="space-y-1">
+          <h3 className="font-bold text-sm">Which package should we customize?</h3>
+          <p className="text-xs text-muted-foreground px-4">
+            Navigate to a specific holiday package page, or ask me for details about a package first.
+          </p>
+        </div>
+      </CardContent>
+    </Card>
+  );
 
   if (status === 'success') {
     return (

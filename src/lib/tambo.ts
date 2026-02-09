@@ -28,7 +28,7 @@ export const components = [
     description: "Show this specifically when a user asks to CUSTOMIZE, change, or modify a package. This is a rich interactive tool for personalization.",
     component: PackageCustomizer,
     propsSchema: z.object({
-      packageId: z.string().describe("The ID of the package to customize."),
+      packageId: z.string().optional().describe("The ID of the package to customize. If not provided, the component will attempt to detect it or ask the user."),
     }),
   },
   {
