@@ -1,10 +1,11 @@
 
 "use client";
 
+import { useState, useRef } from "react";
 import { usePackages } from "@/hooks/usePackages";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Loader2, MapPin, Calendar, Clock, CheckCircle2, Info } from "lucide-react";
+import { Loader2, MapPin, Calendar, Clock, CheckCircle2, Info, ChevronLeft, ChevronRight } from "lucide-react";
 import Link from "next/link";
 
 interface ChatPackageCardProps {
@@ -13,8 +14,17 @@ interface ChatPackageCardProps {
 
 export function ChatPackageCard({ id }: ChatPackageCardProps) {
   const { packages, loading, error } = usePackages();
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   const pkg = packages.find(p => p.id === id);
+
+  const scroll = (direction: 'left' | 'right') => {
+    if (scrollRef.current) {
+      const { scrollLeft, clientWidth } = scrollRef.current;
+      const scrollTo = direction === 'left' ? scrollLeft - clientWidth : scrollLeft + clientWidth;
+      scrollRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+    }
+  };
 
   if (loading) {
     return (
@@ -30,20 +40,57 @@ export function ChatPackageCard({ id }: ChatPackageCardProps) {
 
   return (
     <Card className="overflow-hidden border-border shadow-md my-2 max-w-full">
-      {/* Hero Image Section */}
-      <div className="relative aspect-[16/9] w-full overflow-hidden">
-        {pkg.images && pkg.images.length > 0 ? (
-          <img 
-            src={pkg.images[0]} 
-            alt={pkg.title}
-            className="object-cover w-full h-full" 
-          />
-        ) : (
-          <div className="flex items-center justify-center h-full bg-muted text-muted-foreground">
-            No Preview Available
+      {/* Hero Image Section - Horizontal Scroll */}
+      <div className="relative aspect-[16/9] w-full overflow-hidden group/gallery">
+        <div 
+          ref={scrollRef}
+          className="flex overflow-x-auto snap-x snap-mandatory scrollbar-hide w-full h-full"
+        >
+          {pkg.images && pkg.images.length > 0 ? (
+            pkg.images.map((img, idx) => (
+              <div key={idx} className="flex-none w-full h-full snap-center">
+                <img 
+                  src={img} 
+                  alt={`${pkg.title} - ${idx + 1}`}
+                  className="object-cover w-full h-full" 
+                />
+              </div>
+            ))
+          ) : (
+            <div className="flex items-center justify-center w-full h-full bg-muted text-muted-foreground">
+              No Preview Available
+            </div>
+          )}
+        </div>
+        
+        {/* Navigation Arrows */}
+        {pkg.images && pkg.images.length > 1 && (
+          <>
+            <button 
+              onClick={(e) => { e.preventDefault(); scroll('left'); }}
+              className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 rounded-full opacity-0 group-hover/gallery:opacity-100 transition-opacity z-20"
+            >
+              <ChevronLeft className="h-5 w-5" />
+            </button>
+            <button 
+              onClick={(e) => { e.preventDefault(); scroll('right'); }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white p-1 rounded-full opacity-0 group-hover/gallery:opacity-100 transition-opacity z-20"
+            >
+              <ChevronRight className="h-5 w-5" />
+            </button>
+          </>
+        )}
+        
+        {/* Indicators for multi-image */}
+        {pkg.images && pkg.images.length > 1 && (
+          <div className="absolute bottom-3 left-1/2 -translate-x-1/2 flex gap-1.5 z-10">
+            {pkg.images.map((_, i) => (
+              <div key={i} className="h-1.5 w-1.5 rounded-full bg-white/40 border border-black/10 shadow-sm" />
+            ))}
           </div>
         )}
-        <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full shadow-lg">
+
+        <div className="absolute top-3 right-3 bg-primary text-primary-foreground text-xs font-bold px-3 py-1 rounded-full shadow-lg z-10">
           {pkg.days}D / {pkg.nights}N
         </div>
       </div>
