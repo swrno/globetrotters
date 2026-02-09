@@ -58,7 +58,7 @@ export function PackageCustomizer({ packageId: propPackageId }: PackageCustomize
         setSelectedInclusions(pkg.inclusions_exclusions.inclusions);
       }
     }
-  }, [pkg]);
+  }, [pkg, selectedInclusions.length]);
 
   const handleInclusionToggle = (item: string) => {
     setSelectedInclusions(prev => 
@@ -227,7 +227,7 @@ export function PackageCustomizer({ packageId: propPackageId }: PackageCustomize
                     <Sparkles className="h-4 w-4 text-primary" />
                 </div>
                 <p className="text-xs text-muted-foreground">
-                    "I'd love to add a private dinner experience or upgrade to a sea-view room."
+                    &quot;I&apos;d love to add a private dinner experience or upgrade to a sea-view room.&quot;
                 </p>
             </div>
           </div>

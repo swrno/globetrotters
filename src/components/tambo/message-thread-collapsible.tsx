@@ -212,7 +212,7 @@ export const MessageThreadCollapsible = React.forwardRef<
     const THREAD_CONFIG = {
       labels: {
         openState: "Conversations",
-        closedState: "Start chatting with tambo",
+        closedState: "Start chatting with Globetrotters Assistent",
       },
     };
 

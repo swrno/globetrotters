@@ -191,20 +191,7 @@ export default function AdminLogin() {
             </Button>
           </Box>
 
-          <Paper 
-            variant="outlined" 
-            sx={{ p: 2, mt: 2, width: '100%' }}
-          >
-            <Typography variant="body2" color="text.secondary" align="center">
-              <strong>Demo credentials:</strong>
-            </Typography>
-            <Typography variant="body2" color="text.secondary" align="center">
-              Email: admin@globetrotters.com
-            </Typography>
-            <Typography variant="body2" color="text.secondary" align="center">
-              Password: admin123
-            </Typography>
-          </Paper>
+    
         </Paper>
       </Box>
     </Container>

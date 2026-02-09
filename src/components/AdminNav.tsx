@@ -40,6 +40,7 @@ import {
   Database,
   X,
   ChevronRight,
+  Settings2,
 } from 'lucide-react';
 
 export default function AdminNav() {
@@ -79,7 +80,7 @@ export default function AdminNav() {
     setMobileCustomerDataOpen(!mobileCustomerDataOpen);
   };
 
-  const isCustomerDataActive = pathname?.startsWith('/admin/registrations') || pathname?.startsWith('/admin/contact');
+  const isCustomerDataActive = pathname?.startsWith('/admin/registrations') || pathname?.startsWith('/admin/contact') || pathname?.startsWith('/admin/custom-plans');
 
   const navItems = [
     { label: 'Dashboard', path: '/admin/dashboard', icon: LayoutDashboard },
@@ -89,6 +90,7 @@ export default function AdminNav() {
 
   const customerDataItems = [
     { label: 'Registrations', path: '/admin/registrations', icon: Users },
+    { label: 'Custom Plans', path: '/admin/custom-plans', icon: Settings2 },
     { label: 'Contact Us', path: '/admin/contact', icon: MessageSquare },
   ];
 

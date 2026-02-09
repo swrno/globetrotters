@@ -40,7 +40,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       // In a real app, you'd verify the token with the server
       const token = localStorage.getItem('auth-token');
       if (token) {
-        setUser({ email: 'admin@globetrotters.com', role: 'admin' });
+        setUser({ email: 'brandsubhajit@gmail.com', role: 'admin' });
       }
     } catch (error) {
       console.error('Auth check failed:', error);

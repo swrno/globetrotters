@@ -53,3 +53,23 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+
+export async function GET(request: NextRequest) {
+  try {
+    await dbConnect();
+    
+    const customizations = await CustomizedPackage.find({})
+      .sort({ createdAt: -1 });
+
+    return NextResponse.json(
+      { success: true, data: customizations },
+      { status: 200 }
+    );
+  } catch (error: any) {
+    console.error("Error fetching customizations:", error);
+    return NextResponse.json(
+      { success: false, error: error.message || "Failed to fetch customizations" },
+      { status: 500 }
+    );
+  }
+}

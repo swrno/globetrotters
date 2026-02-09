@@ -120,7 +120,7 @@ export function RegistrationForm({ packageId: initialPackageId, packageTitle: in
           </div>
           <h3 className="font-semibold text-lg">Registration Successful!</h3>
           <p className="text-muted-foreground text-sm">
-            Thank you for your interest in {displayTitle || "our packages"}. We'll be in touch shortly.
+            Thank you for your interest in {displayTitle || "our packages"}. We&apos;ll be in touch shortly.
           </p>
           <Button 
             variant="link" 

@@ -41,6 +41,7 @@ import {
   User,
   Calendar,
   MessageSquare,
+  Settings2,
 } from 'lucide-react';
 
 interface Package {
@@ -72,6 +73,7 @@ interface Registration {
 export default function AdminDashboard() {
   const [packages, setPackages] = useState<Package[]>([]);
   const [registrations, setRegistrations] = useState<Registration[]>([]);
+  const [customPlans, setCustomPlans] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [regPage, setRegPage] = useState(0);
   const [regRowsPerPage, setRegRowsPerPage] = useState(10);
@@ -90,7 +92,20 @@ export default function AdminDashboard() {
     }
     
     fetchPackages();
+    fetchCustomPlans();
   }, [user, router]);
+
+  const fetchCustomPlans = async () => {
+    try {
+      const response = await fetch('/api/customized-packages');
+      const data = await response.json();
+      if (data.success) {
+        setCustomPlans(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching custom plans:', error);
+    }
+  };
 
   const fetchPackages = async () => {
     try {
@@ -398,7 +413,7 @@ export default function AdminDashboard() {
             </Card>
           </Grid>
 
-          <Grid size={{ xs: 12, sm: 6, md: 2.4 }}>
+          <Grid size={{ xs: 12, sm: 6, md: 2 }}>
             <Card sx={{ 
               height: '100%', 
               bgcolor: 'rgba(251, 146, 60, 0.1)', 
@@ -431,6 +446,64 @@ export default function AdminDashboard() {
                     <Typography variant="h6" sx={{ fontSize: '1.1rem', fontWeight: 600, color: '#fb923c' }}>
                       {mostPopular}
                     </Typography>
+                  </Box>
+                </Box>
+              </CardContent>
+            </Card>
+          </Grid>
+
+          <Grid size={{ xs: 12, sm: 6, md: 2 }}>
+            <Card sx={{ 
+              height: '100%', 
+              bgcolor: 'rgba(244, 63, 94, 0.1)', 
+              borderColor: 'rgba(244, 63, 94, 0.3)',
+              '&:hover': {
+                bgcolor: 'rgba(244, 63, 94, 0.15)',
+                transform: 'translateY(-2px)',
+                transition: 'all 0.3s ease'
+              }
+            }}>
+              <CardContent sx={{ height: '100%', display: 'flex', flexDirection: 'column', minHeight: 140 }}>
+                <Box sx={{ display: 'flex', alignItems: 'flex-start', flex: 1 }}>
+                  <Box sx={{ 
+                    mr: 2, 
+                    color: '#f43f5e', 
+                    flexShrink: 0,
+                    bgcolor: 'rgba(244, 63, 94, 0.2)',
+                    p: 1,
+                    borderRadius: 2,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}>
+                    <Settings2 size={28} />
+                  </Box>
+                  <Box sx={{ flex: 1 }}>
+                    <Typography color="text.secondary" gutterBottom variant="overline" sx={{ lineHeight: 1.2, display: 'block', mb: 1, fontSize: '0.7rem', letterSpacing: 1 }}>
+                      Custom Plans
+                    </Typography>
+                    <Button 
+                      onClick={() => router.push('/admin/custom-plans')}
+                      size="small"
+                      variant="contained"
+                      sx={{ 
+                        mt: 0.5,
+                        textTransform: 'none', 
+                        fontSize: '0.75rem', 
+                        fontWeight: 600,
+                        px: 2,
+                        py: 0.5,
+                        borderRadius: 1.5,
+                        bgcolor: '#f43f5e',
+                        color: '#ffffff',
+                        '&:hover': {
+                          bgcolor: '#e11d48',
+                          color: '#ffffff'
+                        }
+                      }}
+                    >
+                      {customPlans.length} Total →
+                    </Button>
                   </Box>
                 </Box>
               </CardContent>
