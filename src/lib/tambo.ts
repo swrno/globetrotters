@@ -18,7 +18,7 @@ export const components = [
     description: "Navigate the user to a specific page or route in the application.",
     component: NavigationTool,
     propsSchema: z.object({
-      path: z.string().optional().describe("The path to navigate to (e.g., '/holiday-packages', '/contact', '/about'. For package details use '/package/:id')"),
+      path: z.string().optional().nullable().describe("The path to navigate to. Use the 'url' field from search results (e.g., '/package/123')."),
     }),
   },
 ];
@@ -39,12 +39,23 @@ export const tools: TamboTool[] = [
          
          const packages = responseData.data;
 
-         if (!query) return packages.slice(0, 5);
+         const formatPackage = (pkg: any) => ({
+            id: pkg.id,
+            title: pkg.title,
+            location: pkg.location,
+            category: pkg.category,
+            description: pkg.description ? pkg.description.substring(0, 100) + "..." : "",
+            price: pkg.cost_per_person,
+            url: `/package/${pkg.id}` 
+         });
+
+         if (!query) return packages.slice(0, 5).map(formatPackage);
+         
          const q = query.toLowerCase();
          return packages.filter((pkg: any) => 
             pkg.title?.toLowerCase().includes(q) ||
             pkg.location?.toLowerCase().includes(q)
-         ).slice(0, 5);
+         ).slice(0, 5).map(formatPackage);
       } catch (e: any) {
         console.error("Search tool error:", e);
         return { error: `Search failed: ${e.message || String(e)}` };

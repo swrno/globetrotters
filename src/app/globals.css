@@ -29,7 +29,7 @@
   --color-muted-backdrop: var(--muted-backdrop);
 }
 
-@import "tailwindcss";
+@import "tailwindcss" important;
 
 @custom-variant dark (&:is(.dark *));
 

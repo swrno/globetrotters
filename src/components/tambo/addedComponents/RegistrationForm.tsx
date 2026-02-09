@@ -1,16 +1,35 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
-import ReCAPTCHA from "react-google-recaptcha";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { 
+  Loader2, 
+  CheckCircle2, 
+  User, 
+  Mail, 
+  Phone, 
+  MapPin, 
+  ChevronDown 
+} from "lucide-react";
+import { usePackages } from "@/hooks/usePackages";
 
 const formSchema = z.object({
   fullName: z.string().min(2, { message: "Name must be at least 2 characters." }),
   email: z.string().email({ message: "Invalid email address." }),
   phone: z.string().min(10, { message: "Phone number must be at least 10 digits." }),
-  captcha: z.string().min(1, { message: "Please complete the CAPTCHA." }),
+  packageId: z.string().min(1, { message: "Please select a package." }),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -20,10 +39,12 @@ interface RegistrationFormProps {
   packageTitle?: string;
 }
 
-export function RegistrationForm({ packageId, packageTitle }: RegistrationFormProps) {
+export function RegistrationForm({ packageId: initialPackageId, packageTitle: initialPackageTitle }: RegistrationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
   const [errorMessage, setErrorMessage] = useState("");
+  
+  const { packages, loading: packagesLoading } = usePackages();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -31,9 +52,16 @@ export function RegistrationForm({ packageId, packageTitle }: RegistrationFormPr
       fullName: "",
       email: "",
       phone: "",
-      captcha: "",
+      packageId: initialPackageId || "",
     },
   });
+
+  // Update form default if props change or packages load
+  useEffect(() => {
+    if (initialPackageId) {
+      form.setValue("packageId", initialPackageId);
+    }
+  }, [initialPackageId, form]);
 
   const onSubmit = async (data: FormData) => {
     setIsSubmitting(true);
@@ -41,8 +69,11 @@ export function RegistrationForm({ packageId, packageTitle }: RegistrationFormPr
     setErrorMessage("");
 
     try {
-      const endpoint = packageId 
-        ? `/api/packages/${packageId}/register`
+      const selectedPackage = packages.find(p => p.id === data.packageId);
+      const currentPackageTitle = selectedPackage?.title || initialPackageTitle;
+      
+      const endpoint = data.packageId 
+        ? `/api/packages/${data.packageId}/register`
         : `/api/register`;
 
       const response = await fetch(endpoint, {
@@ -51,9 +82,11 @@ export function RegistrationForm({ packageId, packageTitle }: RegistrationFormPr
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          ...data,
-          packageId,
-          packageTitle,
+          name: data.fullName,
+          email: data.email,
+          phone: data.phone,
+          packageId: data.packageId,
+          packageTitle: currentPackageTitle,
         }),
       });
 
@@ -74,124 +107,140 @@ export function RegistrationForm({ packageId, packageTitle }: RegistrationFormPr
     }
   };
 
+  const selectedPackageId = form.watch("packageId");
+  const selectedPackage = packages.find(p => p.id === selectedPackageId);
+  const displayTitle = selectedPackage?.title || initialPackageTitle;
+
   if (submitStatus === 'success') {
     return (
-      <div className="bg-card text-card-foreground p-6 rounded-lg shadow-sm border border-border animate-in fade-in zoom-in-95 duration-300">
-        <div className="flex flex-col items-center text-center space-y-3">
+      <Card className="w-full max-w-sm my-2 animate-in fade-in zoom-in-95 duration-300">
+        <CardContent className="pt-6 flex flex-col items-center text-center space-y-3">
           <div className="bg-green-100 text-green-600 p-2 rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <CheckCircle2 className="h-6 w-6" />
           </div>
           <h3 className="font-semibold text-lg">Registration Successful!</h3>
           <p className="text-muted-foreground text-sm">
-            Thank you for your interest in {packageTitle || "our packages"}. We'll be in touch shortly.
+            Thank you for your interest in {displayTitle || "our packages"}. We'll be in touch shortly.
           </p>
-          <button 
+          <Button 
+            variant="link" 
             onClick={() => setSubmitStatus('idle')}
-            className="text-primary hover:underline text-sm font-medium mt-2"
+            className="mt-2"
           >
             Register another
-          </button>
-        </div>
-      </div>
+          </Button>
+        </CardContent>
+      </Card>
     );
   }
 
   return (
-    <div className="w-full max-w-sm bg-card text-card-foreground rounded-xl border border-border shadow-sm overflow-hidden my-2">
-      <div className="bg-muted/30 p-4 border-b border-border">
-        <h3 className="font-semibold text-base">Register Interest</h3>
-        {packageTitle && (
-          <p className="text-sm text-muted-foreground truncate">
-            For: <span className="font-medium text-foreground">{packageTitle}</span>
-          </p>
-        )}
-      </div>
-
-      <div className="p-4">
+    <Card className="w-full max-w-sm my-2 overflow-hidden shadow-sm">
+      <CardHeader className="bg-muted/30 pb-4 border-b">
+        <CardTitle className="text-base">Register Interest</CardTitle>
+        <CardDescription>
+          Fill out the form below to book your next adventure.
+        </CardDescription>
+      </CardHeader>
+      <CardContent className="pt-4">
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          
+          {/* Package Selection */}
           <div className="space-y-2">
-            <label htmlFor="fullName" className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-              Full Name
-            </label>
-            <input
-              id="fullName"
-              {...form.register("fullName")}
-              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-              placeholder="John Doe"
-            />
+            <Label htmlFor="packageId">Interested Package</Label>
+            <div className="relative">
+              <MapPin className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+              <select
+                id="packageId"
+                className="flex h-10 w-full rounded-md border border-input bg-background pl-9 pr-8 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 appearance-none"
+                {...form.register("packageId")}
+                disabled={isSubmitting || packagesLoading}
+              >
+                <option value="" disabled>Select a package</option>
+                {packages.map((pkg) => (
+                  <option key={pkg.id} value={pkg.id}>
+                    {pkg.title}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="absolute right-3 top-3 h-4 w-4 text-muted-foreground opacity-50 pointer-events-none" />
+            </div>
+            {form.formState.errors.packageId && (
+              <p className="text-destructive text-xs">{form.formState.errors.packageId.message}</p>
+            )}
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="fullName">Full Name</Label>
+            <div className="relative">
+              <User className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="fullName"
+                placeholder="John Doe"
+                className="pl-9"
+                {...form.register("fullName")}
+                disabled={isSubmitting}
+              />
+            </div>
             {form.formState.errors.fullName && (
-              <p className="text-red-500 text-xs mt-1">{form.formState.errors.fullName.message}</p>
+              <p className="text-destructive text-xs">{form.formState.errors.fullName.message}</p>
             )}
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="email" className="text-sm font-medium leading-none">
-              Email
-            </label>
-            <input
-              id="email"
-              type="email"
-              {...form.register("email")}
-              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
-              placeholder="john@example.com"
-            />
+            <Label htmlFor="email">Email</Label>
+            <div className="relative">
+              <Mail className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="email"
+                type="email"
+                placeholder="john@example.com"
+                className="pl-9"
+                {...form.register("email")}
+                disabled={isSubmitting}
+              />
+            </div>
             {form.formState.errors.email && (
-              <p className="text-red-500 text-xs mt-1">{form.formState.errors.email.message}</p>
+              <p className="text-destructive text-xs">{form.formState.errors.email.message}</p>
             )}
           </div>
 
           <div className="space-y-2">
-            <label htmlFor="phone" className="text-sm font-medium leading-none">
-              Phone
-            </label>
-            <input
-              id="phone"
-              type="tel"
-              {...form.register("phone")}
-              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
-              placeholder="+1 234 567 890"
-            />
+            <Label htmlFor="phone">Phone</Label>
+            <div className="relative">
+              <Phone className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
+              <Input
+                id="phone"
+                type="tel"
+                placeholder="+1 234 567 890"
+                className="pl-9"
+                {...form.register("phone")}
+                disabled={isSubmitting}
+              />
+            </div>
             {form.formState.errors.phone && (
-              <p className="text-red-500 text-xs mt-1">{form.formState.errors.phone.message}</p>
+              <p className="text-destructive text-xs">{form.formState.errors.phone.message}</p>
             )}
           </div>
-
-          <div className="flex justify-center py-2">
-            <ReCAPTCHA
-              sitekey={process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY!}
-              size="compact"
-              onChange={(token) => form.setValue("captcha", token || "")}
-            />
-          </div>
-          {form.formState.errors.captcha && (
-            <p className="text-red-500 text-xs text-center">{form.formState.errors.captcha.message}</p>
-          )}
 
           {submitStatus === 'error' && (
-            <div className="bg-red-50 text-red-600 p-3 rounded-md text-sm border border-red-100 mb-2">
+            <div className="bg-destructive/10 text-destructive p-3 rounded-md text-sm border border-destructive/20">
               {errorMessage}
             </div>
           )}
 
-          <button
-            type="submit"
-            disabled={isSubmitting}
-            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 w-full"
-          >
+          <Button type="submit" className="w-full" disabled={isSubmitting}>
             {isSubmitting ? (
               <>
-                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                </svg>
+                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                 Registering...
               </>
             ) : (
               "Register Interest"
             )}
-          </button>
+          </Button>
         </form>
-      </div>
-    </div>
+      </CardContent>
+    </Card>
   );
 }
