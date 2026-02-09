@@ -1,7 +1,12 @@
 import { RegistrationForm } from "@/components/tambo/addedComponents/RegistrationForm";
+import { ChatPackageList } from "@/components/tambo/addedComponents/ChatPackageList";
+import { ChatPackageCard } from "@/components/tambo/addedComponents/ChatPackageCard";
 import { NavigationTool } from "@/components/tambo/tools/NavigationTool";
 import { z } from "zod";
 import { TamboTool } from "@tambo-ai/react";
+import { navigateSchema, navigateToolAction } from "@/components/tambo/tools/Navigate";
+import { getCurrentPageSchema, getCurrentPageAction } from "@/components/tambo/tools/GetCurrentPage";
+import { searchPackagesSchema, searchPackagesAction } from "@/components/tambo/tools/SearchTool";
 
 export const components = [
   {
@@ -21,49 +26,51 @@ export const components = [
       path: z.string().optional().nullable().describe("The path to navigate to. Use the 'url' field from search results (e.g., '/package/123')."),
     }),
   },
+  {
+    name: "ChatPackageList",
+    description: "Display a list of available holiday packages directly in the chat.",
+    component: ChatPackageList,
+    propsSchema: z.object({
+      limit: z.number().optional().describe("Number of packages to display (default: 5)"),
+      category: z.enum(['domestic', 'international', 'all']).optional().describe("Filter by category (default: all)"),
+    }),
+  },
+  {
+    name: "ChatPackageCard",
+    description: "Display rich details for a single package. Must provide the 'id' from search results.",
+    component: ChatPackageCard,
+    propsSchema: z.object({
+      id: z.string().optional().describe("The unique ID of the package to display. Required for showing details."),
+    }),
+  },
 ];
 
 export const tools: TamboTool[] = [
   {
     name: "search_packages",
-    description: "Search for available holiday packages by keywords, location, or category.",
-    tool: async ({ query }: { query?: string }) => {
-      try {
-        const res = await fetch('/api/packages');
-         if (!res.ok) throw new Error('Failed to fetch');
-         const responseData = await res.json();
-
-         if (!responseData.success || !Array.isArray(responseData.data)) {
-           throw new Error(responseData.error || "Invalid response format");
-         }
-         
-         const packages = responseData.data;
-
-         const formatPackage = (pkg: any) => ({
-            id: pkg.id,
-            title: pkg.title,
-            location: pkg.location,
-            category: pkg.category,
-            description: pkg.description ? pkg.description.substring(0, 100) + "..." : "",
-            price: pkg.cost_per_person,
-            url: `/package/${pkg.id}` 
-         });
-
-         if (!query) return packages.slice(0, 5).map(formatPackage);
-         
-         const q = query.toLowerCase();
-         return packages.filter((pkg: any) => 
-            pkg.title?.toLowerCase().includes(q) ||
-            pkg.location?.toLowerCase().includes(q)
-         ).slice(0, 5).map(formatPackage);
-      } catch (e: any) {
-        console.error("Search tool error:", e);
-        return { error: `Search failed: ${e.message || String(e)}` };
-      }
-    },
-    inputSchema: z.object({
-      query: z.string().optional().describe("The search query"),
-    }),
+    description: "Search for packages. Returns unique 'id' for each package which can be used to show details.",
+    tool: searchPackagesAction,
+    inputSchema: searchPackagesSchema,
+    outputSchema: z.array(z.object({
+      id: z.string(),
+      title: z.string(),
+      location: z.string(),
+      price: z.number(),
+      url: z.string()
+    })),
+  },
+  {
+    name: "navigate",
+    description: "Silent navigation to a specific route.",
+    tool: navigateToolAction,
+    inputSchema: navigateSchema,
     outputSchema: z.any(),
-  }
+  },
+  {
+    name: "get_current_page",
+    description: "Retrieves the current URL path context.",
+    tool: getCurrentPageAction,
+    inputSchema: getCurrentPageSchema,
+    outputSchema: z.any(),
+  },
 ];

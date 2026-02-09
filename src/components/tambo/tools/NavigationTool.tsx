@@ -1,33 +1,23 @@
+
 "use client";
 
-import { z } from "zod";
-import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 
-export const navigationSchema = z.object({
-  path: z.string().describe("The path to navigate to (e.g., '/holiday-packages', '/contact')"),
-});
+export interface NavigationToolProps {
+  path?: string;
+}
 
-export function NavigationTool({ path }: { path?: string }) {
-  const router = useRouter();
-
+/**
+ * A silent navigation component that performs a route change 
+ * via a custom event and renders absolutely no UI in the chat thread.
+ */
+export function NavigationTool({ path }: NavigationToolProps) {
   useEffect(() => {
-    if (path) {
-      router.push(path);
+    if (path && typeof window !== "undefined") {
+      window.dispatchEvent(new CustomEvent("tambo:navigate", { detail: { path } }));
     }
-  }, [path, router]);
+  }, [path]);
 
-  if (!path) {
-    return (
-      <div className="p-4 bg-yellow-50 text-yellow-700 rounded-md border border-yellow-200">
-        <p>Navigation path missing.</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="p-4 bg-blue-50 text-blue-700 rounded-md border border-blue-200">
-      <p>Navigating to {path}...</p>
-    </div>
-  );
+  // Return null so no tool-call UI is rendered in the chat bubble
+  return null;
 }

@@ -1,36 +1,41 @@
+
 import { z } from "zod";
 
 export const searchPackagesSchema = z.object({
-  query: z.string().describe("The search query to find holiday packages (e.g., 'beach', 'Europe', 'mountain')"),
+  query: z.string().optional().describe("The search query (keywords, location, etc.)"),
 });
 
-export async function searchPackages(args: z.infer<typeof searchPackagesSchema>) {
+export const searchPackagesAction = async ({ query }: { query?: string }) => {
   try {
-    const response = await fetch('/api/packages');
-    if (!response.ok) {
-      throw new Error('Failed to fetch packages');
+    const res = await fetch('/api/packages');
+    if (!res.ok) throw new Error('Failed to fetch');
+    const responseData = await res.json();
+
+    if (!responseData.success || !Array.isArray(responseData.data)) {
+      throw new Error(responseData.error || "Invalid response format");
     }
-    const packages = await response.json();
     
-    if (!args.query) return packages.slice(0, 5);
+    const packages = responseData.data;
 
-    const query = args.query.toLowerCase();
-    const filtered = packages.filter((pkg: any) => 
-      pkg.title?.toLowerCase().includes(query) ||
-      pkg.location?.toLowerCase().includes(query) ||
-      pkg.description?.toLowerCase().includes(query) ||
-      pkg.category?.toLowerCase().includes(query)
-    );
-
-    return filtered.slice(0, 5).map((pkg: any) => ({
-      id: pkg._id || pkg.id,
+    const formatPackage = (pkg: any) => ({
+      id: pkg.id,
       title: pkg.title,
       location: pkg.location,
-      price: pkg.price,
-      duration: `${pkg.nights} Nights / ${pkg.days} Days`
-    }));
-  } catch (error) {
-    console.error("Search error:", error);
-    return { error: "Failed to search packages." };
+      category: pkg.category,
+      description: pkg.description ? pkg.description.substring(0, 100) + "..." : "",
+      price: pkg.cost_per_person,
+      url: `/package/${pkg.id}` 
+    });
+
+    if (!query) return packages.slice(0, 5).map(formatPackage);
+    
+    const q = query.toLowerCase();
+    return packages.filter((pkg: any) => 
+      pkg.title?.toLowerCase().includes(q) ||
+      pkg.location?.toLowerCase().includes(q)
+    ).slice(0, 5).map(formatPackage);
+  } catch (e: any) {
+    console.error("Search tool error:", e);
+    return { error: `Search failed: ${e.message || String(e)}` };
   }
-}
+};

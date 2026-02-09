@@ -12,6 +12,7 @@ interface Package {
   category: 'domestic' | 'international';
   days: number;
   nights: number;
+  cost_per_person: number;
   registrations: any[];
   images: string[];
   createdAt: string;
