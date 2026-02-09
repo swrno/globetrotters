@@ -100,26 +100,12 @@ export function ChatPackageCard({ id }: ChatPackageCardProps) {
         </div>
       </CardContent>
 
-      <CardFooter className="p-4 pt-0 flex gap-2">
-        <Link href={`/package/${pkg.id}`} className="flex-1">
+      <CardFooter className="p-4 pt-0">
+        <Link href={`/package/${pkg.id}`} className="w-full">
           <Button variant="default" className="w-full font-bold">
             View Full Package
           </Button>
         </Link>
-        <Button 
-          variant="outline" 
-          onClick={() => {
-            const el = document.querySelector('[data-slot="message-input-textarea"]');
-            if (el instanceof HTMLTextAreaElement) {
-              el.value = `I'm interested in the ${pkg.title} package. Can you tell me more about it?`;
-              el.focus();
-              // Trigger input event to resize/update state if needed
-              el.dispatchEvent(new Event('input', { bubbles: true }));
-            }
-          }}
-        >
-          Inquire
-        </Button>
       </CardFooter>
     </Card>
   );
