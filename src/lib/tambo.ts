@@ -8,6 +8,7 @@ import { ContactDetails } from "@/components/tambo/addedComponents/ContactDetail
 import { NavigationTool } from "@/components/tambo/tools/NavigationTool";
 import { z } from "zod";
 import { TamboTool } from "@tambo-ai/react";
+import { getContactSchema, getContactAction } from "@/components/tambo/tools/GetContact";
 import { navigateSchema, navigateToolAction } from "@/components/tambo/tools/Navigate";
 import { getCurrentPageSchema, getCurrentPageAction } from "@/components/tambo/tools/GetCurrentPage";
 import { searchPackagesSchema, searchPackagesAction } from "@/components/tambo/tools/SearchTool";
@@ -106,6 +107,13 @@ export const tools: TamboTool[] = [
     description: "Silent navigation to a specific route.",
     tool: navigateToolAction,
     inputSchema: navigateSchema,
+    outputSchema: z.any(),
+  },
+  {
+    name: "get_contact",
+    description: "Get the contact details for Subhajit (phone and email). Use this when the user asks for contact info.",
+    tool: getContactAction,
+    inputSchema: getContactSchema,
     outputSchema: z.any(),
   },
   {
