@@ -4,6 +4,7 @@ import { ChatPackageCard } from "@/components/tambo/addedComponents/ChatPackageC
 import { LocationPermissionCard } from "@/components/tambo/addedComponents/LocationPermissionCard";
 import { SmartRecommendations } from "@/components/tambo/addedComponents/SmartRecommendations";
 import { PackageCustomizer } from "@/components/tambo/addedComponents/PackageCustomizer";
+import { ContactDetails } from "@/components/tambo/addedComponents/ContactDetails";
 import { NavigationTool } from "@/components/tambo/tools/NavigationTool";
 import { z } from "zod";
 import { TamboTool } from "@tambo-ai/react";
@@ -14,6 +15,16 @@ import { getDateTimeSchema, getDateTimeAction } from "@/components/tambo/tools/G
 import { getLocationSchema, getLocationAction } from "@/components/tambo/tools/GetLocation";
 
 export const components = [
+  {
+    name: "ContactDetails",
+    description: "Show this immediately whenever a user asks for contact details, phone number, email, or who to talk to. This shows the details for Subhajit.",
+    component: ContactDetails,
+    propsSchema: z.object({
+      fullName: z.string().optional().describe("The name of the contact person"),
+      phone: z.string().optional().describe("The phone number"),
+      email: z.string().optional().describe("The email address"),
+    }),
+  },
   {
     name: "RegistrationForm",
     description: "ESSENTIAL: Show this form immediately whenever a user says they want to book, register interest, or inquire about a package. DO NOT just ask for details in text; show this form.",
